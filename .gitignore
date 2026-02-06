@@ -1,0 +1,68 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### reate ignore ###
+# Logs
+src/main/frontend/logs
+src/main/frontend/*.log
+src/main/frontend/npm-debug.log*
+src/main/frontend/yarn-debug.log*
+src/main/frontend/yarn-error.log*
+src/main/frontend/pnpm-debug.log*
+src/main/frontend/lerna-debug.log*
+
+# Dependencies
+src/main/frontend/node_modules
+
+# Build outputs
+src/main/frontend/dist
+src/main/frontend/dist-ssr
+
+# Environment variables
+src/main/frontend/*.local
+
+# Editor directories and files
+src/main/frontend/.vscode/*
+!src/main/frontend/.vscode/extensions.json
+src/main/frontend/.idea
+src/main/frontend/.DS_Store
+src/main/frontend/*.suo
+src/main/frontend/*.ntvs*
+src/main/frontend/*.njsproj
+src/main/frontend/*.sln
+src/main/frontend/*.sw?
