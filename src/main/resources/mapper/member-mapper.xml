@@ -3,8 +3,18 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
-<mapper namespace="mapper">
-	
+<mapper namespace="com.green.book_shop.member.mapper.MemberMapper">
+	<resultMap id="member" type="com.green.book_shop.member.dto.MemberDTO">
+		<id column="MEM_EMAIL" property="memEmail" />
+		<result column="MEM_PW" property="memPw" />
+		<result column="MEM_NAME" property="memName" />
+		<result column="MEM_TEL" property="memTel" />
+		<result column="MEM_ADDR" property="memAddr" />
+		<result column="ADDR_DETAIL" property="addrDetail" />
+		<result column="IS_USING" property="isUsing" />
+		<result column="MEM_ROLE" property="memRole" />
+		<result column="JOIN_DATE" property="joinDate" />
+	</resultMap>
 </mapper>
 
 
