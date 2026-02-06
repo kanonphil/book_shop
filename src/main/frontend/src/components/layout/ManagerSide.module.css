@@ -20,6 +20,7 @@
   cursor: pointer;
   transition: background-color 0.3s;
   justify-content: space-between;
+  user-select: none;
 }
 
 .menu_title:hover {
@@ -53,6 +54,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  user-select: none;
 }
 
 .sub_menu > li:hover {

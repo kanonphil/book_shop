@@ -19,9 +19,9 @@ import {
 
 const ManagerSide = () => {
   const [openMenu, setOpenMenu] = useState({
-    product: false,
-    purchase: false,
-    member: false
+    product: true,
+    purchase: true,
+    member: true
   })
 
   const toggleMenu = (menu) => {

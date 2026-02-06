@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './ManagerHeader.module.css'
+import { Link } from 'react-router-dom'
 
 const ManagerHeader = () => {
   return (
@@ -10,7 +11,9 @@ const ManagerHeader = () => {
       />
       <ul>
         <li>Login</li>
-        <li>Join</li>
+        <li>
+          <Link to="/join">Join</Link>
+        </li>
       </ul>
     </div>
   )

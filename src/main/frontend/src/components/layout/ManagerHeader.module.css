@@ -19,3 +19,8 @@
 .container > ul > li {
   cursor: pointer;
 }
+
+.container > ul > li a {
+  color: inherit;
+  text-decoration: none;
+}
