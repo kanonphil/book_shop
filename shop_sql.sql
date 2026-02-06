@@ -1,0 +1,21 @@
+##### 도서 쇼핑몰 프로젝트 테이블 생성 SQL #####
+
+### 생성 예상 테이블 ###
+# 1. 회원 정보 테이블 SHOP_MEMBER
+# 2. 도서 카테고리 테이블 BOOK_CATEGORY
+# 3. 도서 정보 테이블 SHOP_BOOK
+# 4. 장바구니 테이블 SHOP_CART
+# 5. 구매 정보 테이블 SHOP_BUY
+
+# 회원 정보 테이블 생성
+CREATE TABLE SHOP_MEMBER (
+	MEM_EMAIL VARCHAR(50) PRIMARY KEY,
+	MEM_PW VARCHAR(50) NOT NULL,
+	MEM_NAME VARCHAR(30) NOT NULL,
+	MEM_TEL VARCHAR(15) NOT NULL UNIQUE, # '-' 포함
+	MEM_ADDR VARCHAR(50),
+	ADDR_DETAIL VARCHAR(100),
+	IS_USING VARCHAR(10) DEFAULT 'Y', # 'Y': 사용중, 'N': 사용 안 함
+	MEM_ROLE VARCHAR(20) DEFAULT 'USER', # USER: 회원, MANAGER: 쇼핑몰 운영자, ADMIN: 관리자
+	JOIN_DATE DATETIME DEFAULT SYSDATE()
+);
