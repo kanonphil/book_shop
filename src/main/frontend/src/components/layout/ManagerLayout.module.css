@@ -1,0 +1,19 @@
+.container {
+  width: 1400px;
+  border: 1px solid black;
+  margin: 0 auto;
+}
+
+.main {
+  display: flex;
+}
+
+.side {
+  width: 18%;
+  border: 1px solid black;
+}
+
+.content {
+  width: 92%;
+  border: 1px solid black;
+}

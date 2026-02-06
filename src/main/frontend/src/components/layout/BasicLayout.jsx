@@ -10,7 +10,9 @@ const BasicLayout = () => {
   return (
     <div className={styles.container}>
       <Header />
-      <div>b</div>
+      <div style={{marginTop: '20px'}}>
+        b
+      </div>
     </div>
   )
 }

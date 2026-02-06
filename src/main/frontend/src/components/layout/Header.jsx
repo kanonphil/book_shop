@@ -22,7 +22,7 @@ const Header = () => {
         </h3>
       </div>
       <div>
-        메뉴
+        일반 사용자가 보는 메뉴
       </div>
     </div>
   )
