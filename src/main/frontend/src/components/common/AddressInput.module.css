@@ -1,0 +1,22 @@
+.address_container {
+  margin-bottom: 20px;
+}
+
+.no_margin {
+  margin-bottom: 5px !important;
+}
+
+.detail_input {
+  width: 100%;
+  margin-top: 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.detail_input:focus {
+  outline: none;
+  border-color: #3498db;
+}

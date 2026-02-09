@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './Input.module.css'
+import Button from './Button'
 
 const Input = ({ 
   label, 
@@ -8,10 +9,11 @@ const Input = ({
   defaultValue,
   maxLength,
   button,
-  onButtonClick
+  onButtonClick,
+  className
 }) => {
   return (
-    <div className={styles.input_group}>
+    <div className={`${styles.input_group} ${className || ''}`}>
       {label && <label>{label}</label>}
       {button ? (
         <div className={styles.input_with_button}>
@@ -21,9 +23,9 @@ const Input = ({
             defaultValue={defaultValue}
             maxLength={maxLength}
           />
-          <button type="button" onClick={onButtonClick}>
+          <Button onClick={onButtonClick} variant='primary'>
             {button}
-          </button>
+          </Button>
         </div>
       ) : (
         <input 

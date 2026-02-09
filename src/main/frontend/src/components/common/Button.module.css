@@ -1,0 +1,60 @@
+.button {
+  padding: 10px 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+/* Primary 버튼 (파란색 - 중복확인, 검색 등) */
+.primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.primary:hover {
+  background-color: #2980b9;
+}
+
+.primary:active {
+  background-color: #1c5a85;
+}
+
+/* Secondary 버튼 (회색 - 뒤로가기 등) */
+.secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.secondary:hover {
+  background-color: #7f8c8d;
+}
+
+.secondary:active {
+  background-color: #5d6d6e;
+}
+
+/* Dark 버튼 (검은색 - 회원가입, Submit 등) */
+.dark {
+  background-color: #2c3e50;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.dark:hover {
+  background-color: #34495e;
+}
+
+.dark:active {
+  background-color: #0a1c30;
+}
+
+/* Full Width */
+.fullWidth {
+  width: 100%;
+  padding: 15px;
+}

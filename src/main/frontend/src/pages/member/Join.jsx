@@ -3,6 +3,9 @@ import styles from './Join.module.css'
 import { useNavigate } from 'react-router-dom'
 import Input from '../../components/common/Input'
 import TelInput from '../../components/common/TelInput'
+import Button from '../../components/common/Button'
+import AddressInput from '../../components/common/AddressInput'
+import Form from '../../components/common/Form'
 
 const Join = () => {
   const navigate = useNavigate()
@@ -15,98 +18,75 @@ const Join = () => {
     console.log('주소 검색')
   }
 
+  const handleSubmit = () => {
+    console.log('회원가입')
+  }
+
   return (
-    <div className={styles.container}>
-      <button 
-        onClick={() => navigate(-1)}
-        className={styles.navBtn}
-      >
-        뒤로가기
-      </button>
+    <>
+      
 
-      {/* Email */}
-      <Input 
-        label="Email"
-        type="text"
-        placeholder="이메일을 입력하세요"
-        button="중복확인"
-        onButtonClick={handleEmailCheck}
-      />
-      {/* <div className={styles.input_group}>
-        <label>Email</label>
-        <div className={styles.input_with_button}>
-          <input type="text" placeholder='이메일을 입력하세요' />
-          <button type="button">중복확인</button>
+      <Form title='회원가입' onSubmit={handleSubmit}>
+
+        {/* Email */}
+        <Input 
+          label="Email"
+          type="text"
+          placeholder="이메일을 입력하세요"
+          button="중복확인"
+          onButtonClick={handleEmailCheck}
+        />
+  
+        {/* Password */}
+        <Input 
+          label='Password'
+          type='text'
+          placeholder="비밀번호를 입력하세요"
+        />
+  
+        {/* Confirm Password */}
+        <Input 
+          label='Confirm Password'
+          type='text'
+          placeholder="비밀번호를 다시 입력하세요"
+        />
+  
+        {/* Name */}
+        <Input 
+          label='Name'
+          type='text'
+          placeholder="이름을 입력하세요"
+        />
+  
+        {/* Tel */}
+        <TelInput label='Tel' />
+  
+        {/* Address */}
+        <AddressInput onSearch={handleAddressSearch} />
+  
+        {/* Submit Button */}
+        <div className={styles.button_group}>
+          <Button 
+            variant='dark'
+            fullWidth={true}
+            onClick={handleSubmit}
+          >
+            회원가입
+          </Button>
+
+          {/* 뒤로가기 버튼 */}
+          <Button 
+            onClick={() => navigate(-1)}
+            variant='secondary'
+            fullWidth={true}
+            className={styles.navBtn}
+          >
+            뒤로가기
+          </Button>
         </div>
-      </div> */}
-
-      {/* Password */}
-      <Input 
-        label='Password'
-        type='text'
-        placeholder="비밀번호를 입력하세요"
-      />
-      {/* <div className={styles.input_group}>
-        <label>Password</label>
-        <input type="text" placeholder='비밀번호를 입력하세요' />
-      </div> */}
-
-      {/* Confirm Password */}
-      <Input 
-        label='Confirm Password'
-        type='text'
-        placeholder="비밀번호를 다시 입력하세요"
-      />
-      {/* <div className={styles.input_group}>
-        <label>Confirm Password</label>
-        <input type="text" placeholder='비밀번호를 다시 입력하세요' />
-      </div> */}
-
-      {/* Name */}
-      <Input 
-        label='Name'
-        type='text'
-        placeholder="이름을 입력하세요"
-      />
-      {/* <div className={styles.input_group}>
-        <label>Name</label>
-        <input type="text" placeholder='이름을 입력하세요' />
-      </div> */}
-
-      {/* Tel */}
-      <TelInput label='Tel' />
-      {/* <div className={styles.input_group}>
-        <label>Tel</label>
-        <div className={styles.tel_group}>
-          <input type="text" maxLength="3" defaultValue="010" />
-          <input type="text" maxLength="4" />
-          <input type="text" maxLength="4" />
-        </div>
-      </div> */}
-
-      {/* Address */}
-      <Input 
-        label='Address'
-        type='text'
-        placeholder='우편번호'
-        button='검색'
-        onButtonClick={handleAddressSearch}
-      />
-      <input type="text" placeholder="상세주소" className={styles.full_input} />
-      {/* <div className={styles.input_group}>
-        <label>Address</label>
-        <div className={styles.input_with_button}>
-          <input type="text" placeholder="우편번호" />
-          <button>검색</button>
-        </div>
-        <input type="text" placeholder="상세주소" className={styles.full_input} />
-      </div> */}
-
-      {/* Submit Button */}
-      <div className={styles.button_group}>
-        <button className={styles.submit_button}>회원가입</button>
-      </div>
-    </div>
+        
+      </Form>
+    </>
   )
 }
 
