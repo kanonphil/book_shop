@@ -15,6 +15,62 @@
 		<result column="MEM_ROLE" property="memRole" />
 		<result column="JOIN_DATE" property="joinDate" />
 	</resultMap>
+
+	<!-- 회원가입 -->
+	<insert id="insertMember">
+		INSERT INTO SHOP_MEMBER (
+		                         MEM_EMAIL,
+		                         MEM_PW,
+		                         MEM_NAME,
+		                         MEM_TEL,
+		                         MEM_ADDR,
+		                         ADDR_DETAIL
+		)
+		VALUES (
+		        #{memEmail},
+		        #{memPw},
+		        #{memName},
+		        #{memTel},
+		        #{memAddr},
+		        #{addrDetail}
+			   )
+	</insert>
+
+	<!-- 이메일 중복 확인 -->
+	<select id="checkEmailDuplicate" resultType="int">
+		SELECT COUNT(*)
+		FROM SHOP_MEMBER
+		WHERE MEM_EMAIL = #{memEmail}
+	</select>
+
+	<!-- 로그인 (회원 정보 조회) -->
+	<select id="selectMemberByEmail" resultMap="member">
+		SELECT MEM_EMAIL,
+			   MEM_PW,
+			   MEM_NAME,
+			   MEM_TEL,
+			   MEM_ADDR,
+			   ADDR_DETAIL,
+			   IS_USING,
+			   MEM_ROLE,
+			   JOIN_DATE
+		FROM SHOP_MEMBER
+		WHERE MEM_EMAIL = #{memEmail}
+	</select>
+
+	<!-- 회원 정보 조회 -->
+	<select id="selectMemberInfo" resultMap="member">
+		SELECT MEM_EMAIL,
+			   MEM_NAME,
+			   MEM_TEL,
+			   MEM_ADDR,
+			   ADDR_DETAIL,
+			   IS_USING,
+			   MEM_ROLE,
+			   JOIN_DATE
+		FROM SHOP_MEMBER
+		WHERE MEM_EMAIL = #{memEmail}
+	</select>
 </mapper>
 
 

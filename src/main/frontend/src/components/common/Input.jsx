@@ -6,11 +6,13 @@ const Input = ({
   label, 
   type = "text", 
   placeholder, 
-  defaultValue,
+  value,
+  onChange,
   maxLength,
   button,
   onButtonClick,
   className,
+  readOnly = false,
   ...props
 }) => {
   return (
@@ -21,8 +23,10 @@ const Input = ({
           <input 
             type={type}
             placeholder={placeholder}
-            defaultValue={defaultValue}
+            value={value}
+            onChange={onChange}
             maxLength={maxLength}
+            readOnly={readOnly}
             {...props}
           />
           <Button onClick={onButtonClick} variant='primary'>
@@ -33,8 +37,9 @@ const Input = ({
         <input 
           type={type}
           placeholder={placeholder}
-          defaultValue={defaultValue}
-          maxLength={maxLength}
+          value={value}
+          onChange={onChange}
+          readOnly={readOnly}
           {...props}
         />
       )}

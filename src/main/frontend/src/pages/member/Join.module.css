@@ -1,7 +1,14 @@
 .button_group {
   margin-top: 30px;
-  text-align: center;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+/* 에러 메시지 */
+.error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
