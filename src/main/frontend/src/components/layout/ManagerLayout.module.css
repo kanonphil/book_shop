@@ -1,6 +1,7 @@
-.container {
+.manager_layout_container {
   width: 1200px;
-  border: 1px solid black;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
   margin: 0 auto;
 }
 
@@ -10,10 +11,12 @@
 
 .side {
   width: 18%;
-  border: 1px solid black;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
 }
 
 .content {
   width: 92%;
-  border: 1px solid black;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
 }

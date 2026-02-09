@@ -32,7 +32,7 @@ const ManagerSide = () => {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.manager_side_container}>
       {/* 상품관리 */}
       <div className={styles.menu_section}>
         <div 

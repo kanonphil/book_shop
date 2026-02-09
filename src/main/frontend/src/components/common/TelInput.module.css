@@ -6,7 +6,7 @@
   display: block;
   margin-bottom: 8px;
   font-weight: bold;
-  color: #2c3e50;
+  color: var(--text-primary);
 }
 
 .tel_group {
@@ -19,13 +19,15 @@
   flex: 1;
   min-width: 0;  /* 추가 - flex 아이템이 너무 커지는 것 방지 */
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 0.875rem;
   box-sizing: border-box;
 }
 
 .tel_group input:focus {
   outline: none;
-  border-color: #3498db;
+  border-color: var(--button-primary);
 }

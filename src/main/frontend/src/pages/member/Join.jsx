@@ -24,8 +24,6 @@ const Join = () => {
 
   return (
     <>
-      
-
       <Form title='회원가입' onSubmit={handleSubmit}>
 
         {/* Email */}

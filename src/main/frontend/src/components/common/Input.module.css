@@ -6,14 +6,16 @@
   display: block;
   margin-bottom: 8px;
   font-weight: bold;
-  color: #2c3e50;
+  color: var(--text-primary);
 }
 
 /* 일반 input */
 .input_group input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   border-radius: 4px;
   font-size: 14px;
   box-sizing: border-box;  /* 추가 */
@@ -21,7 +23,7 @@
 
 .input_group input:focus {
   outline: none;
-  border-color: #3498db;
+  border-color: var(--button-primary);
 }
 
 /* input + button 레이아웃 */

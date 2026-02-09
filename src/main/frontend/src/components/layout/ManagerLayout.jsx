@@ -9,7 +9,7 @@ import ManagerSide from './ManagerSide'
 
 const ManagerLayout = () => {
   return (
-    <div className={styles.container}>
+    <div className={styles.manager_layout_container}>
       <ManagerHeader />
       <div className={styles.main}>
         <div className={styles.side}>

@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './Header.module.css'
+import ThemeToggle from '../common/ThemeToggle'
 
 // 일반 사용자가 보는 페이지의 헤더 영역
 
@@ -8,6 +9,7 @@ const Header = () => {
     <div>
       <div className={styles.top_menu}>
         <ul>
+          <li><ThemeToggle /></li>
           <li>Login</li>
           <li>Join</li>
         </ul>

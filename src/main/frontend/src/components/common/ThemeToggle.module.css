@@ -1,0 +1,10 @@
+.toggle_button {
+  padding: 8px;
+  background-color: transparent;
+  color: var(--text-primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

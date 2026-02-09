@@ -1,3 +1,46 @@
+/* 라이트 모드 기본 색상 */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --text-primary: #2c3e50;
+  --text-secondary: #7f8c8d;
+  --border-color: #ddd;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  
+  /* 버튼 색상 */
+  --button-primary: #3498db;
+  --button-primary-hover: #2980b9;
+  --button-primary-active: #1c5a85;
+  --button-secondary: #95a5a6;
+  --button-secondary-hover: #7f8c8d;
+  --button-secondary-active: #5d6d6e;
+  --button-dark: #2c3e50;
+  --button-dark-hover: #34495e;
+  --button-dark-active: #0a1c30;
+}
+
+/* 다크 모드 색상 */
+[data-theme='dark'] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --border-color: #444;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  
+  /* 버튼 색상 */
+  --button-primary: #2980b9;
+  --button-primary-hover: #1c5a85;
+  --button-primary-active: #145374;
+  --button-secondary: #7f8c8d;
+  --button-secondary-hover: #6d7b7c;
+  --button-secondary-active: #5d6d6e;
+  --button-dark: #ecf0f1;
+  --button-dark-hover: #d5dbdb;
+  --button-dark-active: #bdc3c7;
+}
+
+/* ==================== 기본 리셋 ==================== */
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -12,45 +55,44 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	/* border: 0; */
-	/* font-size: 100%; */
-	/* font: inherit; */
-	vertical-align: baseline;
-	font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", helvetica, "Apple SD Gothic Neo", sans-serif;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+  font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", helvetica, "Apple SD Gothic Neo", sans-serif;
 }
 
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
-	display: block;
+  display: block;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
 }
 
 ol, ul {
-	list-style: none;
+  list-style: none;
 }
 
 blockquote, q {
-	quotes: none;
+  quotes: none;
 }
 
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
-	content: none;
+  content: '';
+  content: none;
 }
 
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
-
-/*  * -> 에스테리스크 (모든, 전부, all)   */
-*{
+/* 모든 요소에 box-sizing 적용 */
+* {
   box-sizing: border-box;
 }
-
-
-

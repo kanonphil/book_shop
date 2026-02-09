@@ -6,10 +6,11 @@ const Button = ({
   onClick,
   type = 'button',
   variant = 'primary',
+  size = 'medium',
   fullWidth = false,
   className
 }) => {
-  const buttonClass = `${styles.button} ${styles[variant]} ${fullWidth ? styles.fullWidth : ''} ${className || ''}`
+  const buttonClass = `${styles.button} ${styles[variant]} ${size[size]} ${fullWidth ? styles.fullWidth : ''} ${className || ''}`
 
   return (
     <button

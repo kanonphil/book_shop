@@ -9,52 +9,74 @@
   transition: background-color 0.2s;
 }
 
+/* Size 스타일 */
+.small {
+  padding: 6px 16px;
+  font-size: 0.75rem;
+}
+
+.medium {
+  padding: 10px 30px;
+  font-size: 0.875rem;
+}
+
+.large {
+  padding: 14px 40px;
+  font-size: 1rem;
+}
+
 /* Primary 버튼 (파란색 - 중복확인, 검색 등) */
 .primary {
-  background-color: #3498db;
+  background-color: var(--button-primary);
   color: white;
 }
 
 .primary:hover {
-  background-color: #2980b9;
+  background-color: var(--button-primary-hover);
 }
 
 .primary:active {
-  background-color: #1c5a85;
+  background-color: var(--button-primary-active);
 }
 
 /* Secondary 버튼 (회색 - 뒤로가기 등) */
 .secondary {
-  background-color: #95a5a6;
-  color: white;
+  background-color: var(--button-secondary);
+  color: var(--text-primary);
 }
 
 .secondary:hover {
-  background-color: #7f8c8d;
+  background-color: var(--button-secondary-hover);
 }
 
 .secondary:active {
-  background-color: #5d6d6e;
+  background-color: var(--button-secondary-active);
 }
 
 /* Dark 버튼 (검은색 - 회원가입, Submit 등) */
 .dark {
-  background-color: #2c3e50;
+  background-color: var(--button-dark);
   color: white;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
 }
 
 .dark:hover {
-  background-color: #34495e;
+  background-color: var(--button-dark-hover);
 }
 
 .dark:active {
-  background-color: #0a1c30;
+  background-color: var(--button-dark-active);
+}
+
+/* 다크모드에서 dark 버튼 텍스트 색상 변경 */
+[data-theme='dark'] .dark {
+  color: #1a1a1a;
 }
 
 /* Full Width */
 .fullWidth {
   width: 100%;
   padding: 15px;
+  font-size: 1rem;
 }
