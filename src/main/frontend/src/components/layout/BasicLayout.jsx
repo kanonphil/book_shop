@@ -8,7 +8,7 @@ import Header from './Header'
 
 const BasicLayout = () => {
   return (
-    <div className={styles.container}>
+    <div className={styles.basic_layout_container}>
       <Header />
       <div style={{marginTop: '20px'}}>
         b

@@ -5,7 +5,7 @@ import ThemeToggle from '../common/ThemeToggle'
 
 const ManagerHeader = () => {
   return (
-    <div className={styles.container}>
+    <div className={styles.manager_header_container}>
       <img 
         src="/logo3.png" 
         className={styles.logo}

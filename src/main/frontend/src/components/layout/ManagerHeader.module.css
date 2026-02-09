@@ -1,7 +1,8 @@
-.container {
+.manager_header_container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* padding: 10px 20px; */
 }
 
 .logo {
@@ -10,17 +11,18 @@
   object-fit: fill;
 }
 
-.container > ul {
+.manager_header_container > ul {
   display: flex;
+  align-items: center;
   gap: 8px;
   margin: 0 10px;
 }
 
-.container > ul > li {
+.manager_header_container > ul > li {
   cursor: pointer;
 }
 
-.container > ul > li a {
+.manager_header_container > ul > li a {
   color: inherit;
   text-decoration: none;
 }

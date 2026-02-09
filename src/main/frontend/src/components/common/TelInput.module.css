@@ -25,9 +25,16 @@
   border-radius: 4px;
   font-size: 0.875rem;
   box-sizing: border-box;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .tel_group input:focus {
   outline: none;
   border-color: var(--button-primary);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* 다크모드 focus */
+[data-theme='dark'] .tel_group input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
