@@ -6,7 +6,7 @@ import TelInput from '../../components/common/TelInput'
 import Button from '../../components/common/Button'
 import AddressInput from '../../components/common/AddressInput'
 import Form from '../../components/common/Form'
-import axios from 'axios'
+import { checkEmail, joinMember } from '../../api/memberApi'
 
 const Join = () => {
   const navigate = useNavigate()
@@ -58,7 +58,7 @@ const Join = () => {
 
   // 주소 변경 핸들러
   const handleAddressChange = (addr, detail) => {
-    console.log('주소 변경:', addr, detail)  // 디버깅용
+    //console.log('주소 변경:', addr, detail)  // 디버깅용
     setFormData({
       ...formData,
       memAddr: addr,
@@ -67,12 +67,12 @@ const Join = () => {
   }
 
   // 우편번호 검색 콜백 (선택사항)
-  const handleAddressSearch = (data) => {
-    console.log('우편번호:', data.zonecode)
-    console.log('기본주소:', data.address)
-    console.log('도로명주소:', data.roadAddress)
-    console.log('지번주소:', data.jibunAddress)
-  }
+  // const handleAddressSearch = (data) => {
+  //   console.log('우편번호:', data.zonecode)
+  //   console.log('기본주소:', data.address)
+  //   console.log('도로명주소:', data.roadAddress)
+  //   console.log('지번주소:', data.jibunAddress)
+  // }
 
   // 이메일 중복 확인
   const handleEmailCheck = async () => {
@@ -82,7 +82,7 @@ const Join = () => {
     }
     
     try {
-      const response = await axios.get(`http://localhost:8080/members/check-email/${formData.memEmail}`)
+      const response = await checkEmail(formData.memEmail)
       
       if (response.data.isDuplicate) {
         alert('이미 사용 중인 이메일입니다')
@@ -160,7 +160,7 @@ const Join = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/members/join', memberData)
+      const response = await joinMember(memberData)
       
       if (response.data.success) {
         alert('회원가입이 완료되었습니다')
@@ -230,7 +230,7 @@ const Join = () => {
 
       {/* Address */}
       <AddressInput 
-        onSearch={handleAddressSearch}
+        //onSearch={handleAddressSearch}
         addrValue={formData.memAddr}
         detailValue={formData.addrDetail}
         onChange={handleAddressChange}

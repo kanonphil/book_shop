@@ -17,7 +17,7 @@ const AddressInput = ({
 
   // 다음 우편번호 API 호출
   const handlePostcode = () => {
-    new window.daum.Postcode({
+    new window.kakao.Postcode({
       oncomplete: function(data) {
         // 선택한 주소 정보를 받아옴
         let fullAddress = data.address // 기본 주소

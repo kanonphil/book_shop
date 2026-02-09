@@ -4,7 +4,7 @@ import styles from './Login.module.css'
 import Input from '../../components/common/Input'
 import Button from '../../components/common/Button'
 import FormContainer from '../../components/common/Form'
-import axios from 'axios'
+import { loginMember } from '../../api/memberApi'
 import { useAuth } from '../../contexts/AuthContext'
 
 const Login = () => {
@@ -64,7 +64,7 @@ const Login = () => {
     setIsLoading(true)
 
     try {
-      const response = await axios.post('http://localhost:8080/members/login', {
+      const response = await loginMember({
         email: formData.email,
         password: formData.password
       })

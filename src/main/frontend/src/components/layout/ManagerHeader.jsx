@@ -11,15 +11,13 @@ const ManagerHeader = () => {
       <img 
         src="/symbol2.png" 
         className={styles.logo}
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/manage')}
         style={{ cursor: 'pointer' }}
       />
       <ul>
         <li><ThemeToggle /></li>
         <li>Login</li>
-        <li>
-          <Link to="/manage/join">Join</Link>
-        </li>
+        <li onClick={() => navigate('/manage/join')}>Join</li>
       </ul>
     </div>
   )
