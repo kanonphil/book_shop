@@ -10,7 +10,8 @@ const Input = ({
   maxLength,
   button,
   onButtonClick,
-  className
+  className,
+  ...props
 }) => {
   return (
     <div className={`${styles.input_group} ${className || ''}`}>
@@ -22,6 +23,7 @@ const Input = ({
             placeholder={placeholder}
             defaultValue={defaultValue}
             maxLength={maxLength}
+            {...props}
           />
           <Button onClick={onButtonClick} variant='primary'>
             {button}
@@ -33,6 +35,7 @@ const Input = ({
           placeholder={placeholder}
           defaultValue={defaultValue}
           maxLength={maxLength}
+          {...props}
         />
       )}
     </div>

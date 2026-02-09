@@ -42,7 +42,9 @@
 /* Secondary 버튼 (회색 - 뒤로가기 등) */
 .secondary {
   background-color: var(--button-secondary);
-  color: var(--text-primary);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .secondary:hover {
@@ -74,9 +76,13 @@
   color: #1a1a1a;
 }
 
+[data-theme='dark'] .secondary {
+  color: #1a1a1a;
+}
+
 /* Full Width */
 .fullWidth {
   width: 100%;
-  padding: 15px;
+  padding: 10px 30px;
   font-size: 1rem;
 }

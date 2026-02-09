@@ -7,14 +7,14 @@ const ManagerHeader = () => {
   return (
     <div className={styles.manager_header_container}>
       <img 
-        src="/logo3.png" 
+        src="/symbol2.png" 
         className={styles.logo}
       />
       <ul>
         <li><ThemeToggle /></li>
         <li>Login</li>
         <li>
-          <Link to="/join">Join</Link>
+          <Link to="/manage/join">Join</Link>
         </li>
       </ul>
     </div>

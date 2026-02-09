@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styles from './Header.module.css'
 import ThemeToggle from '../common/ThemeToggle'
 
@@ -11,7 +12,9 @@ const Header = () => {
         <ul>
           <li><ThemeToggle /></li>
           <li>Login</li>
-          <li>Join</li>
+          <li>
+            <Link to='/join'>Join</Link>
+          </li>
         </ul>
       </div>
       <div className={styles.banner_div}>

@@ -77,9 +77,8 @@ const Join = () => {
             onClick={() => navigate(-1)}
             variant='secondary'
             fullWidth={true}
-            className={styles.navBtn}
           >
-            뒤로가기
+            취소
           </Button>
         </div>
         
