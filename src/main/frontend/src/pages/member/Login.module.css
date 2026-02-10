@@ -4,30 +4,49 @@
 
 .button_group {
   margin-top: 30px;
-  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .links {
-  margin-top: 20px;
   text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
   color: var(--text-secondary);
 }
 
 .links span {
   cursor: pointer;
-  color: var(--button-primary);
+  transition: color 0.2s;
 }
 
 .links span:hover {
+  color: var(--button-primary);
   text-decoration: underline;
 }
 
+.divider {
+  margin: 0 10px;
+  cursor: default !important;
+}
+
+.divider:hover {
+  color: var(--text-secondary) !important;
+  text-decoration: none !important;
+}
+
+/* 에러 메시지 */
 .error {
-  color: #dc3545;
+  color: var(--color-error);
   font-size: 0.875rem;
-  margin-top: 5px;
-  margin-bottom: 10px;
+  margin-top: 4px;
+  /* margin-bottom: 20px; */
+}
+
+.success {
+  color: var(--color-success);
+  font-size: 0.875rem;
+  margin-top: 4px;
+  /* margin-bottom: 20px; */
 }

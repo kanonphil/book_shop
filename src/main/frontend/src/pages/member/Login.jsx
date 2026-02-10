@@ -18,35 +18,67 @@ const Login = () => {
 
   const [errors, setErrors] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+  const [validated, setValidated] = useState({
+    memEmail: false,
+    memPw: false
+  })
+
+  // 정규식 (Join과 동일)
+  const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,50}$/
+  const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/
+
+  // 필드별 유효성 검사 함수
+  const validateField = (field, value) => {
+    switch (field) {
+      case 'memEmail':
+        if (!value) return '이메일을 입력하세요'
+        if (!emailRegEx.test(value)) return '올바른 이메일 형식이 아닙니다'
+        return ''
+
+      case 'memPw':
+        if (!value) return '비밀번호를 입력하세요'
+        if (!passwordRegEx.test(value)) return '비밀번호는 영문 대소문자, 숫자를 혼합하여 4~12자로 입력해주세요'
+        return ''
+
+      default:
+        return ''
+    }
+  }
   
   // 입력한 값 변경 핸들러
   const handleChange = (field) => (e) => {
+    const value = e.target.value
+
     setFormData({
       ...formData,
-      [field]: e.target.value
+      [field]: value
     })
-    // 에러 초기화
-    if (errors[field]) {
-      setErrors({
-        ...errors,
-        [field]: ''
-      })
-    }
+
+    // 실시간 유효성 검사
+    const error = validateField(field, value)
+    setErrors(prev => ({
+      ...prev,
+      [field]: error
+    }))
+
+    // 성공 상태 업데이트
+    setValidated(prev => ({
+      ...prev,
+      [field]: !error && value !== ''
+    }))
   }
 
-  // 유효성 검사
+  // 전체 유효성 검사
   const validate = () => {
     const newErrors = {}
 
-    if (!formData.memEmail) {
-      newErrors.memEmail = '이메일을 입력하세요'
-    } else if (!/\S+@\S+\.\S+/.test(formData.memEmail)) {
-      newErrors.memEmail = '올바른 이메일 형식이 아닙니다'
-    }
+    newErrors.memEmail = validateField('memEmail', formData.memEmail)
+    newErrors.memPw = validateField('memPw', formData.memPw)
 
-    if (!formData.memPw) {
-      newErrors.memPw = '비밀번호를 입력하세요'
-    }
+    // 빈 문자열 제거
+    Object.keys(newErrors).forEach(key => {
+      if (!newErrors[key]) delete newErrors[key]
+    })
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -56,7 +88,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    // 유효성 검사
     if (!validate()) {
       return
     }
@@ -70,29 +101,24 @@ const Login = () => {
       })
 
       if (response.data.success) {
-        // 로그인 성공
         const member = response.data.member
-
         login(member)
-
         alert(`환영합니다, ${member.memName}님!`)
 
-        // 권한에 따라 다른 페이지로 이동
         if (member.memRole === 'ADMIN' || member.memRole === 'MANAGER') {
-          navigate('/manage') // 관리자 페이지
+          navigate('/manage')
         } else {
-          navigate('/') // 메인 페이지
+          navigate('/')
         }
       }
     } catch (error) {
-      // 에러 메시지 표시
       const message = error.response?.data?.message || '로그인에 실패했습니다'
       alert(message)
       
       // 비밀번호 초기화
       setFormData({
         ...formData,
-        password: ''
+        memPw: ''
       })
     } finally {
       setIsLoading(false)
@@ -100,52 +126,52 @@ const Login = () => {
   }
 
   return (
-    <>
-      <FormContainer title='로그인' onSubmit={handleSubmit}>
-        {/* Email */}
-        <div className={styles.field_wrapper}>
-          <Input 
-            label="Email"
-            type="email"
-            placeholder="Input Your I.D"
-            value={formData.memEmail}
-            onChange={handleChange('memEmail')}
-          />
-          {errors.memEmail && <p className={styles.error}>{errors.memEmail}</p>}
-        </div>
-  
-        {/* Password */}
-        <div className={styles.field_wrapper}>
-          <Input 
-            label='Password'
-            type='password'
-            placeholder="Input Your Password"
-            value={formData.memPw}
-            onChange={handleChange('memPw')}
-          />
-          {errors.memPw && <p className={styles.error}>{errors.memPw}</p>}
-        </div>
+    <FormContainer title='로그인' onSubmit={handleSubmit}>
+      {/* Email */}
+      <div className={styles.field_wrapper}>
+        <Input 
+          label="Email"
+          type="email"
+          placeholder="이메일을 입력하세요"
+          value={formData.memEmail}
+          onChange={handleChange('memEmail')}
+        />
+        {errors.memEmail && <p className={styles.error}>{errors.memEmail}</p>}
+        {validated.memEmail && <p className={styles.success}>✓ 올바른 이메일 형식입니다</p>}
+      </div>
 
-        {/* Submit Button */}
-        <div className={styles.button_group}>
-          <Button 
-            variant='dark'
-            fullWidth={true}
-            type='submit'
-            disabled={isLoading}
-          >
-            {isLoading ? '로그인 중...' : '로그인'}
-          </Button>
-        </div>
-        
-        {/* 회원가입 항목 */}
-        <div className={styles.links}>
-          <span onClick={() => navigate('/login-select')}>← 다른 방법으로 로그인</span>
-          <span className={styles.divider}>|</span>
-          <span onClick={() => navigate('/join')}>회원가입</span>
-        </div>
-      </FormContainer>
-    </>
+      {/* Password */}
+      <div className={styles.field_wrapper}>
+        <Input 
+          label='Password'
+          type='password'
+          placeholder="비밀번호를 입력하세요"
+          value={formData.memPw}
+          onChange={handleChange('memPw')}
+        />
+        {errors.memPw && <p className={styles.error}>{errors.memPw}</p>}
+        {validated.memPw && <p className={styles.success}>✓ 올바른 비밀번호 형식입니다</p>}
+      </div>
+
+      {/* Submit Button */}
+      <div className={styles.button_group}>
+        <Button 
+          variant='dark'
+          fullWidth={true}
+          type='submit'
+          disabled={isLoading}
+        >
+          {isLoading ? '로그인 중...' : '로그인'}
+        </Button>
+      </div>
+      
+      {/* 링크 */}
+      <div className={styles.links}>
+        <span onClick={() => navigate('/login-select')}>← 다른 방법으로 로그인</span>
+        <span className={styles.divider}> | </span>
+        <span onClick={() => navigate('/join')}>회원가입</span>
+      </div>
+    </FormContainer>
   )
 }
 

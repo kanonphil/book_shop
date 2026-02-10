@@ -20,6 +20,12 @@ const Header = () => {
   return (
     <div>
       <div className={styles.top_menu}>
+        <img 
+          src="/symbol2.png" 
+          className={styles.logo}
+          onClick={() => navigate('/')}
+          style={{ cursor: 'pointer' }}
+        />
         <ul>
           <li><ThemeToggle /></li>
           {member ? (

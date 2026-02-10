@@ -24,50 +24,118 @@ const Join = () => {
   })
 
   const [errors, setErrors] = useState({})
-  const [emailVerified, setEmailVerified] = useState(false) // 이메일 중복 확인 상태
-  const [isSubmitting, setIsSubmitting] = useState(false) // 제출 중 상태
-  const [passwordMatch, setPasswordMatch] = useState(false) // 비밀번호 확인
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [emailVerified, setEmailVerified] = useState(false)
+  
+  const [validated, setValidated] = useState({
+    memEmail: false,
+    memPw: false,
+    confirmPw: false,
+    memName: false,
+    memTel: false,
+    memAddr: false
+  })
+
+  // 정규식
+  const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,50}$/
+  const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/
+  const nameRegEx = /^[가-힣a-zA-Z0-9]{2,20}$/
+  const tel1RegEx = /^\d{3}$/
+  const tel2RegEx = /^\d{4}$/
+  const tel3RegEx = /^\d{4}$/
+
+  // 필드별 유효성 검사 함수
+  const validateField = (field, value) => {
+    switch (field) {
+      case 'memEmail':
+        if (!value) return '이메일을 입력하세요'
+        if (!emailRegEx.test(value)) return '올바른 이메일 형식이 아닙니다'
+        return ''
+
+      case 'memPw':
+        if (!value) return '비밀번호를 입력하세요'
+        if (!passwordRegEx.test(value)) return '비밀번호는 영문 대소문자, 숫자를 혼합하여 4~12자로 입력해주세요'
+        return ''
+
+      case 'confirmPw':
+        if (!value) return ''
+        if (value !== formData.memPw) return '비밀번호가 일치하지 않습니다'
+        return ''
+
+      case 'memName':
+        if (!value) return '이름을 입력하세요'
+        if (!nameRegEx.test(value)) return '이름은 한글 또는 영문 2~20자로 입력해주세요'
+        return ''
+
+      case 'memTel1':
+        if (!value) return '전화번호를 입력하세요'
+        if (!tel1RegEx.test(value)) return '전화번호는 첫 자리는 숫자 3자리로 입력해주세요'
+        return ''
+
+      case 'memTel2':
+        if (!value) return '전화번호를 입력하세요'
+        if (!tel2RegEx.test(value)) return '전화번호는 숫자 4자리로 입력해주세요'
+        return ''
+
+      case 'memTel3':
+        if (!value) return '전화번호를 입력하세요'
+        if (!tel3RegEx.test(value)) return '전화번호는 숫자 4자리로 입력해주세요'
+        return ''
+
+      case 'memAddr':
+        if (!value) return '주소를 입력하세요'
+        return ''
+
+      default:
+        return ''
+    }
+  }
 
   // 입력값 변경 핸들러
   const handleChange = (field) => (e) => {
+    const value = e.target.value
+
     setFormData({
       ...formData,
-      [field]: e.target.value
+      [field]: value
     })
 
-    // 이메일이 변경되면 중복 확인 상태 초기화
+    // 이메일 변경 시 중복 확인 초기화
     if (field === 'memEmail') {
       setEmailVerified(false)
     }
 
-    // confirmPw 입력 시 실시간 검증
+    // 비밀번호 변경 시 confirmPw도 재검증
+    if (field === 'memPw' && formData.confirmPw) {
+      const confirmError = validateField('confirmPw', formData.confirmPw)
+      setErrors(prev => ({ ...prev, confirmPw: confirmError }))
+      setValidated(prev => ({ 
+        ...prev, 
+        confirmPw: !confirmError && formData.confirmPw !== '' 
+      }))
+    }
+
+    // confirmPw 변경 시 일치 여부 확인
     if (field === 'confirmPw') {
-      // confirmPw가 비어있지 않고 && 일치하면
-      if (e.target.value && formData.memPw === e.target.value) {
-        setPasswordMatch(true)
-        setErrors({
-          ...errors,
-          confirmPw: ''
-        })
-      } else if (e.target.value && formData.memPw !== e.target.value) {
-        setPasswordMatch(false)
-        setErrors({
-          ...errors,
-          confirmPw: '비밀번호가 일치하지 않습니다'
-        })
-      } else {
-        // 비어있으면 둘 다 fasle
-        setPasswordMatch(false)
-      }
+      const confirmError = validateField('confirmPw', value)
+      setValidated(prev => ({ 
+        ...prev, 
+        confirmPw: !confirmError && value !== '' 
+      }))
     }
-    
-    // 에러 초기화
-    if (errors[field] && field !== 'confirmPw') {
-      setErrors({
-        ...errors,
-        [field]: ''
-      })
-    }
+
+    // 실시간 유효성 검사
+    const error = validateField(field, value)
+    setErrors(prev => ({
+      ...prev,
+      [field]: error
+    }))
+
+    // 성공 상태 업데이트
+    setValidated(prev => ({
+      ...prev,
+      [field]: !error && value !== ''
+    }))
   }
 
   // 전화번호 변경 핸들러
@@ -78,12 +146,23 @@ const Join = () => {
       memTel2: tel2,
       memTel3: tel3
     })
-    if (errors.memTel) {
-      setErrors({
-        ...errors,
-        memTel: ''
-      })
-    }
+
+    // 전화번호 유효성 검사
+    const tel1Error = validateField('memTel1', tel1)
+    const tel2Error = validateField('memTel2', tel2)
+    const tel3Error = validateField('memTel3', tel3)
+    const telError = tel1Error || tel2Error || tel3Error
+
+    setErrors(prev => ({
+      ...prev,
+      memTel: telError
+    }))
+
+    // 성공 상태 업데이트
+    setValidated(prev => ({
+      ...prev,
+      memTel: !telError && tel1 !== '' && tel2 !== '' && tel3 !== ''
+    }))
   }
 
   // 주소 변경 핸들러
@@ -93,18 +172,27 @@ const Join = () => {
       memAddr: addr,
       addrDetail: detail
     })
+
+    // 주소 유효성 검사
+    const error = validateField('memAddr', addr)
+    setErrors(prev => ({
+      ...prev,
+      memAddr: error
+    }))
+
+    // 성공 상태 업데이트
+    setValidated(prev => ({
+      ...prev,
+      memAddr: !error && addr !== ''
+    }))
   }
 
   // 이메일 중복 확인
   const handleEmailCheck = async () => {
-    // 이메일 형식 검증
-    if (!formData.memEmail) {
-      alert('이메일을 입력하세요')
-      return
-    }
-
-    if (!/\S+@\S+\.\S+/.test(formData.memEmail)) {
-      alert('올바른 이메일 형식이 아닙니다')
+    const emailError = validateField('memEmail', formData.memEmail)
+    
+    if (emailError) {
+      alert(emailError)
       return
     }
 
@@ -125,43 +213,26 @@ const Join = () => {
     }
   }
 
-  // 유효성 검사
+  // 전체 유효성 검사
   const validate = () => {
     const newErrors = {}
 
-    // 이메일 검증
-    if (!formData.memEmail) {
-      newErrors.memEmail = '이메일을 입력하세요'
-    } else if (!/\S+@\S+\.\S+/.test(formData.memEmail)) {
-      newErrors.memEmail = '올바른 이메일 형식이 아닙니다'
-    }
+    newErrors.memEmail = validateField('memEmail', formData.memEmail)
+    newErrors.memPw = validateField('memPw', formData.memPw)
+    newErrors.confirmPw = validateField('confirmPw', formData.confirmPw)
+    newErrors.memName = validateField('memName', formData.memName)
+    
+    const tel1Error = validateField('memTel1', formData.memTel1)
+    const tel2Error = validateField('memTel2', formData.memTel2)
+    const tel3Error = validateField('memTel3', formData.memTel3)
+    newErrors.memTel = tel1Error || tel2Error || tel3Error
 
-    // 비밀번호 검증
-    if (!formData.memPw) {
-      newErrors.memPw = '비밀번호를 입력하세요'
-    } else if (formData.memPw.length < 4) {
-      newErrors.memPw = '비밀번호는 4자 이상이어야 합니다'
-    }
+    newErrors.memAddr = validateField('memAddr', formData.memAddr)
 
-    // 비밀번호 확인
-    if (formData.memPw !== formData.confirmPw) {
-      newErrors.confirmPw = '비밀번호가 일치하지 않습니다'
-    }
-
-    // 이름 검증
-    if (!formData.memName) {
-      newErrors.memName = '이름을 입력하세요'
-    }
-
-    // 전화번호 검증
-    if (!formData.memTel2 || !formData.memTel3) {
-      newErrors.memTel = '전화번호를 입력하세요'
-    }
-
-    // 주소 검증
-    if (!formData.memAddr) {
-      newErrors.memAddr = '주소를 입력하세요'
-    }
+    // 빈 문자열 제거
+    Object.keys(newErrors).forEach(key => {
+      if (!newErrors[key]) delete newErrors[key]
+    })
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -171,17 +242,14 @@ const Join = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // 유효성 검사
     if (!validate()) {
       return
     }
 
     setIsSubmitting(true)
 
-    // 전화번호 조합
     const memTel = `${formData.memTel1}-${formData.memTel2}-${formData.memTel3}`
 
-    // 서버로 전송할 데이터
     const memberData = {
       memEmail: formData.memEmail,
       memPw: formData.memPw,
@@ -200,7 +268,6 @@ const Join = () => {
       }
       
     } catch (error) {
-      // console.error('회원가입 실패:', error)
       const message = error.response?.data?.message || '회원가입에 실패했습니다'
       alert(message)
     } finally {
@@ -235,6 +302,7 @@ const Join = () => {
           onChange={handleChange('memPw')}
         />
         {errors.memPw && <p className={styles.error}>{errors.memPw}</p>}
+        {validated.memPw && <p className={styles.success}>✓ 사용 가능한 비밀번호입니다</p>}
       </div>
 
       {/* Confirm Password */}
@@ -247,7 +315,7 @@ const Join = () => {
           onChange={handleChange('confirmPw')}
         />
         {errors.confirmPw && <p className={styles.error}>{errors.confirmPw}</p>}
-        {passwordMatch && <p className={styles.success}>✓ 비밀번호가 일치합니다</p>}
+        {validated.confirmPw && <p className={styles.success}>✓ 비밀번호가 일치합니다</p>}
       </div>
 
       {/* Name */}
@@ -260,6 +328,7 @@ const Join = () => {
           onChange={handleChange('memName')}
         />
         {errors.memName && <p className={styles.error}>{errors.memName}</p>}
+        {validated.memName && <p className={styles.success}>✓ 올바른 이름 형식입니다</p>}
       </div>
 
       {/* Tel */}
@@ -272,17 +341,18 @@ const Join = () => {
           onChange={handleTelChange}
         />
         {errors.memTel && <p className={styles.error}>{errors.memTel}</p>}
+        {validated.memTel && <p className={styles.success}>✓ 올바른 전화번호 형식입니다</p>}
       </div>
 
       {/* Address */}
       <div className={styles.field_wrapper}>
         <AddressInput 
-          //onSearch={handleAddressSearch}
           addrValue={formData.memAddr}
           detailValue={formData.addrDetail}
           onChange={handleAddressChange}
         />
         {errors.memAddr && <p className={styles.error}>{errors.memAddr}</p>}
+        {validated.memAddr && <p className={styles.success}>✓ 주소가 입력되었습니다</p>}
       </div>
 
       {/* Submit Button */}
@@ -291,19 +361,9 @@ const Join = () => {
           variant='dark'
           fullWidth={true}
           type='submit'
-          disabled={!emailVerified || isSubmitting} // 이메일 미확인 시 비활성화
+          disabled={!emailVerified || isSubmitting}
         >
           회원가입
-        </Button>
-
-        {/* 뒤로가기 버튼 */}
-        <Button 
-          onClick={() => navigate('/')}
-          variant='secondary'
-          fullWidth={true}
-          disabled={isSubmitting}
-        >
-          취소
         </Button>
       </div>
     </Form>
