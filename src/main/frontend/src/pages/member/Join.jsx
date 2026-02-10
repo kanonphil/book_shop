@@ -26,6 +26,7 @@ const Join = () => {
   const [errors, setErrors] = useState({})
   const [emailVerified, setEmailVerified] = useState(false) // 이메일 중복 확인 상태
   const [isSubmitting, setIsSubmitting] = useState(false) // 제출 중 상태
+  const [passwordMatch, setPasswordMatch] = useState(false) // 비밀번호 확인
 
   // 입력값 변경 핸들러
   const handleChange = (field) => (e) => {
@@ -38,9 +39,30 @@ const Join = () => {
     if (field === 'memEmail') {
       setEmailVerified(false)
     }
+
+    // confirmPw 입력 시 실시간 검증
+    if (field === 'confirmPw') {
+      // confirmPw가 비어있지 않고 && 일치하면
+      if (e.target.value && formData.memPw === e.target.value) {
+        setPasswordMatch(true)
+        setErrors({
+          ...errors,
+          confirmPw: ''
+        })
+      } else if (e.target.value && formData.memPw !== e.target.value) {
+        setPasswordMatch(false)
+        setErrors({
+          ...errors,
+          confirmPw: '비밀번호가 일치하지 않습니다'
+        })
+      } else {
+        // 비어있으면 둘 다 fasle
+        setPasswordMatch(false)
+      }
+    }
     
     // 에러 초기화
-    if (errors[field]) {
+    if (errors[field] && field !== 'confirmPw') {
       setErrors({
         ...errors,
         [field]: ''
@@ -225,6 +247,7 @@ const Join = () => {
           onChange={handleChange('confirmPw')}
         />
         {errors.confirmPw && <p className={styles.error}>{errors.confirmPw}</p>}
+        {passwordMatch && <p className={styles.success}>✓ 비밀번호가 일치합니다</p>}
       </div>
 
       {/* Name */}
