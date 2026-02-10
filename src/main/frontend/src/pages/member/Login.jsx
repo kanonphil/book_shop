@@ -140,6 +140,8 @@ const Login = () => {
         
         {/* 회원가입 항목 */}
         <div className={styles.links}>
+          <span onClick={() => navigate('/login-select')}>← 다른 방법으로 로그인</span>
+          <span className={styles.divider}>|</span>
           <span onClick={() => navigate('/join')}>회원가입</span>
         </div>
       </FormContainer>

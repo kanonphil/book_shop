@@ -66,3 +66,6 @@ src/main/frontend/*.ntvs*
 src/main/frontend/*.njsproj
 src/main/frontend/*.sln
 src/main/frontend/*.sw?
+
+# Properties
+application-secret.properties

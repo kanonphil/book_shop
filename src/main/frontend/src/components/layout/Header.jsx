@@ -29,7 +29,7 @@ const Header = () => {
             </>
           ) : (
             <>
-              <li onClick={() => navigate('/login')}>Login</li>
+              <li onClick={() => navigate('/login-select')}>Login</li>
               <li onClick={() => navigate('/join')}>Join</li>
             </>
           )}

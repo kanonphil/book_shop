@@ -5,6 +5,8 @@ import Join from './pages/member/Join'
 import './reset.css'
 import BookList from './pages/book/BookList'
 import Login from './pages/member/Login'
+import LoginSelect from './pages/member/LoginSelect'
+import OAuthCallback from './pages/member/OAuthCallback'
 
 function App() {
   
@@ -23,6 +25,8 @@ function App() {
           <Route path='' element={<BookList />} />
           <Route path='join' element={<Join />} />
           <Route path='login' element={<Login />} />
+          <Route path='login-select' element={<LoginSelect />} />
+          <Route path='oauth-callback' element={<OAuthCallback />} />
         </Route>
 
         {/* 매니저 권한의 회원이 접근하는 페이지들 */}

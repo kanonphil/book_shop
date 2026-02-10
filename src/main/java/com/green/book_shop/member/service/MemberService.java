@@ -16,6 +16,15 @@ public class MemberService {
   // 회원가입
   @Transactional
   public void joinMember(MemberDTO memberDTO) {
+    // 일반 회원가입 필수 항목 검증
+    if (memberDTO.getMemPw() == null || memberDTO.getMemPw().isEmpty()) {
+      throw new RuntimeException("비밀번호는 필수입니다");
+    }
+
+    if (memberDTO.getMemTel() == null || memberDTO.getMemTel().isEmpty()) {
+      throw new RuntimeException("전화번호는 필수입니다");
+    }
+
     // 이메일 중복 확인
     if (memberMapper.checkEmailDuplicate(memberDTO.getMemEmail()) > 0) {
       throw new RuntimeException("이미 사용 중인 이메일입니다");
@@ -24,6 +33,9 @@ public class MemberService {
     // 비밀번호 암호화
     String encodedPassword = PasswordUtil.encode(memberDTO.getMemPw());
     memberDTO.setMemPw(encodedPassword);
+
+    // provider를 'local'로 설정
+    memberDTO.setProvider("local");
 
     // 회원 등록
     memberMapper.insertMember(memberDTO);

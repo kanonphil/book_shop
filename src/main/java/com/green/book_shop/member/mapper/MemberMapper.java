@@ -11,8 +11,11 @@ public interface MemberMapper {
   // 이메일 중복 확인
   int checkEmailDuplicate(String memEmail);
 
-  // 로그인 (이메일로 회원 조회)
+  // 이메일로 회원 조회 (일반 로그인)
   MemberDTO selectMemberByEmail(String memEmail);
+
+  // OAuth: provider와 providerId로 회원 조회 (추가)
+  MemberDTO selectMemberByProviderAndProviderId(String provider, String providerId);
 
   // 회원 정보 조회
   MemberDTO selectMemberInfo(String memEmail);

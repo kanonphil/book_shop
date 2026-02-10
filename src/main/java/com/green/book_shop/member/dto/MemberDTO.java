@@ -19,4 +19,8 @@ public class MemberDTO {
   private String isUsing;
   private String memRole;
   private LocalDateTime joinDate;
+
+  // OAuth 필드 추가
+  private String provider;
+  private String providerId;
 }
