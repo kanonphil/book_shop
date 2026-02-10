@@ -12,8 +12,8 @@ const Login = () => {
   const { login } = useAuth()
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    memEmail: '',
+    memPw: ''
   })
 
   const [errors, setErrors] = useState({})
@@ -38,14 +38,14 @@ const Login = () => {
   const validate = () => {
     const newErrors = {}
 
-    if (!formData.email) {
-      newErrors.email = '이메일을 입력하세요'
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = '올바른 이메일 형식이 아닙니다'
+    if (!formData.memEmail) {
+      newErrors.memEmail = '이메일을 입력하세요'
+    } else if (!/\S+@\S+\.\S+/.test(formData.memEmail)) {
+      newErrors.memEmail = '올바른 이메일 형식이 아닙니다'
     }
 
-    if (!formData.password) {
-      newErrors.password = '비밀번호를 입력하세요'
+    if (!formData.memPw) {
+      newErrors.memPw = '비밀번호를 입력하세요'
     }
 
     setErrors(newErrors)
@@ -65,8 +65,8 @@ const Login = () => {
 
     try {
       const response = await loginMember({
-        email: formData.email,
-        password: formData.password
+        memEmail: formData.memEmail,
+        memPw: formData.memPw
       })
 
       if (response.data.success) {
@@ -103,24 +103,28 @@ const Login = () => {
     <>
       <FormContainer title='로그인' onSubmit={handleSubmit}>
         {/* Email */}
-        <Input 
-          label="Email"
-          type="email"
-          placeholder="Input Your I.D"
-          value={formData.email}
-          onChange={handleChange('email')}
-        />
-        {errors.email && <p className={styles.error}>{errors.email}</p>}
+        <div className={styles.field_wrapper}>
+          <Input 
+            label="Email"
+            type="email"
+            placeholder="Input Your I.D"
+            value={formData.memEmail}
+            onChange={handleChange('memEmail')}
+          />
+          {errors.memEmail && <p className={styles.error}>{errors.memEmail}</p>}
+        </div>
   
         {/* Password */}
-        <Input 
-          label='Password'
-          type='text'
-          placeholder="Input Your Password"
-          value={formData.password}
-          onChange={handleChange('password')}
-        />
-        {errors.password && <p className={styles.error}>{errors.password}</p>}
+        <div className={styles.field_wrapper}>
+          <Input 
+            label='Password'
+            type='password'
+            placeholder="Input Your Password"
+            value={formData.memPw}
+            onChange={handleChange('memPw')}
+          />
+          {errors.memPw && <p className={styles.error}>{errors.memPw}</p>}
+        </div>
 
         {/* Submit Button */}
         <div className={styles.button_group}>

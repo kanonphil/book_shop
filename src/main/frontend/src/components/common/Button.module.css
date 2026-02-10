@@ -86,3 +86,12 @@
   padding: 10px 30px;
   font-size: 1rem;
 }
+
+/* Disabled */
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #cccccc !important;
+  color: #666666 !important;
+  pointer-events: none; /* 클릭 이벤트 완전 차단 */
+}

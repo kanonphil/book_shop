@@ -24,6 +24,8 @@ const Join = () => {
   })
 
   const [errors, setErrors] = useState({})
+  const [emailVerified, setEmailVerified] = useState(false) // 이메일 중복 확인 상태
+  const [isSubmitting, setIsSubmitting] = useState(false) // 제출 중 상태
 
   // 입력값 변경 핸들러
   const handleChange = (field) => (e) => {
@@ -31,6 +33,12 @@ const Join = () => {
       ...formData,
       [field]: e.target.value
     })
+
+    // 이메일이 변경되면 중복 확인 상태 초기화
+    if (field === 'memEmail') {
+      setEmailVerified(false)
+    }
+    
     // 에러 초기화
     if (errors[field]) {
       setErrors({
@@ -58,7 +66,6 @@ const Join = () => {
 
   // 주소 변경 핸들러
   const handleAddressChange = (addr, detail) => {
-    //console.log('주소 변경:', addr, detail)  // 디버깅용
     setFormData({
       ...formData,
       memAddr: addr,
@@ -66,32 +73,33 @@ const Join = () => {
     })
   }
 
-  // 우편번호 검색 콜백 (선택사항)
-  // const handleAddressSearch = (data) => {
-  //   console.log('우편번호:', data.zonecode)
-  //   console.log('기본주소:', data.address)
-  //   console.log('도로명주소:', data.roadAddress)
-  //   console.log('지번주소:', data.jibunAddress)
-  // }
-
   // 이메일 중복 확인
   const handleEmailCheck = async () => {
+    // 이메일 형식 검증
     if (!formData.memEmail) {
       alert('이메일을 입력하세요')
       return
     }
-    
+
+    if (!/\S+@\S+\.\S+/.test(formData.memEmail)) {
+      alert('올바른 이메일 형식이 아닙니다')
+      return
+    }
+
     try {
       const response = await checkEmail(formData.memEmail)
       
       if (response.data.isDuplicate) {
         alert('이미 사용 중인 이메일입니다')
+        setEmailVerified(false)
       } else {
         alert('사용 가능한 이메일입니다')
+        setEmailVerified(true)
       }
     } catch (error) {
       console.error('이메일 확인 실패:', error)
       alert('이메일 확인 중 오류가 발생했습니다')
+      setEmailVerified(false)
     }
   }
 
@@ -146,6 +154,8 @@ const Join = () => {
       return
     }
 
+    setIsSubmitting(true)
+
     // 전화번호 조합
     const memTel = `${formData.memTel1}-${formData.memTel2}-${formData.memTel3}`
 
@@ -168,74 +178,89 @@ const Join = () => {
       }
       
     } catch (error) {
-      console.error('회원가입 실패:', error)
+      // console.error('회원가입 실패:', error)
       const message = error.response?.data?.message || '회원가입에 실패했습니다'
       alert(message)
+    } finally {
+      setIsSubmitting(false)
     }
   }
   
   return (
     <Form title='회원가입' onSubmit={handleSubmit}>
       {/* Email */}
-      <Input 
-        label="Email"
-        type="email"
-        placeholder="이메일을 입력하세요"
-        value={formData.memEmail}
-        onChange={handleChange('memEmail')}
-        button="중복확인"
-        onButtonClick={handleEmailCheck}
-      />
-      {errors.memEmail && <p className={styles.error}>{errors.memEmail}</p>}
+      <div className={styles.field_wrapper}>
+        <Input 
+          label="Email"
+          type="email"
+          placeholder="이메일을 입력하세요"
+          value={formData.memEmail}
+          onChange={handleChange('memEmail')}
+          button="중복확인"
+          onButtonClick={handleEmailCheck}
+        />
+        {errors.memEmail && <p className={styles.error}>{errors.memEmail}</p>}
+        {emailVerified && <p className={styles.success}>✓ 사용 가능한 이메일입니다</p>}
+      </div>
 
       {/* Password */}
-      <Input 
-        label='Password'
-        type='password'
-        placeholder="비밀번호를 입력하세요"
-        value={formData.memPw}
-        onChange={handleChange('memPw')}
-      />
-      {errors.memPw && <p className={styles.error}>{errors.memPw}</p>}
+      <div className={styles.field_wrapper}>
+        <Input 
+          label='Password'
+          type='password'
+          placeholder="비밀번호를 입력하세요"
+          value={formData.memPw}
+          onChange={handleChange('memPw')}
+        />
+        {errors.memPw && <p className={styles.error}>{errors.memPw}</p>}
+      </div>
 
       {/* Confirm Password */}
-      <Input 
-        label='Confirm Password'
-        type='password'
-        placeholder="비밀번호를 다시 입력하세요"
-        value={formData.confirmPw}
-        onChange={handleChange('confirmPw')}
-      />
-      {errors.confirmPw && <p className={styles.error}>{errors.confirmPw}</p>}
+      <div className={styles.field_wrapper}>
+        <Input 
+          label='Confirm Password'
+          type='password'
+          placeholder="비밀번호를 다시 입력하세요"
+          value={formData.confirmPw}
+          onChange={handleChange('confirmPw')}
+        />
+        {errors.confirmPw && <p className={styles.error}>{errors.confirmPw}</p>}
+      </div>
 
       {/* Name */}
-      <Input 
-        label='Name'
-        type='text'
-        placeholder="이름을 입력하세요"
-        value={formData.memName}
-        onChange={handleChange('memName')}
-      />
-      {errors.memName && <p className={styles.error}>{errors.memName}</p>}
+      <div className={styles.field_wrapper}>
+        <Input 
+          label='Name'
+          type='text'
+          placeholder="이름을 입력하세요"
+          value={formData.memName}
+          onChange={handleChange('memName')}
+        />
+        {errors.memName && <p className={styles.error}>{errors.memName}</p>}
+      </div>
 
       {/* Tel */}
-      <TelInput 
-        label='Tel'
-        value1={formData.memTel1}
-        value2={formData.memTel2}
-        value3={formData.memTel3}
-        onChange={handleTelChange}
-      />
-      {errors.memTel && <p className={styles.error}>{errors.memTel}</p>}
+      <div className={styles.field_wrapper}>
+        <TelInput 
+          label='Tel'
+          value1={formData.memTel1}
+          value2={formData.memTel2}
+          value3={formData.memTel3}
+          onChange={handleTelChange}
+        />
+        {errors.memTel && <p className={styles.error}>{errors.memTel}</p>}
+      </div>
 
       {/* Address */}
-      <AddressInput 
-        //onSearch={handleAddressSearch}
-        addrValue={formData.memAddr}
-        detailValue={formData.addrDetail}
-        onChange={handleAddressChange}
-      />
-      {errors.memAddr && <p className={styles.error}>{errors.memAddr}</p>}
+      <div className={styles.field_wrapper}>
+        <AddressInput 
+          //onSearch={handleAddressSearch}
+          addrValue={formData.memAddr}
+          detailValue={formData.addrDetail}
+          onChange={handleAddressChange}
+        />
+        {errors.memAddr && <p className={styles.error}>{errors.memAddr}</p>}
+      </div>
 
       {/* Submit Button */}
       <div className={styles.button_group}>
@@ -243,6 +268,7 @@ const Join = () => {
           variant='dark'
           fullWidth={true}
           type='submit'
+          disabled={!emailVerified || isSubmitting} // 이메일 미확인 시 비활성화
         >
           회원가입
         </Button>
@@ -252,6 +278,7 @@ const Join = () => {
           onClick={() => navigate('/')}
           variant='secondary'
           fullWidth={true}
+          disabled={isSubmitting}
         >
           취소
         </Button>

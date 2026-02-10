@@ -56,8 +56,8 @@ public class MemberController {
     Map<String, Object> response = new HashMap<>();
 
     try {
-      String email = loginData.get("email");
-      String password = loginData.get("password");
+      String email = loginData.get("memEmail");
+      String password = loginData.get("memPw");
 
       MemberDTO member = memberService.login(email, password);
 
