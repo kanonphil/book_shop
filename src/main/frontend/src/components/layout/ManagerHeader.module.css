@@ -21,3 +21,7 @@
 .manager_header_container > ul > li {
   cursor: pointer;
 }
+
+.manager_header_container > ul > li:hover {
+  color: orange;
+}

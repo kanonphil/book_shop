@@ -6,5 +6,26 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
+}
+
+/* 라이트 모드 */
+[data-theme='light'] .toggle_button {
+  color: #6b7280;
+}
+
+[data-theme='light'] .toggle_button:hover {
+  color: #4b5563;
+}
+
+[data-theme='dark'] .toggle_button {
+  color: #fbbf24;
+}
+
+[data-theme='dark'] .toggle_button:hover {
+  color: #f59e0b;
+}
+
+.toggle_button:hover {
+  transition: color 0.2s;
 }

@@ -96,7 +96,7 @@ const BookForm = () => {
         if (!value) return '가격을 입력해주세요'
         const numPrice = Number(value.replace(/,/g, ''))
         if (numPrice <= 0) return '가격은 0원보다 커야 합니다'
-        if (numPrice > 999999) return '가격이 너무 큽니다'
+        if (numPrice > 99999999) return '가격이 너무 큽니다'
         return '';
       }
 
