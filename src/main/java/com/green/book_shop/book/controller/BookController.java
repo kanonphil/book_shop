@@ -19,7 +19,12 @@ public class BookController {
   // 도서 등록
   @PostMapping("")
   public ResponseEntity<String> regBook(@RequestBody BookDTO bookDTO) {
-    bookService.regBook(bookDTO);
-    return ResponseEntity.status(HttpStatus.CREATED).body("도서가 등록되었습니다.");
+    try {
+      bookService.regBook(bookDTO);
+      return ResponseEntity.status(HttpStatus.CREATED).body("도서가 등록되었습니다.");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("도서 등록에 실패했습니다: " + e.getMessage());
+    }
   }
 }
