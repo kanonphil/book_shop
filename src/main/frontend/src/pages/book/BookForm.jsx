@@ -153,7 +153,15 @@ const BookForm = () => {
   }
   
   return (
-    <Form title='상품 등록' onSubmit={handleSubmit}>
+    <Form 
+      title='상품 등록' 
+      onSubmit={handleSubmit}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+          e.preventDefault()
+        }
+      }}
+    >
       {/* 카테고리 선택 */}
       <div className={styles.formGroup}>
         <label>Book Category</label>
