@@ -1,4 +1,3 @@
-// memberApi.js
 import axios from './axios'
 
 export const memberApi = {

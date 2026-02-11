@@ -17,7 +17,7 @@ const ManagerHeader = () => {
       <ul>
         <li><ThemeToggle /></li>
         <li>Login</li>
-        <li onClick={() => navigate('/manage/join')}>Join</li>
+        <li>Join</li>
       </ul>
     </div>
   )

@@ -28,6 +28,14 @@ const BookForm = () => {
 
   useEffect(() => {
     fetchCategories()
+
+    // 초기 에러 상태 설정
+    setErrors({
+      cateNum: validateField('cateNum', ''),
+      bookTitle: validateField('bookTitle', ''),
+      author: validateField('author', ''),
+      bookPrice: validateField('bookPrice', '')
+    })
   }, [])
 
   const fetchCategories = async () => {
