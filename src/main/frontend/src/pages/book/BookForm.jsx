@@ -19,6 +19,13 @@ const BookForm = () => {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
 
+  const [errors, setErrors] = useState({
+    cateNum: '',
+    bookTitle: '',
+    author: '',
+    bookPrice: ''
+  })
+
   useEffect(() => {
     fetchCategories()
   }, [])
@@ -32,20 +39,67 @@ const BookForm = () => {
     }
   }
 
+  const validateField = (field, value) => {
+    switch (field) {
+      case 'cateNum':
+        if (!value) return '카테고리를 선택해주세요'
+        return '';
+
+      case 'bookTitle':
+        if (!value || !value.trim()) return '도서명을 입력해주세요'
+        if (value.length > 30) return '도서명은 30자 이하로 입력해주세요'
+        return '';
+
+      case 'author':
+        if (!value || !value.trim()) return '저자를 입력해주세요'
+        if (value.length > 20) return '저자는 20자 이하로 입력해주세요'
+        return '';
+
+      case 'bookPrice':
+        if (!value) return '가격을 입력해주세요'
+        if (!value < 0) return '가격은 0원보다 커야 합니다'
+        if (!value > 999999) return '가격이 너무 큽니다'
+        return '';
+    
+      default:
+        return '';
+    }
+  }
+
+  const validate = () => {
+    const newErrors = {
+      cateNum: validateField('cateNum', bookData.cateNum),
+      bookTitle: validateField('bookTitle', bookData.bookTitle),
+      author: validateField('author', bookData.author),
+      bookPrice: validateField('bookPrice', bookData.bookPrice)
+    }
+
+    setErrors(newErrors)
+
+    // 에러가 하나라도 있으면 false
+    return !Object.values(newErrors).some(error => error !== '')
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setBookData(prev => ({
       ...prev,
       [name]: value
+    }))
+
+    // 실시간 검증
+    setErrors(prev => ({
+      ...prev,
+      [name]: validateField(name, value)
     }))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    // 유효성 검사
-    if (!bookData.cateNum || !bookData.bookTitle || !bookData.author || !bookData.bookPrice) {
-      alert('필수 항목을 모두 입력해주세요.');
+    // 전체 유효성 검사
+    if (!validate()) {
       return;
     }
 
@@ -68,13 +122,13 @@ const BookForm = () => {
       
       // 폼 초기화
       setBookData({
-        cateNum: '',
         bookTitle: '',
-        bookPrice: '',
         author: '',
+        bookPrice: '',
+        bookStock: 10,
         bookIntro: '',
         publishDate: '',
-        bookStock: 10
+        cateNum: ''
       });
     } catch (error) {
       alert('도서 등록에 실패했습니다.');
@@ -102,6 +156,7 @@ const BookForm = () => {
             </option>
           ))}
         </select>
+        {errors.cateNum && <span className={styles.error}>{errors.cateNum}</span>}
       </div>
 
       {/* 도서명 */}
@@ -114,6 +169,7 @@ const BookForm = () => {
         placeholder="도서명을 입력하세요"
         required
       />
+      {errors.bookTitle && <span className={styles.error}>{errors.bookTitle}</span>}
 
       {/* 가격 | 저자 */}
       <div className={styles.rowGroup}>
@@ -136,6 +192,14 @@ const BookForm = () => {
           required
         />
       </div>
+      {/* 통합 에러 */}
+      {(errors.bookPrice || errors.author) && (
+        <span className={styles.error}>
+          {errors.bookPrice && errors.author
+            ? '가격과 저자를 입력해주세요'
+            : errors.bookPrice || errors.author}
+        </span>
+      )}
 
       {/* 도서 소개 */}
       <div className={styles.formGroup}>

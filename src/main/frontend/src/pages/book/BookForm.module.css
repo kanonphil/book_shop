@@ -1,5 +1,5 @@
 .formGroup {
-  margin-bottom: 1.5rem;
+  margin: 20px 0;
 }
 
 .formGroup label {
@@ -40,7 +40,7 @@
   border-radius: 4px;
   font-size: 14px;
   box-sizing: border-box;
-  resize: vertical;
+  resize: none;
   font-family: inherit;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -56,11 +56,19 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin: 20px 0;
+  margin-top: 20px;
 }
 
 /* 다크모드 focus 효과 */
 [data-theme='dark'] .select:focus,
 [data-theme='dark'] .textarea:focus {
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* 에러 메시지 */
+.error {
+  color: var(--color-error);
+  font-size: 0.875rem;
+  margin-top: 4px;
+  /* margin-bottom: 20px; */
 }

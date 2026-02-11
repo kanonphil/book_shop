@@ -52,32 +52,7 @@
 /* 다크모드에서 캘린더 아이콘 반전 (흰색으로) */
 [data-theme='dark'] .input_group input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
-}
-
-/* date input의 개별 요소 선택 방지 */
-.input_group input[type="date"]::-webkit-datetime-edit-fields-wrapper {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.input_group input[type="date"]::-webkit-datetime-edit-text {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.input_group input[type="date"]::-webkit-datetime-edit-month-field,
-.input_group input[type="date"]::-webkit-datetime-edit-day-field,
-.input_group input[type="date"]::-webkit-datetime-edit-year-field {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.input_group input[type="date"]::-webkit-datetime-edit-month-field:focus,
-.input_group input[type="date"]::-webkit-datetime-edit-day-field:focus,
-.input_group input[type="date"]::-webkit-datetime-edit-year-field:focus {
-  background-color: transparent !important;
-  color: var(--text-primary) !important;
-  outline: none;
+  color-scheme: light;
 }
 
 /* date input 전체 */
