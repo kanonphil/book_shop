@@ -129,6 +129,7 @@ const BookForm = () => {
         cateNum: Number(bookData.cateNum),
         bookPrice: Number(bookData.bookPrice),
         publishDate: bookData.publishDate || null
+        // publishDate: bookData.publishDate ? new Date(bookData.publishDate).toISOString() : null
       };
       
       console.log('전송 데이터:', submitData); // 디버깅용
@@ -145,6 +146,15 @@ const BookForm = () => {
         bookIntro: '',
         publishDate: ''
       });
+
+      // 에러 메시지 재설정
+      setErrors({
+        cateNum: validateField('cateNum', ''),
+        bookTitle: validateField('bookTitle', ''),
+        author: validateField('author', ''),
+        bookPrice: validateField('bookPrice', '')
+      });
+      
     } catch (error) {
       alert('도서 등록에 실패했습니다.');
     } finally {
