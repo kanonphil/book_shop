@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
+<mapper namespace="com.green.book_shop.book.mapper.BookMapper">
+	<resultMap id="book" type="com.green.book_shop.book.dto.BookDTO">
+		<id column="BOOK_NUM" property="bookNum" />
+		<result column="BOOK_TITLE" property="bookTitle" />
+		<result column="AUTHOR" property="author" />
+		<result column="BOOK_PRICE" property="bookPrice" />
+		<result column="BOOK_STOCK" property="bookStock" />
+		<result column="BOOK_INTRO" property="bookIntro" />
+		<result column="PUBLISH_DATE" property="publishDate" />
+		<result column="CATE_NUM" property="cateNum" />
+		<result column="CATE_NAME" property="cateName" />
+	</resultMap>
+
+	<!-- 도서 등록 -->
+	<insert id="insertBook">
+		INSERT INTO SHOP_BOOK (
+		                       BOOK_TITLE,
+		                       AUTHOR,
+		                       BOOK_PRICE,
+		                       BOOK_STOCK,
+		                       BOOK_INTRO,
+		                       PUBLISH_DATE,
+		                       CATE_NUM
+		) VALUES (
+		          #{bookTitle},
+		          #{author},
+		          #{bookPrice},
+		          #{bookStock},
+		          #{bookIntro},
+		          #{publishDate},
+		          #{cateNum}
+						 )
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

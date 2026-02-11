@@ -25,7 +25,7 @@ const Login = () => {
 
   // 정규식 (Join과 동일)
   const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,50}$/
-  const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/
+  // const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/
 
   // 필드별 유효성 검사 함수
   const validateField = (field, value) => {
@@ -37,7 +37,7 @@ const Login = () => {
 
       case 'memPw':
         if (!value) return '비밀번호를 입력하세요'
-        if (!passwordRegEx.test(value)) return '비밀번호는 영문 대소문자, 숫자를 혼합하여 4~12자로 입력해주세요'
+        // if (!passwordRegEx.test(value)) return '비밀번호는 영문 대소문자, 숫자를 혼합하여 4~12자로 입력해주세요'
         return ''
 
       default:
@@ -150,7 +150,7 @@ const Login = () => {
           onChange={handleChange('memPw')}
         />
         {errors.memPw && <p className={styles.error}>{errors.memPw}</p>}
-        {validated.memPw && <p className={styles.success}>✓ 올바른 비밀번호 형식입니다</p>}
+        {/* {validated.memPw && <p className={styles.success}>✓ 올바른 비밀번호 형식입니다</p>} */}
       </div>
 
       {/* Submit Button */}

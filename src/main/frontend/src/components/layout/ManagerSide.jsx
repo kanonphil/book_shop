@@ -16,8 +16,10 @@ import {
   IoStorefrontOutline, 
   IoToggleOutline
 } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 
 const ManagerSide = () => {
+  const navigate = useNavigate()
   const [openMenu, setOpenMenu] = useState({
     product: true,
     purchase: true,
@@ -45,7 +47,7 @@ const ManagerSide = () => {
         {openMenu.product && (
           <ul className={styles.sub_menu}>
             <li><IoListOutline /> 카테고리관리</li>
-            <li><IoAddCircleOutline /> 상품등록</li>
+            <li onClick={() => navigate('/manage/book-form')}><IoAddCircleOutline /> 상품등록</li>
             <li><IoCubeOutline /> 상품재고관리</li>
             <li><IoCreateOutline /> 상품정보수정</li>
           </ul>

@@ -5,6 +5,7 @@ import Button from './Button'
 const Input = ({ 
   label, 
   type = "text", 
+  name,
   placeholder, 
   value,
   onChange,
@@ -22,8 +23,9 @@ const Input = ({
         <div className={styles.input_with_button}>
           <input 
             type={type}
+            name={name}
             placeholder={placeholder}
-            value={value}
+            value={value || ''}
             onChange={onChange}
             maxLength={maxLength}
             readOnly={readOnly}
@@ -36,10 +38,16 @@ const Input = ({
       ) : (
         <input 
           type={type}
-          placeholder={placeholder}
-          value={value}
+          name={name}
+          placeholder={type === 'date' ? undefined : placeholder}
+          value={value || ''}
           onChange={onChange}
           readOnly={readOnly}
+          onClick={(e) => {
+            if (type === 'date') {
+              e.target.showPicker?.();
+            }
+          }}
           {...props}
         />
       )}
