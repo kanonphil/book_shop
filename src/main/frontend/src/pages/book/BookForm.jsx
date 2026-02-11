@@ -36,6 +36,17 @@ const BookForm = () => {
     bookData.bookPrice &&
     bookData.author.trim();
 
+  // 숫자를 1,000 형식으로 변환
+  const formatPrice = (value) => {
+    if (!value) return '';
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  // 1,000 형식을 숫자로 변환
+  const parsePrice = (value) => {
+    return value.replace(/,/g, '')
+  }
+
   useEffect(() => {
     fetchCategories()
 
@@ -101,15 +112,22 @@ const BookForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    let processedValue = value;
+
+    // 가격 필드는 콤마 제거 후 저장
+    if (name === 'bookPrice') {
+      processedValue = parsePrice(value)
+    }
+
     setBookData(prev => ({
       ...prev,
-      [name]: value
+      [name]: processedValue
     }))
 
     // 실시간 검증
     setErrors(prev => ({
       ...prev,
-      [name]: validateField(name, value)
+      [name]: validateField(name, processedValue)
     }))
   }
 
@@ -154,7 +172,7 @@ const BookForm = () => {
         author: validateField('author', ''),
         bookPrice: validateField('bookPrice', '')
       });
-      
+
     } catch (error) {
       alert('도서 등록에 실패했습니다.');
     } finally {
@@ -210,7 +228,7 @@ const BookForm = () => {
           label="Price"
           type="number"
           name="bookPrice"
-          value={bookData.bookPrice}
+          value={formatPrice(bookData.bookPrice)} // format
           onChange={handleChange}
           placeholder="가격"
           required
