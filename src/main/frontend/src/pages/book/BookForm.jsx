@@ -3,17 +3,17 @@ import styles from './BookForm.module.css'
 import Form from '../../components/common/Form'
 import Input from '../../components/common/Input'
 import Button from '../../components/common/Button'
-import { getCategories, registerBook } from '../../api/bookApi';
+import { registerBook } from '../../api/bookApi';
+import { getCategories } from '../../api/categoryApi';
 
 const BookForm = () => {
   const [bookData, setBookData] = useState({
+    cateNum: '',
     bookTitle: '',
     author: '',
     bookPrice: '',
-    bookStock: 10,
     bookIntro: '',
-    publishDate: '',
-    cateNum: ''
+    publishDate: ''
   })
 
   const [categories, setCategories] = useState([])
@@ -25,6 +25,16 @@ const BookForm = () => {
     author: '',
     bookPrice: ''
   })
+
+  const isFormValid =
+    !errors.cateNum &&
+    !errors.bookTitle &&
+    !errors.bookPrice &&
+    !errors.author &&
+    bookData.cateNum &&
+    bookData.bookTitle.trim() &&
+    bookData.bookPrice &&
+    bookData.author.trim();
 
   useEffect(() => {
     fetchCategories()
@@ -116,10 +126,8 @@ const BookForm = () => {
       // 백엔드로 보낼 데이터 변환
       const submitData = {
         ...bookData,
-        bookPrice: Number(bookData.bookPrice),
-        bookStock: Number(bookData.bookStock),
         cateNum: Number(bookData.cateNum),
-        // publishDate가 빈 문자열이면 null로 보냄
+        bookPrice: Number(bookData.bookPrice),
         publishDate: bookData.publishDate || null
       };
       
@@ -130,13 +138,12 @@ const BookForm = () => {
       
       // 폼 초기화
       setBookData({
+        cateNum: '',
         bookTitle: '',
         author: '',
         bookPrice: '',
-        bookStock: 10,
         bookIntro: '',
-        publishDate: '',
-        cateNum: ''
+        publishDate: ''
       });
     } catch (error) {
       alert('도서 등록에 실패했습니다.');
@@ -146,7 +153,7 @@ const BookForm = () => {
   }
   
   return (
-    <Form title='도서 등록' onSubmit={handleSubmit}>
+    <Form title='상품 등록' onSubmit={handleSubmit}>
       {/* 카테고리 선택 */}
       <div className={styles.formGroup}>
         <label>Book Category</label>
@@ -236,7 +243,7 @@ const BookForm = () => {
         type="submit" 
         variant="primary" 
         fullWidth
-        disabled={loading}
+        disabled={loading || !isFormValid}
       >
         {loading ? '등록 중...' : '도서 등록'}
       </Button>

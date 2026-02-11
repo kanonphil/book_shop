@@ -22,7 +22,6 @@
 		                       BOOK_TITLE,
 		                       AUTHOR,
 		                       BOOK_PRICE,
-		                       BOOK_STOCK,
 		                       BOOK_INTRO,
 		                       PUBLISH_DATE,
 		                       CATE_NUM
@@ -30,7 +29,6 @@
 		          #{bookTitle},
 		          #{author},
 		          #{bookPrice},
-		          #{bookStock},
 		          #{bookIntro},
 		          #{publishDate},
 		          #{cateNum}
