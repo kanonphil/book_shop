@@ -23,7 +23,8 @@ const BookForm = () => {
     cateNum: '',
     bookTitle: '',
     author: '',
-    bookPrice: ''
+    bookPrice: '',
+    publishDate: ''
   })
 
   const isFormValid =
@@ -31,10 +32,12 @@ const BookForm = () => {
     !errors.bookTitle &&
     !errors.bookPrice &&
     !errors.author &&
+    !errors.publishDate &&
     bookData.cateNum &&
     bookData.bookTitle.trim() &&
     bookData.bookPrice &&
-    bookData.author.trim();
+    bookData.author.trim() &&
+    bookData.publishDate
 
   // 숫자를 1,000 형식으로 변환
   const formatPrice = (value) => {
@@ -44,7 +47,11 @@ const BookForm = () => {
 
   // 1,000 형식을 숫자로 변환
   const parsePrice = (value) => {
-    return value.replace(/,/g, '')
+    if (!value) return '';
+    // 숫자와 콤마만 남기고 제거
+    const numbers = value.replace(/[^\d,]/g, '');
+    // 콤마 제거
+    return numbers.replace(/,/g, '');
   }
 
   useEffect(() => {
@@ -55,7 +62,8 @@ const BookForm = () => {
       cateNum: validateField('cateNum', ''),
       bookTitle: validateField('bookTitle', ''),
       author: validateField('author', ''),
-      bookPrice: validateField('bookPrice', '')
+      bookPrice: validateField('bookPrice', ''),
+      publishDate: validateField('publishDate', '')
     })
   }, [])
 
@@ -76,19 +84,25 @@ const BookForm = () => {
 
       case 'bookTitle':
         if (!value || !value.trim()) return '도서명을 입력해주세요'
-        if (value.length > 30) return '도서명은 30자 이하로 입력해주세요'
+        if (value.length > 10) return '도서명은 10자 이하로 입력해주세요'
         return '';
 
       case 'author':
-        if (!value || !value.trim()) return '저자를 입력해주세요'
+        if (!value || !value.trim()) return '저자명을 입력해주세요'
         if (value.length > 20) return '저자는 20자 이하로 입력해주세요'
         return '';
 
-      case 'bookPrice':
+      case 'bookPrice': {
         if (!value) return '가격을 입력해주세요'
-        if (!value < 0) return '가격은 0원보다 커야 합니다'
-        if (!value > 999999) return '가격이 너무 큽니다'
+        const numPrice = Number(value.replace(/,/g, ''))
+        if (numPrice <= 0) return '가격은 0원보다 커야 합니다'
+        if (numPrice > 999999) return '가격이 너무 큽니다'
         return '';
+      }
+
+      case 'publishDate':
+        if (!value) return '출판일을 선택해주세요'
+        return ''
     
       default:
         return '';
@@ -100,7 +114,8 @@ const BookForm = () => {
       cateNum: validateField('cateNum', bookData.cateNum),
       bookTitle: validateField('bookTitle', bookData.bookTitle),
       author: validateField('author', bookData.author),
-      bookPrice: validateField('bookPrice', bookData.bookPrice)
+      bookPrice: validateField('bookPrice', bookData.bookPrice),
+      publishDate: validateField('publishDate', bookData.publishDate)
     }
 
     setErrors(newErrors)
@@ -116,7 +131,12 @@ const BookForm = () => {
 
     // 가격 필드는 콤마 제거 후 저장
     if (name === 'bookPrice') {
-      processedValue = parsePrice(value)
+      const parsed = parsePrice(value)
+      // 숫자가 아니거나 너무 크면 입력 차단
+      if (parsed && Number(parsed) > 99999999) {
+        return
+      }
+      processedValue = parsed
     }
 
     setBookData(prev => ({
@@ -170,7 +190,8 @@ const BookForm = () => {
         cateNum: validateField('cateNum', ''),
         bookTitle: validateField('bookTitle', ''),
         author: validateField('author', ''),
-        bookPrice: validateField('bookPrice', '')
+        bookPrice: validateField('bookPrice', ''),
+        publishDate: validateField('publishDate', '')
       });
 
     } catch (error) {
@@ -226,7 +247,7 @@ const BookForm = () => {
       <div className={styles.rowGroup}>
         <Input
           label="Price"
-          type="number"
+          type="text"
           name="bookPrice"
           value={formatPrice(bookData.bookPrice)} // format
           onChange={handleChange}
@@ -273,6 +294,7 @@ const BookForm = () => {
         value={bookData.publishDate}
         onChange={handleChange}
       />
+      {errors.publishDate && <span className={styles.error}>{errors.publishDate}</span>}
 
       {/* 제출 버튼 */}
       <Button 
