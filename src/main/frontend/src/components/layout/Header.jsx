@@ -39,6 +39,7 @@ const Header = () => {
           {isAuthenticated ? (
             <>
               <li>{member.memName}님</li>
+              <li>반갑습니다</li>
               <li onClick={handleLogout}>Logout</li>
             </>
           ) : (

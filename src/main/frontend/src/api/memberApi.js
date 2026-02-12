@@ -57,7 +57,7 @@ export const loginMember = async (loginData) => {
         memRole: data.memRole,
       };
 
-      localStorage.setItem('userInfo', JSON.stringify(member));
+      // localStorage.setItem('userInfo', JSON.stringify(member));
 
       return {
         data: {
@@ -84,8 +84,13 @@ export const loginMember = async (loginData) => {
 
 // ==================== 로그아웃 ====================
 export const logout = () => {
+  // 둘 다 제거
   localStorage.removeItem('userInfo');
   localStorage.removeItem('accessToken');
+  localStorage.removeItem('rememberMe');
+  
+  sessionStorage.removeItem('userInfo');
+  sessionStorage.removeItem('accessToken');
 };
 
 // ==================== 회원 정보 조회 ====================
@@ -100,13 +105,21 @@ export const getMemberInfo = async (email) => {
 
 // ==================== 로그인 상태 확인 ====================
 export const isLoggedIn = () => {
-  const userInfo = localStorage.getItem('userInfo');
-  return userInfo !== null;
+  const localStorage_userInfo = localStorage.getItem('userInfo');
+  const sessionStorage_userInfo = sessionStorage.getItem('userInfo');
+  
+  return localStorage_userInfo !== null || sessionStorage_userInfo !== null;
 };
 
 // ==================== 현재 사용자 정보 가져오기 ====================
 export const getCurrentUser = () => {
-  const userInfo = localStorage.getItem('userInfo');
+  // rememberMe 플래그 확인
+  const rememberMe = localStorage.getItem('rememberMe') === 'true';
+  
+  const userInfo = rememberMe 
+    ? localStorage.getItem('userInfo')
+    : sessionStorage.getItem('userInfo');
+    
   return userInfo ? JSON.parse(userInfo) : null;
 };
 

@@ -114,11 +114,19 @@ const Login = () => {
         const member = response.data.member
         const token = response.data.token  // 토큰 추출
 
-        // 체크박스에 따라 저장소 선택
-        const storage = formData.rememberMe ? localStorage : sessionStorage
-
-        storage.setItem('accessToken', token)
-        storage.setItem('userInfo', JSON.stringify(member))
+        if (token) {
+          if (formData.rememberMe) {
+            // 체크 시: localStorage 사용
+            localStorage.setItem('accessToken', token)
+            localStorage.setItem('userInfo', JSON.stringify(member))
+            localStorage.setItem('rememberMe', 'true')  // 플래그 저장
+          } else {
+            // 미체크 시: sessionStorage 사용
+            sessionStorage.setItem('accessToken', token)
+            sessionStorage.setItem('userInfo', JSON.stringify(member))
+            localStorage.removeItem('rememberMe')  // 플래그 제거
+          }
+        }
 
         // Redux에 토큰과 사용자 정보 함께 저장
         dispatch(loginReducer({ token, member }))
