@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { loginReducer } from '../../redux/authSlice'
 import styles from './Login.module.css'
 import Input from '../../components/common/Input'
 import Button from '../../components/common/Button'
 import Form from '../../components/common/Form'
 import { loginMember } from '../../api/memberApi'
-import { useAuth } from '../../contexts/AuthContext'
+// import { useAuth } from '../../contexts/AuthContext'
 
 const Login = () => {
   const navigate = useNavigate()
-  const { login } = useAuth()
+  const dispatch = useDispatch()
+  // const { login } = useAuth()
 
   const [formData, setFormData] = useState({
     memEmail: '',
@@ -30,18 +33,26 @@ const Login = () => {
   const validateField = (field, value) => {
     switch (field) {
       case 'memEmail':
-        if (!value) return '이메일을 입력하세요'
+        if (!value) return 'ID를 입력하세요'
         if (!emailRegEx.test(value)) return '올바른 이메일 형식이 아닙니다'
         return ''
 
       case 'memPw':
-        if (!value) return '비밀번호를 입력하세요'
+        if (!value) return 'PW를 입력하세요'
         return ''
 
       default:
         return ''
     }
   }
+
+  // 초기 에러 상태 설정
+  useEffect(() => {
+    setErrors({
+      memEmail: 'ID를 입력하세요',
+      memPw: 'PW를 입력하세요'
+    })
+  }, [])
   
   // 입력한 값 변경 핸들러
   const handleChange = (field) => (e) => {
@@ -100,9 +111,22 @@ const Login = () => {
 
       if (response.data.success) {
         const member = response.data.member
-        login(member)
+        const token = response.data.token  // 토큰 추출
+
+        // Redux에 토큰 저장
+        // if (token) {
+        //   dispatch(loginReducer(token))
+        // }
+
+        // AuthContext에 저장
+        // login(member)  
+
+        // Redux에 토큰과 사용자 정보 함께 저장
+        dispatch(loginReducer({ token, member }))
+
         alert(`환영합니다, ${member.memName}님!`)
 
+        // 권한에 따른 페이지 이동
         if (member.memRole === 'ADMIN' || member.memRole === 'MANAGER') {
           navigate('/manage')
         } else {
@@ -111,13 +135,26 @@ const Login = () => {
       }
     } catch (error) {
       const message = error.response?.data?.message || '로그인에 실패했습니다'
-      alert(message)
+      
+      // 이메일과 비밀번호 둘 다 에러 표시
+      setErrors({
+        memEmail: message,
+        memPw: message
+      })
+
+      // validated 둘 다 초기화
+      setValidated({
+        memEmail: false,
+        memPw: false
+      })
       
       // 비밀번호 초기화
       setFormData({
         ...formData,
         memPw: ''
       })
+
+      alert(message)
     } finally {
       setIsLoading(false)
     }
@@ -130,7 +167,7 @@ const Login = () => {
         label="Email"
         type="email"
         name="memEmail"
-        placeholder="이메일을 입력하세요"
+        placeholder="Input Your ID"
         value={formData.memEmail}
         onChange={handleChange('memEmail')}
         error={errors.memEmail}
@@ -143,7 +180,7 @@ const Login = () => {
         label='Password'
         type='password'
         name="memPw"
-        placeholder="비밀번호를 입력하세요"
+        placeholder="Input Your Password"
         value={formData.memPw}
         onChange={handleChange('memPw')}
         error={errors.memPw}

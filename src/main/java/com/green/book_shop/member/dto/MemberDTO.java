@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "memPw")
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberDTO {

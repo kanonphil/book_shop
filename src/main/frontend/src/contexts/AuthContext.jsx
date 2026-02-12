@@ -1,35 +1,46 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react';
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  // localStorage에서 초기 상태 로드
   const [member, setMember] = useState(() => {
-    const savedMember = localStorage.getItem('member')
-    return savedMember ? JSON.parse(savedMember) : null
-  })
+    try {
+      const savedMember = localStorage.getItem('userInfo');
+      return savedMember ? JSON.parse(savedMember) : null;
+    } catch (error) {
+      console.error('Failed to parse user info from localStorage:', error);
+      localStorage.removeItem('userInfo');
+      return null;
+    }
+  });
 
+  // 로그인
   const login = (memberData) => {
-    localStorage.setItem('member', JSON.stringify(memberData))
-    setMember(memberData)
-  }
+    setMember(memberData);
+    localStorage.setItem('userInfo', JSON.stringify(memberData));
+  };
 
+  // 로그아웃
   const logout = () => {
-    localStorage.removeItem('member')
-    setMember(null)
-  }
+    setMember(null);
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('accessToken');
+  };
 
   return (
     <AuthContext.Provider value={{ member, login, logout }}>
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
 
-// Custom Hook
 export const useAuth = () => {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within AuthProvider')
+    throw new Error('useAuth must be used within AuthProvider');
   }
-  return context
-}
+  return context;
+};
+
+export default AuthContext;

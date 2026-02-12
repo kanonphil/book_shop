@@ -12,7 +12,7 @@ public interface MemberMapper {
   int checkEmailDuplicate(String memEmail);
 
   // 이메일로 회원 조회 (일반 로그인)
-  MemberDTO selectMemberByEmail(String memEmail);
+  MemberDTO getMemberForLogin(String memEmail);
 
   // OAuth: provider와 providerId로 회원 조회 (추가)
   MemberDTO selectMemberByProviderAndProviderId(String provider, String providerId);

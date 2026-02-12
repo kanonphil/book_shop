@@ -1,7 +1,7 @@
 package com.green.book_shop.member.controller;
 
 import com.green.book_shop.member.dto.MemberDTO;
-import com.green.book_shop.member.service.MemberService;
+import com.green.book_shop.member.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import java.util.Map;
 @RequestMapping("/members")
 public class MemberController {
 
-  private final MemberService memberService;
+  private final MemberServiceImpl memberServiceImpl;
 
   // 회원가입
   @PostMapping("/join")
@@ -25,7 +25,7 @@ public class MemberController {
     Map<String, Object> response = new HashMap<>();
 
     try {
-      memberService.joinMember(memberDTO);
+      memberServiceImpl.joinMember(memberDTO);
       response.put("success", true);
       response.put("message", "회원가입이 완료되었습니다");
       return ResponseEntity.ok(response);
@@ -42,7 +42,7 @@ public class MemberController {
   public ResponseEntity<Map<String, Object>> checkEmail(@PathVariable String email) {
     Map<String, Object> response = new HashMap<>();
 
-    boolean isDuplicate = memberService.checkEmailDuplicate(email);
+    boolean isDuplicate = memberServiceImpl.checkEmailDuplicate(email);
 
     response.put("isDuplicate", isDuplicate);
     response.put("message", isDuplicate ? "이미 사용 중인 이메일입니다" : "사용 가능한 이메일입니다");
@@ -51,7 +51,7 @@ public class MemberController {
   }
 
   // 로그인
-  @PostMapping("/login")
+  /*@PostMapping("/login")
   public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> loginData) {
     Map<String, Object> response = new HashMap<>();
 
@@ -59,7 +59,7 @@ public class MemberController {
       String email = loginData.get("memEmail");
       String password = loginData.get("memPw");
 
-      MemberDTO member = memberService.login(email, password);
+      MemberDTO member = memberServiceImpl.login(email, password);
 
       response.put("success", true);
       response.put("message", "로그인 성공");
@@ -71,12 +71,13 @@ public class MemberController {
       response.put("message", e.getMessage());
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
-  }
+  }*/
 
   // 회원 정보 조회
   @GetMapping("/info/{email}")
   public ResponseEntity<MemberDTO> getMemberInfo(@PathVariable String email) {
-    MemberDTO member = memberService.getMemberInfo(email);
+    MemberDTO member = memberServiceImpl.getMemberInfo(email);
+    member.setMemPw(null);
     return ResponseEntity.ok(member);
   }
 }

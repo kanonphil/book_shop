@@ -50,18 +50,12 @@
 	</select>
 
 	<!-- 로그인 (회원 정보 조회) -->
-	<select id="selectMemberByEmail" resultMap="member">
+	<select id="getMemberForLogin" resultMap="member">
 		SELECT MEM_EMAIL,
 			   MEM_PW,
 			   MEM_NAME,
-			   MEM_TEL,
-			   MEM_ADDR,
-			   ADDR_DETAIL,
-			   IS_USING,
 			   MEM_ROLE,
-			   JOIN_DATE,
-			   PROVIDER,
-			   PROVIDER_ID
+			   IS_USING
 		FROM SHOP_MEMBER
 		WHERE MEM_EMAIL = #{memEmail}
 	</select>
@@ -93,9 +87,7 @@
 			   ADDR_DETAIL,
 			   IS_USING,
 			   MEM_ROLE,
-			   JOIN_DATE,
-			   PROVIDER,
-			   PROVIDER_ID
+			   JOIN_DATE
 		FROM SHOP_MEMBER
 		WHERE MEM_EMAIL = #{memEmail}
 	</select>

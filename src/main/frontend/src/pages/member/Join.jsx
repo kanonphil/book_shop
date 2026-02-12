@@ -228,16 +228,16 @@ const Join = () => {
     try {
       const response = await checkEmail(formData.memEmail)
       
-      if (response.data.isDuplicate) {
-        alert('이미 사용 중인 이메일입니다')
-        setEmailVerified(false)
-      } else {
-        alert('사용 가능한 이메일입니다')
-        setEmailVerified(true)
-      }
+      if (response.isDuplicate) {
+      alert(response.message || '이미 사용 중인 이메일입니다')
+      setEmailVerified(false)
+    } else {
+      alert(response.message || '사용 가능한 이메일입니다')
+      setEmailVerified(true)
+    }
     } catch (error) {
       console.error('이메일 확인 실패:', error)
-      alert('이메일 확인 중 오류가 발생했습니다')
+      alert(error.message || '이메일 확인 중 오류가 발생했습니다')
       setEmailVerified(false)
     }
   }
@@ -269,40 +269,47 @@ const Join = () => {
 
   // 회원가입 처리
   const handleSubmit = async (e) => {
-    e.preventDefault()
+  e.preventDefault()
 
-    if (!validate()) {
-      return
-    }
-
-    setIsSubmitting(true)
-
-    const memTel = `${formData.memTel1}-${formData.memTel2}-${formData.memTel3}`
-
-    const memberData = {
-      memEmail: formData.memEmail,
-      memPw: formData.memPw,
-      memName: formData.memName,
-      memTel: memTel,
-      memAddr: formData.memAddr,
-      addrDetail: formData.addrDetail
-    }
-
-    try {
-      const response = await joinMember(memberData)
-      
-      if (response.data.success) {
-        alert('회원가입이 완료되었습니다')
-        navigate('/login')
-      }
-      
-    } catch (error) {
-      const message = error.response?.data?.message || '회원가입에 실패했습니다'
-      alert(message)
-    } finally {
-      setIsSubmitting(false)
-    }
+  if (!validate()) {
+    return
   }
+
+  // 이메일 중복 확인 여부 체크
+  if (!emailVerified) {
+    alert('이메일 중복 확인을 해주세요')
+    return
+  }
+
+  setIsSubmitting(true)
+
+  const memTel = `${formData.memTel1}-${formData.memTel2}-${formData.memTel3}`
+
+  const memberData = {
+    memEmail: formData.memEmail,
+    memPw: formData.memPw,
+    memName: formData.memName,
+    memTel: memTel,
+    memAddr: formData.memAddr,
+    addrDetail: formData.addrDetail
+  }
+
+  try {
+    const response = await joinMember(memberData)
+    
+    if (response.success) {
+      alert(response.message || '회원가입이 완료되었습니다')
+      navigate('/login')
+    }
+    
+  } catch (error) {
+    console.error('회원가입 실패:', error)
+    const message = error.message || '회원가입에 실패했습니다'
+    alert(message)
+  } finally {
+    setIsSubmitting(false)
+  }
+}
   
   return (
     <Form title='회원가입' onSubmit={handleSubmit}>

@@ -1,25 +1,132 @@
-import axios from './axios'
+import axios from 'axios';
+import axiosInstance from './axiosInstance';
+import { store } from '../redux/store';
 
-export const memberApi = {
-  checkEmail: (email) => {
-    return axios.get(`/members/check-email/${email}`)
-  },
+const API_BASE_URL = 'http://localhost:8080';
 
-  join: (data) => {
-    return axios.post('/members/join', data)
-  },
-
-  login: (data) => {
-    return axios.post('/members/login', data)
+// ==================== 회원가입 ====================
+export const joinMember = async (memberData) => {
+  try {
+    const response = await axiosInstance.post('/members/join', memberData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || { message: '회원가입에 실패했습니다.' };
   }
-}
+};
 
-// 또는 개별 export 유지
-export const checkEmail = (email) => 
-  axios.get(`/members/check-email/${email}`)
+// ==================== 이메일 중복 확인 ====================
+export const checkEmail = async (email) => {
+  try {
+    const response = await axiosInstance.get(`/members/check-email/${email}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || { message: '이메일 확인에 실패했습니다.' };
+  }
+};
 
-export const joinMember = (data) => 
-  axios.post('/members/join', data)
+export const checkEmailDuplicate = async (email) => {
+  try {
+    const response = await axiosInstance.get(`/members/check-email/${email}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || { message: '이메일 확인에 실패했습니다.' };
+  }
+};
 
-export const loginMember = (data) => 
-  axios.post('/members/login', data)
+// ==================== 로그인 ====================
+export const loginMember = async (loginData) => {
+  try {
+    // 로그인은 axios 직접 사용 (토큰 없이 요청)
+    const response = await axios.post(
+      `${API_BASE_URL}/member/login`,
+      loginData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
+
+    const data = response.data;
+
+    if (data.success) {
+      const member = {
+        memEmail: data.memEmail,
+        memName: data.memName,
+        memRole: data.memRole,
+      };
+
+      localStorage.setItem('userInfo', JSON.stringify(member));
+
+      return {
+        data: {
+          success: true,
+          message: data.message,
+          member: member,
+          token: data.token  // 토큰 포함
+        }
+      };
+    } else {
+      throw new Error(data.message || '로그인에 실패했습니다.');
+    }
+  } catch (error) {
+    throw {
+      response: {
+        data: {
+          success: false,
+          message: error.response?.data?.message || '로그인에 실패했습니다.'
+        }
+      }
+    };
+  }
+};
+
+// ==================== 로그아웃 ====================
+export const logout = () => {
+  localStorage.removeItem('userInfo');
+  localStorage.removeItem('accessToken');
+};
+
+// ==================== 회원 정보 조회 ====================
+export const getMemberInfo = async (email) => {
+  try {
+    const response = await axiosInstance.get(`/members/info/${email}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || { message: '회원 정보 조회에 실패했습니다.' };
+  }
+};
+
+// ==================== 로그인 상태 확인 ====================
+export const isLoggedIn = () => {
+  const userInfo = localStorage.getItem('userInfo');
+  return userInfo !== null;
+};
+
+// ==================== 현재 사용자 정보 가져오기 ====================
+export const getCurrentUser = () => {
+  const userInfo = localStorage.getItem('userInfo');
+  return userInfo ? JSON.parse(userInfo) : null;
+};
+
+// ==================== 권한 확인 ====================
+export const hasRole = (requiredRole) => {
+  const userInfo = getCurrentUser();
+  if (!userInfo || !userInfo.memRole) return false;
+
+  const role = userInfo.memRole.replace('ROLE_', '');
+  return role === requiredRole;
+};
+
+export default {
+  joinMember,
+  checkEmail,
+  checkEmailDuplicate,
+  loginMember,
+  logout,
+  getMemberInfo,
+  isLoggedIn,
+  getCurrentUser,
+  hasRole,
+};
