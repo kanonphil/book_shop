@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import { jwtDecode } from 'jwt-decode';
 
 const getInitialState = () => {
-  const token = localStorage.getItem('accessToken')
-  const userInfo = localStorage.getItem('userInfo')
+  let token = localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken')
+  let userInfo = localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo')
 
   if (token === null) return { token: null, member: null, isAuthenticated: false };
 
@@ -13,7 +13,9 @@ const getInitialState = () => {
 
     if (decodedToken.exp < currentTime) {
       localStorage.removeItem('accessToken')
+      sessionStorage.removeItem('accessToken')
       localStorage.removeItem('userInfo')
+      sessionStorage.removeItem('userInfo')
       return { token: null, member: null, isAuthenticated: false };
     }
 
@@ -25,7 +27,9 @@ const getInitialState = () => {
   } catch (error) {
     console.error('토큰 디코딩 실패:', error)
     localStorage.removeItem('accessToken')
+    sessionStorage.removeItem('accessToken')
     localStorage.removeItem('userInfo')
+    sessionStorage.removeItem('userInfo')
     return { token: null, member: null, isAuthenticated: false };
   }
 }

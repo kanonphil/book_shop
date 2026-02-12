@@ -16,7 +16,8 @@ const Login = () => {
 
   const [formData, setFormData] = useState({
     memEmail: '',
-    memPw: ''
+    memPw: '',
+    rememberMe: false
   })
 
   const [errors, setErrors] = useState({})
@@ -113,13 +114,11 @@ const Login = () => {
         const member = response.data.member
         const token = response.data.token  // 토큰 추출
 
-        // Redux에 토큰 저장
-        // if (token) {
-        //   dispatch(loginReducer(token))
-        // }
+        // 체크박스에 따라 저장소 선택
+        const storage = formData.rememberMe ? localStorage : sessionStorage
 
-        // AuthContext에 저장
-        // login(member)  
+        storage.setItem('accessToken', token)
+        storage.setItem('userInfo', JSON.stringify(member))
 
         // Redux에 토큰과 사용자 정보 함께 저장
         dispatch(loginReducer({ token, member }))
@@ -186,6 +185,20 @@ const Login = () => {
         error={errors.memPw}
         required
       />
+
+      {/* 로그인 상태 유지 체크박스 */}
+      <div className={styles.checkboxContainer}>
+        <label className={styles.checkboxLabel}>
+          <input 
+            type="checkbox"
+            className={styles.checkboxInput}
+            checked={formData.rememberMe}
+            onChange={(e) => setFormData({...formData, rememberMe: e.target.checked})}
+          />
+          <span className={styles.checkboxCustom}></span>
+          <span className={styles.checkboxText}>로그인 상태 유지</span>
+        </label>
+      </div>
 
       {/* Submit Button */}
       <div className={styles.buttonGroup}>
