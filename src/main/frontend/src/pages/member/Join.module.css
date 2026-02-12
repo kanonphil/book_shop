@@ -1,25 +1,14 @@
-.field_wrapper {
-  margin-bottom: 20px;
-}
-
-.button_group {
-  margin-top: 30px;
+.buttonGroup {
+  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* 에러 메시지 */
-.error {
-  color: var(--color-error);
-  font-size: 0.875rem;
-  margin-top: 4px;
-  /* margin-bottom: 20px; */
-}
-
+/* 성공 메시지 */
 .success {
-  color: var(--color-success);
-  font-size: 0.875rem;
-  margin-top: 4px;
-  /* margin-bottom: 20px; */
+  color: #51cf66;
+  font-size: 0.85rem;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
 }

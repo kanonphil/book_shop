@@ -1,90 +1,144 @@
-.input_group {
-  margin-bottom: 0;
+.formGroup {
+  margin-bottom: 1rem;
 }
 
-.input_group label {
+.label {
   display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  color: #e0e0e0;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
-/* 일반 input */
-.input_group input {
+.required {
+  color: #ff6b6b;
+  margin-left: 0.25rem;
+}
+
+.input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  padding: 0.75rem;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  border: 1px solid #404040;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
   box-sizing: border-box;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.input_group input:focus {
+.input:hover {
+  border-color: #505050;
+}
+
+.input:focus {
   outline: none;
-  border-color: var(--button-primary);
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  border-color: #4a9eff;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25)
 }
 
-/* 다크모드 focus */
-[data-theme='dark'] .input_group input:focus {
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+.input:disabled {
+  background-color: #1a1a1a;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.input:read-only {
+  background-color: #252525;
+  cursor: default;
+}
+
+.inputError {
+  border-color: #ff6b6b;
+}
+
+.inputError:focus {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.25);
+}
+
+.error {
+  display: block;
+  margin-top: 0.5rem;
+  color: #ff6b6b;
+  font-size: 0.85rem;
 }
 
 /* input + button 레이아웃 */
-.input_with_button {
+.inputWithButton {
   display: flex;
-  gap: 10px;
+  gap: 0.75rem;
 }
 
-.input_with_button input {
+.inputWithButton .input {
   flex: 1;
 }
 
-/* date input 캘린더 아이콘 표시 */
-.input_group input[type="date"]::-webkit-calendar-picker-indicator {
+.inputWithButton button {
+  margin-top: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* date input 스타일 */
+.input[type="date"] {
   cursor: pointer;
-  opacity: 1;
-}
-
-/* 다크모드에서 캘린더 아이콘 반전 (흰색으로) */
-[data-theme='dark'] .input_group input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-  color-scheme: light;
-}
-
-/* date input 전체 */
-.input_group input[type="date"] {
-  cursor: pointer;
-  color-scheme: light;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* 다크모드 */
-[data-theme='dark'] .input_group input[type="date"] {
   color-scheme: dark;
   user-select: none;
   -webkit-user-select: none;
 }
 
-/* autofill 배경색 제거 */
-.input_group input:-webkit-autofill,
-.input_group input:-webkit-autofill:hover,
-.input_group input:-webkit-autofill:focus,
-.input_group input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px var(--bg-primary) inset !important;
-  -webkit-text-fill-color: var(--text-primary) !important;
+.input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 1;
+  filter: invert(1);
+}
+
+/* autofill 배경색 처리 */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #2a2a2a inset !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
-/* 다크모드 autofill */
-[data-theme='dark'] .input_group input:-webkit-autofill,
-[data-theme='dark'] .input_group input:-webkit-autofill:hover,
-[data-theme='dark'] .input_group input:-webkit-autofill:focus,
-[data-theme='dark'] .input_group input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px var(--bg-primary) inset !important;
-  -webkit-text-fill-color: var(--text-primary) !important;
+/* 라이트모드 대응 (테마 변수 사용 시) */
+[data-theme='light'] .input {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border-color: #d0d0d0;
+}
+
+[data-theme='light'] .label {
+  color: #1a1a1a;
+}
+
+[data-theme='light'] .input:hover {
+  border-color: #b0b0b0;
+}
+
+[data-theme='light'] .input:disabled {
+  background-color: #f5f5f5;
+}
+
+[data-theme='light'] .input:read-only {
+  background-color: #fafafa;
+}
+
+[data-theme='light'] .input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0);
+}
+
+[data-theme='light'] .input[type="date"] {
+  color-scheme: light;
+}
+
+[data-theme='light'] .input:-webkit-autofill,
+[data-theme='light'] .input:-webkit-autofill:hover,
+[data-theme='light'] .input:-webkit-autofill:focus,
+[data-theme='light'] .input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #1a1a1a !important;
 }

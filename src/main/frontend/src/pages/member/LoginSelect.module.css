@@ -1,31 +1,23 @@
-.subtitle {
-  text-align: center;
-  color: var(--text-secondary);
-  font-size: 14px;
-  margin-bottom: 40px;
-  line-height: 1.6;
-}
-
-.sns_buttons {
+.snsButtons {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.sns_buttons a {
+.snsButtons a {
   text-decoration: none;
   width: 100%;
 }
 
 .footer {
   text-align: center;
-  margin-top: 30px;
-  font-size: 14px;
-  color: var(--text-secondary);
+  margin-top: 2rem;
+  font-size: 0.875rem;
+  color: #a0a0a0;
 }
 
 .link {
-  color: var(--button-primary);
+  color: #4a9eff;
   cursor: pointer;
   font-weight: 500;
 }

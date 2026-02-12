@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './Join.module.css'
 import { useNavigate } from 'react-router-dom'
 import Input from '../../components/common/Input'
@@ -45,7 +45,7 @@ const Join = () => {
   const tel3RegEx = /^\d{4}$/
 
   // 필드별 유효성 검사 함수
-  const validateField = (field, value) => {
+  const validateField = (field, value, compareValue = null) => {
     switch (field) {
       case 'memEmail':
         if (!value) return '이메일을 입력하세요'
@@ -57,10 +57,13 @@ const Join = () => {
         if (!passwordRegEx.test(value)) return '비밀번호는 영문 대소문자, 숫자를 혼합하여 4~12자로 입력해주세요'
         return ''
 
-      case 'confirmPw':
-        if (!value) return ''
-        if (value !== formData.memPw) return '비밀번호가 일치하지 않습니다'
+      case 'confirmPw': {
+        if (!value) return '비밀번호 확인을 입력하세요'
+        // compareValue가 있으면 사용, 없으면 formData.memPw 사용
+        const passwordToCompare = compareValue !== null ? compareValue : formData.memPw
+        if (value !== passwordToCompare) return '비밀번호가 일치하지 않습니다'
         return ''
+      }
 
       case 'memName':
         if (!value) return '이름을 입력하세요'
@@ -91,6 +94,24 @@ const Join = () => {
     }
   }
 
+  // 초기 에러 상태 설정
+  useEffect(() => {
+    const tel1Error = validateField('memTel1', '010')
+    const tel2Error = validateField('memTel2', '')
+    const tel3Error = validateField('memTel3', '')
+    const telError = tel1Error || tel2Error || tel3Error
+
+    setErrors({
+      memEmail: '이메일을 입력하세요',
+      memPw: '비밀번호를 입력하세요',
+      confirmPw: '비밀번호 확인을 입력하세요',
+      memName: '이름을 입력하세요',
+      memTel: telError,
+      memAddr: '주소를 입력하세요'
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // 초기 마운트 시에만 실행
+
   // 입력값 변경 핸들러
   const handleChange = (field) => (e) => {
     const value = e.target.value
@@ -107,7 +128,7 @@ const Join = () => {
 
     // 비밀번호 변경 시 confirmPw도 재검증
     if (field === 'memPw' && formData.confirmPw) {
-      const confirmError = validateField('confirmPw', formData.confirmPw)
+      const confirmError = validateField('confirmPw', formData.confirmPw, value)
       setErrors(prev => ({ ...prev, confirmPw: confirmError }))
       setValidated(prev => ({ 
         ...prev, 
@@ -117,11 +138,19 @@ const Join = () => {
 
     // confirmPw 변경 시 일치 여부 확인
     if (field === 'confirmPw') {
-      const confirmError = validateField('confirmPw', value)
+      const confirmError = validateField('confirmPw', value, formData.memPw)
       setValidated(prev => ({ 
         ...prev, 
         confirmPw: !confirmError && value !== '' 
       }))
+
+      // 에러도 update
+      setErrors(prev => ({
+        ...prev,
+        confirmPw: confirmError
+      }))
+
+      return
     }
 
     // 실시간 유효성 검사
@@ -278,85 +307,86 @@ const Join = () => {
   return (
     <Form title='회원가입' onSubmit={handleSubmit}>
       {/* Email */}
-      <div className={styles.field_wrapper}>
-        <Input 
-          label="Email"
-          type="email"
-          placeholder="이메일을 입력하세요"
-          value={formData.memEmail}
-          onChange={handleChange('memEmail')}
-          button="중복확인"
-          onButtonClick={handleEmailCheck}
-        />
-        {errors.memEmail && <p className={styles.error}>{errors.memEmail}</p>}
-        {emailVerified && <p className={styles.success}>✓ 사용 가능한 이메일입니다</p>}
-      </div>
+      <Input 
+        label="Email"
+        type="email"
+        name="memEmail"
+        placeholder="이메일을 입력하세요"
+        value={formData.memEmail}
+        onChange={handleChange('memEmail')}
+        button="중복확인"
+        onButtonClick={handleEmailCheck}
+        error={errors.memEmail}
+        required
+      />
+      {emailVerified && <p className={styles.success}>✓ 사용 가능한 이메일입니다</p>}
 
       {/* Password */}
-      <div className={styles.field_wrapper}>
-        <Input 
-          label='Password'
-          type='password'
-          placeholder="비밀번호를 입력하세요"
-          value={formData.memPw}
-          onChange={handleChange('memPw')}
-        />
-        {errors.memPw && <p className={styles.error}>{errors.memPw}</p>}
-        {validated.memPw && <p className={styles.success}>✓ 사용 가능한 비밀번호입니다</p>}
-      </div>
+      <Input 
+        label='Password'
+        type='password'
+        name="memPw"
+        placeholder="비밀번호를 입력하세요"
+        value={formData.memPw}
+        onChange={handleChange('memPw')}
+        error={errors.memPw}
+        required
+      />
+      {validated.memPw && <p className={styles.success}>✓ 사용 가능한 비밀번호입니다</p>}
 
       {/* Confirm Password */}
-      <div className={styles.field_wrapper}>
-        <Input 
-          label='Confirm Password'
-          type='password'
-          placeholder="비밀번호를 다시 입력하세요"
-          value={formData.confirmPw}
-          onChange={handleChange('confirmPw')}
-        />
-        {errors.confirmPw && <p className={styles.error}>{errors.confirmPw}</p>}
-        {validated.confirmPw && <p className={styles.success}>✓ 비밀번호가 일치합니다</p>}
-      </div>
+      <Input 
+        label='Confirm Password'
+        type='password'
+        name="confirmPw"
+        placeholder="비밀번호를 다시 입력하세요"
+        value={formData.confirmPw}
+        onChange={handleChange('confirmPw')}
+        error={errors.confirmPw}
+        required
+      />
+      {validated.confirmPw && <p className={styles.success}>✓ 비밀번호가 일치합니다</p>}
 
       {/* Name */}
-      <div className={styles.field_wrapper}>
-        <Input 
-          label='Name'
-          type='text'
-          placeholder="이름을 입력하세요"
-          value={formData.memName}
-          onChange={handleChange('memName')}
-        />
-        {errors.memName && <p className={styles.error}>{errors.memName}</p>}
-        {validated.memName && <p className={styles.success}>✓ 올바른 이름 형식입니다</p>}
-      </div>
+      <Input 
+        label='Name'
+        type='text'
+        name="memName"
+        placeholder="이름을 입력하세요"
+        value={formData.memName}
+        onChange={handleChange('memName')}
+        error={errors.memName}
+        required
+      />
+      {validated.memName && <p className={styles.success}>✓ 올바른 이름 형식입니다</p>}
 
       {/* Tel */}
-      <div className={styles.field_wrapper}>
-        <TelInput 
-          label='Tel'
-          value1={formData.memTel1}
-          value2={formData.memTel2}
-          value3={formData.memTel3}
-          onChange={handleTelChange}
-        />
-        {errors.memTel && <p className={styles.error}>{errors.memTel}</p>}
-        {validated.memTel && <p className={styles.success}>✓ 올바른 전화번호 형식입니다</p>}
-      </div>
+      <TelInput 
+        label='Tel'
+        name="memTel"
+        value1={formData.memTel1}
+        value2={formData.memTel2}
+        value3={formData.memTel3}
+        onChange={handleTelChange}
+        error={errors.memTel}
+        required
+      />
+      {validated.memTel && <p className={styles.success}>✓ 올바른 전화번호 형식입니다</p>}
 
       {/* Address */}
-      <div className={styles.field_wrapper}>
-        <AddressInput 
-          addrValue={formData.memAddr}
-          detailValue={formData.addrDetail}
-          onChange={handleAddressChange}
-        />
-        {errors.memAddr && <p className={styles.error}>{errors.memAddr}</p>}
-        {validated.memAddr && <p className={styles.success}>✓ 주소가 입력되었습니다</p>}
-      </div>
+      <AddressInput 
+        label="Address"
+        name="memAddr"
+        addrValue={formData.memAddr}
+        detailValue={formData.addrDetail}
+        onChange={handleAddressChange}
+        error={errors.memAddr}
+        required
+      />
+      {validated.memAddr && <p className={styles.success}>✓ 주소가 입력되었습니다</p>}
 
       {/* Submit Button */}
-      <div className={styles.button_group}>
+      <div className={styles.buttonGroup}>
         <Button 
           variant='dark'
           fullWidth={true}

@@ -1,13 +1,16 @@
 import React from 'react'
 import styles from './AddressInput.module.css'
-import Input from './Input'
 
 const AddressInput = ({ 
   label = "Address", 
+  name = "address",
   onSearch, 
   addrValue = '', 
   detailValue = '', 
-  onChange 
+  onChange,
+  required = false,
+  disabled = false,
+  error = ''
 }) => {
   const handleDetailChange = (e) => {
     if (onChange) {
@@ -17,7 +20,7 @@ const AddressInput = ({
 
   // 다음 우편번호 API 호출
   const handlePostcode = () => {
-    new window.kakao.Postcode({
+    new window.daum.Postcode({
       oncomplete: function(data) {
         // 선택한 주소 정보를 받아옴
         let fullAddress = data.address // 기본 주소
@@ -45,33 +48,61 @@ const AddressInput = ({
         }
 
         // 상세주소 input에 포커스
-        const detailInput = document.querySelector(`.${styles.detail_input}`)
-        if (detailInput) {
-          detailInput.focus()
-        }
+        setTimeout(() => {
+          const detailInput = document.querySelector(`input[name="${name}-detail"]`)
+          if (detailInput) {
+            detailInput.focus()
+          }
+        }, 100)
       }
     }).open()
   }
 
   return (
-    <div className={styles.address_container}>
-      <Input 
-        label={label}
-        type='text'
-        placeholder='우편번호'
-        value={addrValue}
-        button='검색'
-        onButtonClick={handlePostcode}
-        className={styles.no_margin}
-        readOnly={true}
-      />
-      <input 
-        type="text" 
-        placeholder="상세주소" 
-        className={styles.detail_input}
-        value={detailValue}
-        onChange={handleDetailChange}
-      />
+    <div className={styles.formGroup}>
+      {label && (
+        <label className={styles.label}>
+          {label}
+          {required && <span className={styles.required}>*</span>}
+        </label>
+      )}
+      
+      {/* 기본 주소 + 검색 버튼 */}
+      <div className={styles.inputWithButton}>
+        <input 
+          type="text" 
+          name={`${name}-addr`}
+          placeholder="우편번호 검색" 
+          className={`${styles.addrInput} ${error ? styles.addrInputError : ''}`}
+          value={addrValue}
+          readOnly={true}
+          disabled={disabled}
+        />
+        <button 
+          type="button"
+          onClick={handlePostcode}
+          className={styles.searchButton}
+          disabled={disabled}
+        >
+          검색
+        </button>
+      </div>
+      
+      {/* 상세 주소 */}
+      <div className={styles.detailInputWrapper}>
+        <input 
+          type="text" 
+          name={`${name}-detail`}
+          placeholder="상세주소" 
+          className={`${styles.detailInput} ${error ? styles.detailInputError : ''}`}
+          value={detailValue}
+          onChange={handleDetailChange}
+          disabled={disabled}
+        />
+      </div>
+      
+      {/* 에러 메시지 - 상세주소 아래에 표시 */}
+      {error && <span className={styles.error}>{error}</span>}
     </div>
   )
 }

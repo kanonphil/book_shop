@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import styles from './Login.module.css'
 import Input from '../../components/common/Input'
 import Button from '../../components/common/Button'
-import FormContainer from '../../components/common/Form'
+import Form from '../../components/common/Form'
 import { loginMember } from '../../api/memberApi'
 import { useAuth } from '../../contexts/AuthContext'
 
@@ -23,9 +23,8 @@ const Login = () => {
     memPw: false
   })
 
-  // 정규식 (Join과 동일)
+  // 정규식
   const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,50}$/
-  // const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/
 
   // 필드별 유효성 검사 함수
   const validateField = (field, value) => {
@@ -37,7 +36,6 @@ const Login = () => {
 
       case 'memPw':
         if (!value) return '비밀번호를 입력하세요'
-        // if (!passwordRegEx.test(value)) return '비밀번호는 영문 대소문자, 숫자를 혼합하여 4~12자로 입력해주세요'
         return ''
 
       default:
@@ -126,35 +124,34 @@ const Login = () => {
   }
 
   return (
-    <FormContainer title='로그인' onSubmit={handleSubmit}>
+    <Form title='로그인' onSubmit={handleSubmit}>
       {/* Email */}
-      <div className={styles.field_wrapper}>
-        <Input 
-          label="Email"
-          type="email"
-          placeholder="이메일을 입력하세요"
-          value={formData.memEmail}
-          onChange={handleChange('memEmail')}
-        />
-        {errors.memEmail && <p className={styles.error}>{errors.memEmail}</p>}
-        {validated.memEmail && <p className={styles.success}>✓ 올바른 이메일 형식입니다</p>}
-      </div>
+      <Input 
+        label="Email"
+        type="email"
+        name="memEmail"
+        placeholder="이메일을 입력하세요"
+        value={formData.memEmail}
+        onChange={handleChange('memEmail')}
+        error={errors.memEmail}
+        required
+      />
+      {validated.memEmail && <p className={styles.success}>✓ 올바른 이메일 형식입니다</p>}
 
       {/* Password */}
-      <div className={styles.field_wrapper}>
-        <Input 
-          label='Password'
-          type='password'
-          placeholder="비밀번호를 입력하세요"
-          value={formData.memPw}
-          onChange={handleChange('memPw')}
-        />
-        {errors.memPw && <p className={styles.error}>{errors.memPw}</p>}
-        {/* {validated.memPw && <p className={styles.success}>✓ 올바른 비밀번호 형식입니다</p>} */}
-      </div>
+      <Input 
+        label='Password'
+        type='password'
+        name="memPw"
+        placeholder="비밀번호를 입력하세요"
+        value={formData.memPw}
+        onChange={handleChange('memPw')}
+        error={errors.memPw}
+        required
+      />
 
       {/* Submit Button */}
-      <div className={styles.button_group}>
+      <div className={styles.buttonGroup}>
         <Button 
           variant='dark'
           fullWidth={true}
@@ -171,7 +168,7 @@ const Login = () => {
         <span className={styles.divider}> | </span>
         <span onClick={() => navigate('/join')}>회원가입</span>
       </div>
-    </FormContainer>
+    </Form>
   )
 }
 

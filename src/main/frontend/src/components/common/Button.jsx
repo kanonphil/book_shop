@@ -9,6 +9,7 @@ const Button = ({
   size = 'medium',
   fullWidth = false,
   disabled = false,
+  className = '',
   ...props
 }) => {
   const buttonClass = [
@@ -16,7 +17,8 @@ const Button = ({
     styles[variant],
     styles[size],
     fullWidth && styles.fullWidth,
-    disabled && styles.disabled
+    disabled && styles.disabled,
+    className
   ].filter(Boolean).join(' ')
 
   return (

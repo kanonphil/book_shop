@@ -6,43 +6,72 @@ const Input = ({
   label, 
   type = "text", 
   name,
-  placeholder, 
-  value,
+  placeholder = '', 
+  value = '',
   onChange,
+  required = false,
+  disabled = false,
+  readOnly = false,
+  error = '',
   maxLength,
   button,
   onButtonClick,
-  className,
-  readOnly = false,
   ...props
 }) => {
   return (
-    <div className={`${styles.input_group} ${className || ''}`}>
-      {label && <label>{label}</label>}
+    <div className={styles.formGroup}>
+      {label && (
+        <label htmlFor={name} className={styles.label}>
+          {label}
+          {required && <span className={styles.required}>*</span>}
+        </label>
+      )}
+      
       {button ? (
-        <div className={styles.input_with_button}>
+        // 버튼이 있는 경우 (중복확인, 주소검색 등)
+        <div className={styles.inputWithButton}>
           <input 
+            id={name}
             type={type}
             name={name}
-            placeholder={placeholder}
-            value={value || ''}
+            placeholder={type === 'date' ? undefined : placeholder}
+            value={value}
             onChange={onChange}
-            maxLength={maxLength}
+            className={`${styles.input} ${error ? styles.inputError : ''}`}
+            required={required}
+            disabled={disabled}
             readOnly={readOnly}
+            maxLength={maxLength}
+            onClick={(e) => {
+              if (type === 'date') {
+                e.target.showPicker?.();
+              }
+            }}
             {...props}
           />
-          <Button onClick={onButtonClick} variant='primary'>
+          <Button 
+            onClick={onButtonClick} 
+            variant='primary'
+            type='button'
+            disabled={disabled}
+          >
             {button}
           </Button>
         </div>
       ) : (
+        // 일반 input
         <input 
+          id={name}
           type={type}
           name={name}
           placeholder={type === 'date' ? undefined : placeholder}
-          value={value || ''}
+          value={value}
           onChange={onChange}
+          className={`${styles.input} ${error ? styles.inputError : ''}`}
+          required={required}
+          disabled={disabled}
           readOnly={readOnly}
+          maxLength={maxLength}
           onClick={(e) => {
             if (type === 'date') {
               e.target.showPicker?.();
@@ -51,6 +80,8 @@ const Input = ({
           {...props}
         />
       )}
+      
+      {error && <span className={styles.error}>{error}</span>}
     </div>
   )
 }

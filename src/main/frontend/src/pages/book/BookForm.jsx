@@ -3,6 +3,8 @@ import styles from './BookForm.module.css'
 import Form from '../../components/common/Form'
 import Input from '../../components/common/Input'
 import Button from '../../components/common/Button'
+import Select from '../../components/common/Select'
+import Textarea from '../../components/common/Textarea'
 import { registerBook } from '../../api/bookApi';
 import { getCategories } from '../../api/categoryApi';
 
@@ -48,9 +50,7 @@ const BookForm = () => {
   // 1,000 형식을 숫자로 변환
   const parsePrice = (value) => {
     if (!value) return '';
-    // 숫자와 콤마만 남기고 제거
     const numbers = value.replace(/[^\d,]/g, '');
-    // 콤마 제거
     return numbers.replace(/,/g, '');
   }
 
@@ -120,7 +120,6 @@ const BookForm = () => {
 
     setErrors(newErrors)
 
-    // 에러가 하나라도 있으면 false
     return !Object.values(newErrors).some(error => error !== '')
   }
 
@@ -129,10 +128,8 @@ const BookForm = () => {
 
     let processedValue = value;
 
-    // 가격 필드는 콤마 제거 후 저장
     if (name === 'bookPrice') {
       const parsed = parsePrice(value)
-      // 숫자가 아니거나 너무 크면 입력 차단
       if (parsed && Number(parsed) > 99999999) {
         return
       }
@@ -144,7 +141,6 @@ const BookForm = () => {
       [name]: processedValue
     }))
 
-    // 실시간 검증
     setErrors(prev => ({
       ...prev,
       [name]: validateField(name, processedValue)
@@ -154,23 +150,20 @@ const BookForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    // 전체 유효성 검사
     if (!validate()) {
       return;
     }
 
     setLoading(true);
     try {
-      // 백엔드로 보낼 데이터 변환
       const submitData = {
         ...bookData,
         cateNum: Number(bookData.cateNum),
         bookPrice: Number(bookData.bookPrice),
         publishDate: bookData.publishDate || null
-        // publishDate: bookData.publishDate ? new Date(bookData.publishDate).toISOString() : null
       };
       
-      console.log('전송 데이터:', submitData); // 디버깅용
+      console.log('전송 데이터:', submitData);
       
       await registerBook(submitData);
       alert('도서가 성공적으로 등록되었습니다.');
@@ -185,7 +178,6 @@ const BookForm = () => {
         publishDate: ''
       });
 
-      // 에러 메시지 재설정
       setErrors({
         cateNum: validateField('cateNum', ''),
         bookTitle: validateField('bookTitle', ''),
@@ -212,24 +204,19 @@ const BookForm = () => {
       }}
     >
       {/* 카테고리 선택 */}
-      <div className={styles.formGroup}>
-        <label>Book Category</label>
-        <select 
-          name="cateNum"
-          value={bookData.cateNum}
-          onChange={handleChange}
-          className={styles.select}
-          required
-        >
-          <option value="">카테고리 선택</option>
-          {categories.map(category => (
-            <option key={category.cateNum} value={category.cateNum}>
-              {category.cateName}
-            </option>
-          ))}
-        </select>
-        {errors.cateNum && <span className={styles.error}>{errors.cateNum}</span>}
-      </div>
+      <Select 
+        label='Book Category'
+        name='cateNum'
+        value={bookData.cateNum}
+        onChange={handleChange}
+        options={categories.map(category => ({
+          value: category.cateNum,
+          label: category.cateName
+        }))}
+        placeholder='카테고리 선택'
+        error={errors.cateNum}
+        required
+      />
 
       {/* 도서명 */}
       <Input
@@ -239,9 +226,9 @@ const BookForm = () => {
         value={bookData.bookTitle}
         onChange={handleChange}
         placeholder="도서명을 입력하세요"
+        error={errors.bookTitle}
         required
       />
-      {errors.bookTitle && <span className={styles.error}>{errors.bookTitle}</span>}
 
       {/* 가격 | 저자 */}
       <div className={styles.rowGroup}>
@@ -249,9 +236,10 @@ const BookForm = () => {
           label="Price"
           type="text"
           name="bookPrice"
-          value={formatPrice(bookData.bookPrice)} // format
+          value={formatPrice(bookData.bookPrice)}
           onChange={handleChange}
           placeholder="가격"
+          error={errors.bookPrice}
           required
         />
         <Input
@@ -261,30 +249,22 @@ const BookForm = () => {
           value={bookData.author}
           onChange={handleChange}
           placeholder="저자명"
+          error={errors.author}
           required
         />
       </div>
-      {/* 통합 에러 */}
-      {(errors.bookPrice || errors.author) && (
-        <span className={styles.error}>
-          {errors.bookPrice && errors.author
-            ? '가격과 저자를 입력해주세요'
-            : errors.bookPrice || errors.author}
-        </span>
-      )}
 
       {/* 도서 소개 */}
-      <div className={styles.formGroup}>
-        <label>Introduce</label>
-        <textarea
-          name="bookIntro"
-          value={bookData.bookIntro}
-          onChange={handleChange}
-          placeholder="도서 소개를 입력하세요"
-          className={styles.textarea}
-          maxLength={50}
-        />
-      </div>
+      <Textarea 
+        label='Introduce'
+        name='bookIntro'
+        value={bookData.bookIntro}
+        onChange={handleChange}
+        placeholder='도서 소개를 입력하세요'
+        maxLength={50}
+        showCount={true}
+        rows={4}
+      />
 
       {/* 출판일 */}
       <Input
@@ -293,8 +273,8 @@ const BookForm = () => {
         name="publishDate"
         value={bookData.publishDate}
         onChange={handleChange}
+        error={errors.publishDate}
       />
-      {errors.publishDate && <span className={styles.error}>{errors.publishDate}</span>}
 
       {/* 제출 버튼 */}
       <Button 

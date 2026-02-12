@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './LoginSelect.module.css'
 import Button from '../../components/common/Button'
-import FormContainer from '../../components/common/Form'
+import Form from '../../components/common/Form'
 import { SiKakao, SiNaver } from "react-icons/si";
 import { FcGoogle } from "react-icons/fc";
 
@@ -10,14 +10,12 @@ const LoginSelect = () => {
   const navigate = useNavigate()
 
   return (
-    <FormContainer title='책과 함께하는 시간'>
-      <p className={styles.subtitle}>
-        다양한 도서 구매부터 리뷰까지<br />
-        당신의 독서 생활을 더 풍요롭게
-      </p>
-
+    <Form 
+      title='책과 함께하는 시간'
+      subtitle='다양한 도서 구매부터 리뷰까지 당신의 독서 생활을 더 풍요롭게'
+    >
       {/* SNS 로그인 버튼들 */}
-      <div className={styles.sns_buttons}>
+      <div className={styles.snsButtons}>
         {/* <a href="http://localhost:8080/oauth2/authorization/kakao">
           <Button variant='kakao' fullWidth={true}>
             <SiKakao /> 카카오 계정으로 계속하기
@@ -52,7 +50,7 @@ const LoginSelect = () => {
           회원가입
         </span>
       </div>
-    </FormContainer>
+    </Form>
   )
 }
 

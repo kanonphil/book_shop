@@ -1,74 +1,14 @@
-.formGroup {
-  margin: 20px 0;
-}
-
-.formGroup label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: var(--text-primary);
-}
-
-/* select 스타일 - Input과 동일하게 */
-.select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  border-radius: 4px;
-  font-size: 14px;
-  box-sizing: border-box;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  cursor: pointer;
-}
-
-.select:focus {
-  outline: none;
-  border-color: var(--button-primary);
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-/* textarea 스타일 - Input과 동일하게 */
-.textarea {
-  width: 100%;
-  min-height: 100px;
-  padding: 10px;
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  border-radius: 4px;
-  font-size: 14px;
-  box-sizing: border-box;
-  resize: none;
-  font-family: inherit;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.textarea:focus {
-  outline: none;
-  border-color: var(--button-primary);
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-/* Price와 Author를 한 줄에 */
+/* rowGroup: 가격과 저자를 나란히 배치 */
 .rowGroup {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin-top: 20px;
 }
 
-/* 다크모드 focus 효과 */
-[data-theme='dark'] .select:focus,
-[data-theme='dark'] .textarea:focus {
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-/* 에러 메시지 */
-.error {
-  color: var(--color-error);
-  font-size: 0.875rem;
-  margin-top: 4px;
-  /* margin-bottom: 20px; */
+/* 반응형: 작은 화면에서는 세로로 배치 */
+@media (max-width: 768px) {
+  .rowGroup {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 }
