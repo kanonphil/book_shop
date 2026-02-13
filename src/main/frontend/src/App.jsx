@@ -8,6 +8,8 @@ import Login from './pages/member/Login'
 import LoginSelect from './pages/member/LoginSelect'
 import OAuthCallback from './pages/member/OAuthCallback'
 import BookForm from './pages/book/BookForm'
+import BookDetail from './pages/book/BookDetail'
+import CartList from './pages/cart/CartList'
 
 function App() {
   
@@ -26,6 +28,8 @@ function App() {
           <Route path='' element={<BookList />} />
           <Route path='join' element={<Join />} />
           <Route path='login' element={<Login />} />
+          <Route path='books/:bookNum' element={<BookDetail />} />
+          <Route path='carts' element={<CartList />} />
           {/* <Route path='login-select' element={<LoginSelect />} /> */}
           {/* <Route path='oauth-callback' element={<OAuthCallback />} /> */}
         </Route>
@@ -33,6 +37,7 @@ function App() {
         {/* 매니저 권한의 회원이 접근하는 페이지들 */}
         <Route path='/manage' element={<ManagerLayout />}>
           <Route path='book-form' element={<BookForm />} />
+          <Route />
         </Route>
       </Routes>
     </>

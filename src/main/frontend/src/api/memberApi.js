@@ -1,6 +1,5 @@
 import axios from 'axios';
 import axiosInstance from './axiosInstance';
-import { store } from '../redux/store';
 
 const API_BASE_URL = 'http://localhost:8080';
 

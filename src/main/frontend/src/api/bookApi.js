@@ -11,51 +11,53 @@ export const registerBook = async (bookData) => {
     console.error('도서 등록 실패:', error);
     console.error('에러 응답:', error.response?.data);
     console.error('전송한 데이터:', bookData);
-    throw error;
+    throw error.response?.data || { message: '도서 등록에 실패했습니다.' };
   }
 };
 
 // 다른 도서 관련 API들
 // 도서 목록 조회
-export const getBooks = async () => {
+export const getBookList = async (page = 1, size = 8) => {
   try {
-    const response = await axiosInstance.get('/books');
+    const response = await axiosInstance.get('/books', {
+      params: { page, size }
+    });
     return response.data;
   } catch (error) {
-    console.error('도서 목록 조회 실패:', error);
-    throw error;
+    throw error.response?.data || { message: '도서 목록 조회에 실패했습니다.' };
   }
 };
 
 // 도서 상세 조회
-export const getBookById = async (bookId) => {
+export const getBookDetail = async (bookNum) => {
   try {
-    const response = await axiosInstance.get(`/books/${bookId}`);
+    const response = await axiosInstance.get(`/books/${bookNum}`);
     return response.data;
   } catch (error) {
-    console.error('도서 상세 조회 실패:', error);
-    throw error;
+    throw error.response?.data || { message: '도서 상세 조회에 실패했습니다.' };
   }
 };
 
-// 도서 수정
-export const updateBook = async (bookId, bookData) => {
+// 카테고리별 조회
+export const getBooksByCategory = async (cateNum, page = 1, size = 8) => {
   try {
-    const response = await axiosInstance.put(`/books/${bookId}`, bookData);
+    const response = await axiosInstance.get(`/books/category/${cateNum}`, {
+      params: { page, size }
+    });
     return response.data;
   } catch (error) {
-    console.error('도서 수정 실패:', error);
-    throw error;
+    throw error.response?.data || { message: '카테고리별 조회에 실패했습니다.' };
   }
 };
 
-// 도서 삭제
-export const deleteBook = async (bookId) => {
+// 도서 검색
+export const searchBooks = async (keyword, page = 1, size = 8) => {
   try {
-    const response = await axiosInstance.delete(`/books/${bookId}`);
+    const response = await axiosInstance.get('/books/search', {
+      params: { keyword, page, size }
+    });
     return response.data;
   } catch (error) {
-    console.error('도서 삭제 실패:', error);
-    throw error;
+    throw error.response?.data || { message: '도서 검색에 실패했습니다.' };
   }
 };

@@ -1,0 +1,411 @@
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 40px;
+  color: var(--text-primary, #e0e0e0);
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.loading {
+  color: #666;
+  font-size: 18px;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.empty p {
+  font-size: 18px;
+  color: #999;
+}
+
+/* 테이블 래퍼 */
+.tableWrapper {
+  overflow-x: auto;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  border: 1px solid #404040;
+}
+
+/* 테이블 */
+.cartTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--card-bg, #1a1a1a);
+}
+
+.cartTable thead {
+  background-color: #2a2a2a;
+}
+
+.cartTable th {
+  padding: 16px 12px;
+  text-align: center;
+  font-weight: 600;
+  color: #e0e0e0;
+  border-bottom: 2px solid #404040;
+  white-space: nowrap;
+}
+
+.cartTable tbody tr {
+  border-bottom: 1px solid #404040;
+  transition: background-color 0.2s;
+}
+
+.cartTable tbody tr:hover {
+  background-color: #252525;
+}
+
+.cartTable td {
+  padding: 20px 12px;
+  text-align: center;
+  color: #e0e0e0;
+  vertical-align: middle;
+}
+
+/* 컬럼 너비 */
+.checkboxCol {
+  width: 50px;
+}
+
+.noCol {
+  width: 60px;
+}
+
+.bookCol {
+  width: auto;
+  min-width: 300px;
+}
+
+.priceCol {
+  width: 120px;
+}
+
+.quantityCol {
+  width: 100px;
+}
+
+.totalCol {
+  width: 120px;
+}
+
+.dateCol {
+  width: 200px;
+}
+
+.actionCol {
+  width: 100px;
+}
+
+/* 체크박스 */
+.checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #4a9eff;
+}
+
+/* 도서 정보 */
+.bookInfo {
+  text-align: left !important;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.bookInfo:hover {
+  background-color: #2a2a2a;
+}
+
+.bookContent {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.bookImage {
+  width: 80px;
+  height: 100px;
+  background: #2a2a2a;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #999;
+  flex-shrink: 0;
+}
+
+.bookDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.bookTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.bookAuthor {
+  font-size: 14px;
+  color: #999;
+}
+
+/* 수량 입력 */
+.quantityInput {
+  width: 70px;
+  padding: 8px;
+  text-align: center;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.quantityInput:focus {
+  outline: none;
+  border-color: #4a9eff;
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.quantityBtn {
+  width: 30px;
+  height: 30px;
+  background-color: #4a9eff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.quantityBtn:hover {
+  background-color: #3d8be8;
+}
+
+.quantityBtn:active {
+  transform: scale(0.95);
+}
+
+.quantityValue {
+  min-width: 40px;
+  text-align: center;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+[data-theme='light'] .quantityValue {
+  color: #1a1a1a;
+}
+
+/* 총 가격 */
+.totalPrice {
+  font-weight: 700;
+  color: #4a9eff;
+}
+
+/* 총 구매 가격 섹션 */
+.totalSection {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 30px 20px;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.totalLabel {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.totalAmount {
+  font-size: 24px;
+  font-weight: 700;
+  color: #4a9eff;
+}
+
+/* 버튼 영역 */
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+  .bookCol {
+    min-width: 250px;
+  }
+
+  .bookImage {
+    width: 60px;
+    height: 75px;
+  }
+
+  .bookTitle {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 10px;
+  }
+
+  .title {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .tableWrapper {
+    border: none;
+  }
+
+  .cartTable {
+    display: block;
+  }
+
+  .cartTable thead {
+    display: none;
+  }
+
+  .cartTable tbody {
+    display: block;
+  }
+
+  .cartTable tr {
+    display: block;
+    margin-bottom: 20px;
+    border: 1px solid #404040;
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .cartTable td {
+    display: block;
+    text-align: left !important;
+    padding: 8px 0;
+    border: none;
+  }
+
+  .cartTable td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #999;
+    display: inline-block;
+    width: 120px;
+  }
+
+  .bookInfo {
+    padding: 0 !important;
+  }
+
+  .bookContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .totalSection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+}
+
+/* 라이트 모드 */
+[data-theme='light'] .cartTable {
+  background-color: #ffffff;
+}
+
+[data-theme='light'] .cartTable thead {
+  background-color: #f5f5f5;
+}
+
+[data-theme='light'] .cartTable th {
+  color: #1a1a1a;
+  border-bottom-color: #e0e0e0;
+}
+
+[data-theme='light'] .cartTable tbody tr {
+  border-bottom-color: #e0e0e0;
+}
+
+[data-theme='light'] .cartTable tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+[data-theme='light'] .cartTable td {
+  color: #1a1a1a;
+}
+
+[data-theme='light'] .bookImage {
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+}
+
+[data-theme='light'] .bookTitle {
+  color: #1a1a1a;
+}
+
+[data-theme='light'] .quantityInput {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border-color: #d0d0d0;
+}
+
+[data-theme='light'] .totalSection {
+  background-color: #f5f5f5;
+}
+
+[data-theme='light'] .totalLabel {
+  color: #1a1a1a;
+}
+
+[data-theme='light'] .tableWrapper {
+  border-color: #e0e0e0;
+}
+
+[data-theme='light'] .bookInfo:hover {
+  background-color: #f0f0f0;
+}

@@ -1,0 +1,235 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 16px;
+}
+
+.loading {
+  color: #666;
+}
+
+.error {
+  color: #d32f2f;
+  margin-bottom: 20px;
+}
+
+/* 상단 영역 */
+.topSection {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+/* 이미지 영역 */
+.imageSection {
+  width: 100%;
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 16px;
+}
+
+/* 정보 영역 */
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text-primary, #333);
+}
+
+.infoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 16px;
+}
+
+.label {
+  font-weight: 600;
+  color: #666;
+  /* min-width: 80px; */
+  padding-top: 12px;
+}
+
+.value {
+  color: #333;
+  padding-top: 12px;
+}
+
+/* 수량 섹션 */
+.quantityWrapper {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.stockInfo {
+  font-size: 14px;
+  color: #666;
+  padding-top: 20px;
+  white-space: nowrap;
+}
+
+.totalPrice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 0;
+  border-top: 2px solid #e0e0e0;
+  border-bottom: 2px solid #e0e0e0;
+  margin: 20px 0;
+  font-size: 18px;
+}
+
+.totalPrice .label {
+  padding-top: 0;
+}
+
+.totalValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: #d32f2f;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* 도서 소개 영역 */
+.descriptionSection {
+  border-top: 2px solid #333;
+  padding-top: 40px;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: var(--text-primary, #333);
+}
+
+.descriptionBox {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 40px;
+}
+
+.descriptionImage {
+  width: 100%;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.descriptionText {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #555;
+  white-space: pre-wrap;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .topSection {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .descriptionBox {
+    padding: 20px;
+  }
+}
+
+/* 다크 모드 */
+[data-theme='dark'] .loading {
+  color: #999;
+}
+
+[data-theme='dark'] .error {
+  color: #ff6b6b;
+}
+
+[data-theme='dark'] .image {
+  background: #2a2a2a;
+  border-color: #404040;
+  color: #666;
+}
+
+[data-theme='dark'] .title {
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .label {
+  color: #999;
+}
+
+[data-theme='dark'] .value {
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .stockInfo {
+  color: #999;
+}
+
+[data-theme='dark'] .totalPrice {
+  border-top-color: #404040;
+  border-bottom-color: #404040;
+}
+
+[data-theme='dark'] .totalValue {
+  color: #ff6b6b;
+}
+
+[data-theme='dark'] .descriptionSection {
+  border-top-color: #404040;
+}
+
+[data-theme='dark'] .sectionTitle {
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .descriptionBox {
+  background: #2a2a2a;
+  border-color: #404040;
+}
+
+[data-theme='dark'] .descriptionText {
+  color: #b0b0b0;
+}

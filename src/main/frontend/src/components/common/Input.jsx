@@ -16,10 +16,11 @@ const Input = ({
   maxLength,
   button,
   onButtonClick,
+  className = '',
   ...props
 }) => {
   return (
-    <div className={styles.formGroup}>
+    <div className={`${styles.formGroup} ${className}`}>
       {label && (
         <label htmlFor={name} className={styles.label}>
           {label}

@@ -54,15 +54,15 @@ const authSlice = createSlice({
   initialState: getInitialState(),
   reducers: {
     loginReducer: (state, action) => {
-      state.token = action.payload.token;
       state.member = action.payload.member;
+      state.token = action.payload.token;
       state.isAuthenticated = true;
       
       // Login.jsx에서 이미 저장했으므로 여기서는 생략 가능
     },
     logoutReducer: (state) => {
-      state.token = null
       state.member = null
+      state.token = null
       state.isAuthenticated = false
       
       // 둘 다 삭제

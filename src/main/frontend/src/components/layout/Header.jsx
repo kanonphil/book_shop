@@ -38,8 +38,8 @@ const Header = () => {
           <li><ThemeToggle /></li>
           {isAuthenticated ? (
             <>
-              <li>{member.memName}님</li>
-              <li>반갑습니다</li>
+              <li>{member.memName}님 반갑습니다</li>
+              <li onClick={() => navigate('/carts')}>장바구니</li>
               <li onClick={handleLogout}>Logout</li>
             </>
           ) : (
@@ -60,6 +60,7 @@ const Header = () => {
           BOOK SHOP
         </h3>
       </div>
+      <div>일반 사용자가 보는 메뉴</div>
     </div>
   )
 }

@@ -2,64 +2,56 @@ package com.green.book_shop.member.dto;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
-  private final MemberDTO memberDTO;
+  private final MemberDTO member;
 
-  @Override // 계정의 권한정보를 리턴하는 메서드
+  // ✅ 외부에서 MemberDTO 접근 가능하도록 getter 추가
+  public MemberDTO getMemberDTO() {
+    return member;
+  }
+
+  @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    Collection<GrantedAuthority> collection = new ArrayList<>();
-
-    collection.add(new GrantedAuthority() {
-      @Override
-      public String getAuthority() {
-        return memberDTO.getMemRole();
-      }
-    });
-
-    return collection;
+    // ✅ ROLE_ 접두사 추가
+    return Collections.singletonList(
+            new SimpleGrantedAuthority("ROLE_" + member.getMemRole())
+    );
   }
 
-  @Override // 계정의 비밀번호를 리턴
+  @Override
   public String getPassword() {
-    return memberDTO.getMemPw();
+    return member.getMemPw();
   }
 
-  @Override // 계정의 아이디를 리턴
+  @Override
   public String getUsername() {
-    return memberDTO.getMemEmail();
+    return member.getMemEmail();
   }
 
-  // 만료되지 않은 계정인가?
   @Override
   public boolean isAccountNonExpired() {
     return true;
   }
 
-  // 잠기지 않은 계정인가?
   @Override
   public boolean isAccountNonLocked() {
     return true;
   }
 
-  // 자격증명이 만료되지 않았는가?
   @Override
   public boolean isCredentialsNonExpired() {
     return true;
   }
 
-  // 사용가능 상태의 계정인가?
   @Override
   public boolean isEnabled() {
     return true;
-  }
-
-  public MemberDTO getMemberDTO() {
-    return memberDTO;
   }
 }

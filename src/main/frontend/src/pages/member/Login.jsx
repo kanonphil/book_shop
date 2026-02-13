@@ -114,6 +114,9 @@ const Login = () => {
         const member = response.data.member
         const token = response.data.token  // 토큰 추출
 
+        console.log('받은 토큰:', token);
+        console.log('사용자 권한:', member.memRole);
+
         if (token) {
           if (formData.rememberMe) {
             // 체크 시: localStorage 사용
@@ -135,7 +138,7 @@ const Login = () => {
 
         // 권한에 따른 페이지 이동
         if (member.memRole === 'ADMIN' || member.memRole === 'MANAGER') {
-          navigate('/manage')
+          navigate('/manage/book-form')
         } else {
           navigate('/')
         }

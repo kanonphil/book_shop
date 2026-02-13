@@ -34,35 +34,131 @@
 		          #{cateNum}
 						 )
 	</insert>
+
+	<!-- 도서 목록 조회 (페이징) -->
+	<select id="selectBookList" resultMap="book">
+		SELECT B.BOOK_NUM,
+		       B.BOOK_TITLE,
+		       B.AUTHOR,
+		       B.BOOK_PRICE,
+		       B.BOOK_INTRO,
+		       B.PUBLISH_DATE,
+		       B.CATE_NUM,
+		       C.CATE_NUM,
+		       C.CATE_NAME
+		FROM SHOP_BOOK B
+		LEFT JOIN BOOK_CATEGORY C ON B.CATE_NUM = C.CATE_NUM
+		ORDER BY B.BOOK_NUM DESC
+		LIMIT #{offset}, #{size}
+	</select>
+
+	<!-- 도서 총 개수 조회 -->
+	<select id="selectBookCount" resultType="int">
+		SELECT COUNT(*)
+		FROM SHOP_BOOK
+	</select>
+
+	<!-- 도서 상세 조회 -->
+	<select id="selectBookDetail" resultMap="book">
+		SELECT B.BOOK_NUM,
+		       B.BOOK_TITLE,
+		       B.AUTHOR,
+		       B.BOOK_PRICE,
+		       B.BOOK_STOCK,
+		       B.BOOK_INTRO,
+		       B.PUBLISH_DATE,
+		       B.CATE_NUM,
+		       C.CATE_NAME
+		FROM SHOP_BOOK B
+		LEFT JOIN BOOK_CATEGORY C ON B.CATE_NUM = C.CATE_NUM
+		WHERE B.BOOK_NUM = #{bookNum}
+	</select>
+
+	<!-- 카테고리별 도서 목록 -->
+	<select id="selectBookListByCategory" resultMap="book">
+		SELECT B.BOOK_NUM,
+		       B.BOOK_TITLE,
+		       B.AUTHOR,
+		       B.BOOK_PRICE,
+		       B.BOOK_STOCK,
+		       B.BOOK_INTRO,
+		       B.PUBLISH_DATE,
+		       B.CATE_NUM,
+		       C.CATE_NAME
+		FROM SHOP_BOOK B
+		LEFT JOIN BOOK_CATEGORY C ON B.CATE_NUM = C.CATE_NUM
+		WHERE B.CATE_NUM = #{cateNum}
+		ORDER BY B.BOOK_NUM DESC
+		LIMIT #{offset}, #{size}
+	</select>
+
+	<!-- 카테고리별 도서 개수 -->
+	<select id="selectBookCountByCategory" resultType="int">
+		SELECT COUNT(*)
+		FROM SHOP_BOOK
+		WHERE CATE_NUM = #{cateNum}
+	</select>
+
+	<!-- 도서 검색 -->
+	<select id="searchBooks" resultMap="book">
+		SELECT B.BOOK_NUM,
+		B.BOOK_TITLE,
+		B.AUTHOR,
+		B.BOOK_PRICE,
+		B.BOOK_STOCK,
+		B.BOOK_INTRO,
+		B.PUBLISH_DATE,
+		B.CATE_NUM,
+		C.CATE_NAME
+		FROM SHOP_BOOK B
+		LEFT JOIN BOOK_CATEGORY C ON B.CATE_NUM = C.CATE_NUM
+		<where>
+			<if test="keyword != null and keyword != ''">
+				(B.BOOK_TITLE LIKE CONCAT('%', #{keyword}, '%')
+				OR B.AUTHOR LIKE CONCAT('%', #{keyword}, '%'))
+			</if>
+		</where>
+		ORDER BY B.BOOK_NUM DESC
+		LIMIT #{offset}, #{size}
+	</select>
+
+	<!-- 검색 결과 개수 -->
+	<select id="searchBooksCount" resultType="int">
+		SELECT COUNT(*)
+		FROM SHOP_BOOK B
+		<where>
+			<if test="keyword != null and keyword != ''">
+				(B.BOOK_TITLE LIKE CONCAT('%', #{keyword}, '%')
+				OR B.AUTHOR LIKE CONCAT('%', #{keyword}, '%'))
+			</if>
+		</where>
+	</select>
+
+	<!-- 도서 수정 -->
+	<update id="updateBook">
+		UPDATE SHOP_BOOK
+		SET BOOK_TITLE = #{bookTitle},
+		AUTHOR = #{author},
+		BOOK_PRICE = #{bookPrice},
+		BOOK_INTRO = #{bookIntro},
+		PUBLISH_DATE = #{publishDate},
+		CATE_NUM = #{cateNum}
+		<if test="bookStock != null">
+			, BOOK_STOCK = #{bookStock}
+		</if>
+		WHERE BOOK_NUM = #{bookNum}
+	</update>
+
+	<!-- 도서 삭제 -->
+	<delete id="deleteBook">
+		DELETE FROM SHOP_BOOK
+		WHERE BOOK_NUM = #{bookNum}
+	</delete>
+
+	<!-- 재고 업데이트 -->
+	<update id="updateBookStock">
+		UPDATE SHOP_BOOK
+		SET BOOK_STOCK = BOOK_STOCK + #{quantity}
+		WHERE BOOK_NUM = #{bookNum}
+	</update>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
