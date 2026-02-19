@@ -1,24 +1,16 @@
 package com.green.book_shop.book.service;
 
 import com.green.book_shop.book.dto.BookDTO;
-import com.green.book_shop.book.dto.BookImgDTO;
 import com.green.book_shop.book.dto.BookListResponseDTO;
 import com.green.book_shop.book.dto.BookSearchDTO;
 import com.green.book_shop.book.mapper.BookMapper;
 import com.green.book_shop.util.UploadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.Book;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,30 +27,13 @@ public class BookService {
 
     // 2. 대표 이미지 저장
     if (mainImg != null) {
-      String uploadFileName = uploadUtil.saveFile(mainImg);  // 서버에 파일 저장 후 저장된 파일명 반환
-
-      BookImgDTO imgDTO = new BookImgDTO();
-      imgDTO.setOriginFileName(mainImg.getOriginalFilename());  // 원본 파일명
-      imgDTO.setUploadFileName(uploadFileName);  // 저장된 파일명
-      imgDTO.setIsMain("Y");
-      imgDTO.setBookNum(bookNum);
-
-      bookMapper.insertBookImg(imgDTO);
+      bookMapper.insertBookImg(uploadUtil.saveMainImg(mainImg, bookNum));
     }
 
     // 3. 서브 이미지 저장
     if (subImgs != null) {
-      for (MultipartFile img : subImgs) {
-        String uploadFileName = uploadUtil.saveFile(img);
-
-        BookImgDTO imgDTO = new BookImgDTO();
-        imgDTO.setOriginFileName(img.getOriginalFilename());
-        imgDTO.setUploadFileName(uploadFileName);
-        imgDTO.setIsMain("N");
-        imgDTO.setBookNum(bookNum);
-
-        bookMapper.insertBookImg(imgDTO);
-      }
+      uploadUtil.saveSubImgs(subImgs, bookNum)
+              .forEach(bookMapper::insertBookImg);
     }
 
     log.info("도서 등록 완료 - 제목: {}", bookData.getBookTitle());
