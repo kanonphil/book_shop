@@ -67,21 +67,21 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     CustomUserDetails userDetails = (CustomUserDetails) authResult.getPrincipal();
     String username = authResult.getName();
 
-    // ✅ 권한 정보 추출
+    // 권한 정보 추출
     String role = authResult.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .findFirst()
             .orElse("ROLE_USER");
 
-    // ✅ ROLE_ 접두사 제거
+    //  ROLE_ 접두사 제거
     if (role.startsWith("ROLE_")) {
       role = role.substring(5);  // "ROLE_MANAGER" -> "MANAGER"
     }
 
     log.info("로그인 성공 - 사용자: {}, 권한: {}", username, role);
 
-    // ✅ ROLE_ 없이 토큰 생성
-    String accessToken = jwtUtil.createJwt(username, role, (1000 * 60 * 10));
+    // ROLE_ 없이 토큰 생성
+    String accessToken = jwtUtil.createJwt(username, role, (1000 * 60 * 60)); // 완료 다 하면 60 -> 10
 
     // 응답 데이터 구성
     Map<String, Object> responseData = new HashMap<>();
@@ -89,7 +89,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     responseData.put("message", "로그인 성공");
     responseData.put("memEmail", username);
     responseData.put("memName", userDetails.getMemberDTO().getMemName());
-    responseData.put("memRole", role);  // ✅ "MANAGER" (ROLE_ 없이)
+    responseData.put("memRole", role);  // "MANAGER" (ROLE_ 없이)
     responseData.put("token", accessToken);
 
     response.setHeader("Access-Control-Expose-Headers", "Authorization");

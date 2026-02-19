@@ -5,6 +5,9 @@ import styles from './BookCard.module.css'
 const BookCard = ({ book }) => {
   const navigate = useNavigate()
 
+  // 대표 이미지 파일명 가져오기
+  const mainImg = book.images?.[0]?.uploadFileName
+
   const handleClick = () => {
     navigate(`/books/${book.bookNum}`)
   }
@@ -14,10 +17,13 @@ const BookCard = ({ book }) => {
       {/* 상품 이미지 */}
       <div className={styles.imageContainer}>
         <img 
-          src="/main_react.jpg"
+          src={mainImg ? `/upload/${mainImg}` : 'placeholder.jpg'}
           alt={book.bookTitle}
           className={styles.image}
         />
+        <div className={styles.overlay}>
+          <span className={styles.overlayText}>상세보기</span>
+        </div>
       </div>
 
       {/* 도서명 */}

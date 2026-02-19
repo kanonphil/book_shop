@@ -24,7 +24,7 @@
 	</resultMap>
 
 	<!-- 도서 등록 -->
-	<insert id="insertBook">
+	<insert id="insertBook" useGeneratedKeys="true" keyProperty="bookNum">
 		INSERT INTO SHOP_BOOK (
 		                       BOOK_TITLE,
 		                       AUTHOR,
@@ -52,7 +52,7 @@
 		) VALUES (
 		          #{originFileName},
 		          #{uploadFileName},
-		          #{isName},
+		          #{isMain},
 		          #{bookNum}
 						 )
 	</insert>

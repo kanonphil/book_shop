@@ -146,6 +146,10 @@ const BookDetail = () => {
     return null
   }
 
+  // 이미지 분리
+  const mainImg = book.images?.find(img => img.isMain === 'Y')
+  const subImgs = book.images?.filter(img => img.isMain === 'N')
+
   const totalPrice = book.bookPrice * quantity
 
   return (
@@ -155,7 +159,7 @@ const BookDetail = () => {
         {/* 이미지 */}
         <div className={styles.imageSection}>
           <img 
-            src="/main_react.jpg" 
+            src={mainImg ? `/upload/${mainImg.uploadFileName}` : '/placeholder.jpg'}
             alt={book.bookTitle}
             className={styles.image}
           />
@@ -226,14 +230,20 @@ const BookDetail = () => {
       <div className={styles.descriptionSection}>
         <h2 className={styles.sectionTitle}>도서 소개</h2>
         <div className={styles.descriptionBox}>
-          <img 
-            src="/리액트 다루는 기술 상세이미지1.jpg" 
-            alt={book.bookIntro} 
-            className={styles.descriptionImage}
-          />
           <div className={styles.descriptionText}>
             {book.bookIntro || '도서 소개 내용이 없습니다.'}
           </div>
+          {/* subImgs */}
+          {subImgs?.length > 0 ? (
+            subImgs.map(img => (
+              <img 
+                key={img.imgNum}
+                src={`/upload/${img.uploadFileName}`} 
+                alt={book.bookIntro} 
+                className={styles.descriptionImage}
+              />
+            ))
+          ) : null}
         </div>
       </div>
     </div>

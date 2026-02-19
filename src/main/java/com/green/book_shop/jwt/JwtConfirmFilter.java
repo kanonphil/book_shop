@@ -48,7 +48,7 @@ public class JwtConfirmFilter extends OncePerRequestFilter {
     String username = jwtUtil.getUsername(token);
     String role = jwtUtil.getRole(token);
 
-    // ✅ 토큰에서 가져온 role 로깅
+    // 토큰에서 가져온 role 로깅
     log.info("JWT에서 추출한 role: {}", role);
 
     // userEntity를 생성하여 값 set
@@ -56,13 +56,13 @@ public class JwtConfirmFilter extends OncePerRequestFilter {
     member.setMemEmail(username);
     member.setMemRole(role);
 
-    // ✅ MemberDTO에 저장된 role 로깅
+    // MemberDTO에 저장된 role 로깅
     log.info("MemberDTO에 설정된 role: {}", member.getMemRole());
 
     // UserDetails에 회원 정보 객체 담기
     CustomUserDetails customUserDetails = new CustomUserDetails(member);
 
-    // ✅ CustomUserDetails의 권한 로깅
+    // CustomUserDetails의 권한 로깅
     String authorities = customUserDetails.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(", "));
@@ -75,7 +75,7 @@ public class JwtConfirmFilter extends OncePerRequestFilter {
             customUserDetails.getAuthorities()
     );
 
-    // ✅ 최종 Authentication 권한 로깅
+    // 최종 Authentication 권한 로깅
     String finalAuthorities = authToken.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(", "));

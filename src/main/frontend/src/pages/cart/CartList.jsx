@@ -251,7 +251,7 @@ const CartList = () => {
                     <td className={styles.bookInfo} onClick={() => handleBookClick(item.bookNum)}>
                       <div className={styles.bookContent}>
                         <img 
-                          src='/main_react.jpg'
+                          src={item.uploadFileName ? `upload/${item.uploadFileName}` : '/placeholder.jpg'}
                           alt={item.bookTitle}
                           className={styles.bookImage}
                         />

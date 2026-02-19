@@ -109,7 +109,7 @@ const BookForm = () => {
 
       case 'bookTitle':
         if (!value || !value.trim()) return '도서명을 입력해주세요'
-        if (value.length > 10) return '도서명은 10자 이하로 입력해주세요'
+        if (value.length > 25) return '도서명은 25자 이하로 입력해주세요'
         return '';
 
       case 'author':

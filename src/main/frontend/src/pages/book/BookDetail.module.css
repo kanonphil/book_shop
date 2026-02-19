@@ -23,27 +23,27 @@
 /* 상단 영역 */
 .topSection {
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 40px;
+  grid-template-columns: 300px 1fr;
+  gap: 100px;
   margin-bottom: 60px;
+  align-items: start;
 }
 
 /* 이미지 영역 */
 .imageSection {
   width: 100%;
+  position: sticky;
+  top: 20px; /* 스크롤해도 이미지 고정 */
 }
 
 .image {
   width: 100%;
   aspect-ratio: 3 / 4;
+  object-fit: cover;
   background: #f5f5f5;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #999;
-  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* 정보 영역 */
@@ -115,10 +115,12 @@
   color: #d32f2f;
 }
 
+/* 버튼 */
 .buttonGroup {
   display: flex;
   gap: 12px;
   margin-top: 20px;
+  max-width: 360px;
 }
 
 /* 도서 소개 영역 */
@@ -147,7 +149,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .descriptionText {
@@ -155,6 +157,7 @@
   line-height: 1.8;
   color: #555;
   white-space: pre-wrap;
+  margin-bottom: 20px;
 }
 
 /* 반응형 */
@@ -186,10 +189,10 @@
   color: #ff6b6b;
 }
 
-[data-theme='dark'] .image {
+css[data-theme='dark'] .image {
   background: #2a2a2a;
   border-color: #404040;
-  color: #666;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme='dark'] .title {

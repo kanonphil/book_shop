@@ -16,6 +16,7 @@
 		<result column="AUTHOR" property="author" />
 		<result column="BOOK_PRICE" property="bookPrice" />
 		<result column="BOOK_STOCK" property="bookStock" />
+		<result column="UPLOAD_FILE_NAME" property="uploadFileName" />
 	</resultMap>
 
 	<!-- 장바구니 목록 조회 (특정 회원) -->
@@ -28,9 +29,11 @@
 		       B.BOOK_TITLE,
 		       B.AUTHOR,
 		       B.BOOK_PRICE,
-		       B.BOOK_STOCK
+		       B.BOOK_STOCK,
+		       I.UPLOAD_FILE_NAME
 		FROM SHOP_CART C
 		LEFT JOIN SHOP_BOOK B ON C.BOOK_NUM = B.BOOK_NUM
+		LEFT JOIN BOOK_IMG I ON B.BOOK_NUM = I.BOOK_NUM AND I.IS_MAIN = 'Y'
 		WHERE C.MEM_EMAIL = #{memEmail}
 		ORDER BY C.CART_DATE DESC
 	</select>
@@ -87,34 +90,3 @@
 		WHERE C.MEM_EMAIL = #{memEmail}
 	</select>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

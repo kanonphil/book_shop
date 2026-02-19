@@ -21,5 +21,5 @@ public class CartDTO {
   private String author;
   private Integer bookPrice;
   private Integer bookStock;
-  private String bookImage;
+  private String uploadFileName;
 }
