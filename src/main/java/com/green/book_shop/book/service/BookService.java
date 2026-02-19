@@ -182,7 +182,11 @@ public class BookService {
   // 파일 저장 후 저장된 파일명 반환
   private String saveFile(MultipartFile file) {
     // UUID로 파일명 중복 방지
-    String uploadFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+    String originalFilename = file.getOriginalFilename();
+    String extension = (originalFilename != null && originalFilename.contains("."))
+            ? originalFilename.substring(originalFilename.lastIndexOf("."))
+            : ".jpg";  // 확장자 없으면 기본값
+    String uploadFileName = UUID.randomUUID().toString() + extension;
 
     Path savePath = Paths.get(uploadPath + uploadFileName); // 저장 경로
     try {
