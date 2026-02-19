@@ -1,0 +1,162 @@
+.sliderWrapper {
+  /* margin-bottom: 40px; */
+  padding: 40px 20px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 40px;
+  color: var(--text-primary, #333);
+}
+
+.sliderContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sliderOuter {
+  flex: 1;
+  overflow: hidden;
+}
+
+.bookList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 40px 20px;
+}
+
+.next {
+  animation: slideNext 0.4s ease;
+}
+
+.prev {
+  animation: slidePrev 0.4s ease;
+}
+
+@keyframes slideNext {
+  from { transform: translateX(25%); opacity: 0.5; }
+  to   { transform: translateX(0);   opacity: 1; }
+}
+
+@keyframes slidePrev {
+  from { transform: translateX(-25%); opacity: 0.5; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+.bookItem {
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  flex: 1;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.bookMeta {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  border-radius: 0 0 8px 8px;
+  height: 120px;  /* 고정 높이 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.fadeIn {
+  animation: fadeSlide 0.4s ease;
+}
+
+.rank {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #d32f2f;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bookImage {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.bookTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;  /* 2줄 제한 */
+  -webkit-box-orient: vertical;
+}
+
+.bookPrice {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0 12px 12px;
+}
+
+/* 인디케이터 */
+.indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ddd;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.activeDot {
+  background: #d32f2f;
+}
+
+/* 다크모드 */
+[data-theme='dark'] .title {
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .arrow {
+  border-color: #404040;
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .arrow:hover:not(:disabled) {
+  background: #2a2a2a;
+}
+
+[data-theme='dark'] .bookImage {
+  border-color: #404040;
+}
+
+[data-theme='dark'] .bookTitle {
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .bookPrice {
+  color: #999;
+}

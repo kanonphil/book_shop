@@ -25,7 +25,7 @@
 }
 
 .arrow:disabled {
-  cursor: not-allowed;
+  /* cursor: not-allowed; */
   opacity: 0.3;
 }
 

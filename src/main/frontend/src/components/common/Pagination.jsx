@@ -1,4 +1,5 @@
 import React from 'react';
+import { IoCaretBackOutline, IoCaretForwardOutline } from 'react-icons/io5';
 import styles from './Pagination.module.css';
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
@@ -27,7 +28,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        ◀
+        {/* ◀ */}
+        <IoCaretBackOutline />
       </button>
       
       {getPageNumbers().map((page) => (
@@ -47,7 +49,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        ▶
+        {/* ▶ */}
+        <IoCaretForwardOutline />
       </button>
     </div>
   );

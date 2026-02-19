@@ -79,6 +79,25 @@
 		LIMIT #{offset}, #{size}
 	</select>
 
+	<!-- 베스트셀러(추후 수정) -->
+	<select id="selectRandomBooks" resultMap="book">
+		SELECT B.BOOK_NUM,
+		       B.BOOK_TITLE,
+		       B.AUTHOR,
+		       B.BOOK_PRICE,
+		       B.CATE_NUM,
+		       C.CATE_NUM,
+		       I.IMG_NUM,
+		       I.ORIGIN_FILE_NAME,
+		       I.UPLOAD_FILE_NAME,
+		       I.IS_MAIN
+		FROM SHOP_BOOK B
+		LEFT JOIN BOOK_CATEGORY C ON B.CATE_NUM = C.CATE_NUM
+		LEFT JOIN BOOK_IMG I ON B.BOOK_NUM = I.BOOK_NUM AND I.IS_MAIN = 'Y'
+		ORDER BY RAND()
+		LIMIT #{size}
+	</select>
+
 	<!-- 도서 총 개수 조회 -->
 	<select id="selectBookCount" resultType="int">
 		SELECT COUNT(*)

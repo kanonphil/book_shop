@@ -53,6 +53,21 @@ public class BookController {
   }
 
   /**
+   * 베스트셀러 (추후 구매 테이블 생성 후 판매량 기준으로 수정 예정)
+   * GET /books/random
+   */
+  @GetMapping("/random")
+  public ResponseEntity<?> getRandomBooks(
+          @RequestParam(defaultValue = "8") int size
+  ) {
+    List<BookDTO> books = bookService.getRandomBooks(size);
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    result.put("data", books);
+    return ResponseEntity.ok(result);
+  }
+
+  /**
    * 도서 상세 조회
    * GET /books/1
    */

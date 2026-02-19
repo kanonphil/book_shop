@@ -4,6 +4,7 @@ import { getBookList } from '../../api/bookApi'
 import styles from './BookList.module.css'
 import Pagination from '../../components/common/Pagination'
 import { useSearchParams } from 'react-router-dom'
+import BestSellerSlider from './BestSellerSlider'
 
 const BookList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -70,6 +71,13 @@ const BookList = () => {
 
   return (
     <div className={styles.container}>
+      {/* 베스트셀러 슬라이더 */}
+      {books.length > 0 && (
+        <BestSellerSlider 
+          books={books}
+        />
+      )}
+      
       <h1 className={styles.title}>도서 목록</h1>
 
       <BookGrid 

@@ -6,6 +6,7 @@ import com.green.book_shop.book.dto.BookSearchDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.awt.print.Book;
 import java.util.List;
 
 @Mapper
@@ -18,6 +19,9 @@ public interface BookMapper {
 
   // 도서 목록 조회 (페이징)
   List<BookDTO> selectBookList(@Param("offset") int offset, @Param("size") int size);
+
+  // 베스트셀러
+  List<BookDTO> selectRandomBooks(@Param("size") int size);
 
   // 도서 총 개수
   int selectBookCount();

@@ -5,6 +5,7 @@ import com.green.book_shop.book.dto.BookImgDTO;
 import com.green.book_shop.book.dto.BookListResponseDTO;
 import com.green.book_shop.book.dto.BookSearchDTO;
 import com.green.book_shop.book.mapper.BookMapper;
+import com.green.book_shop.util.UploadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ import java.util.UUID;
 @Slf4j
 public class BookService {
   private final BookMapper bookMapper;
+  private final UploadUtil uploadUtil;
 
   // 도서 등록
   public void regBook(BookDTO bookData, MultipartFile mainImg, List<MultipartFile> subImgs) {
@@ -33,7 +35,7 @@ public class BookService {
 
     // 2. 대표 이미지 저장
     if (mainImg != null) {
-      String uploadFileName = saveFile(mainImg);  // 서버에 파일 저장 후 저장된 파일명 반환
+      String uploadFileName = uploadUtil.saveFile(mainImg);  // 서버에 파일 저장 후 저장된 파일명 반환
 
       BookImgDTO imgDTO = new BookImgDTO();
       imgDTO.setOriginFileName(mainImg.getOriginalFilename());  // 원본 파일명
@@ -47,7 +49,7 @@ public class BookService {
     // 3. 서브 이미지 저장
     if (subImgs != null) {
       for (MultipartFile img : subImgs) {
-        String uploadFileName = saveFile(img);
+        String uploadFileName = uploadUtil.saveFile(img);
 
         BookImgDTO imgDTO = new BookImgDTO();
         imgDTO.setOriginFileName(img.getOriginalFilename());
@@ -85,6 +87,11 @@ public class BookService {
             .totalElements(totalElements)
             .size(size)
             .build();
+  }
+
+  // 베스트셀러
+  public List<BookDTO> getRandomBooks(int size) {
+    return bookMapper.selectRandomBooks(size);
   }
 
   // 도서 상세 조회
@@ -174,27 +181,5 @@ public class BookService {
     }
 
     log.info("재고 업데이트 완료 - bookNum: {}, quantity: {}", bookNum, quantity);
-  }
-
-  @Value("${file.upload.path}")
-  private String uploadPath;
-
-  // 파일 저장 후 저장된 파일명 반환
-  private String saveFile(MultipartFile file) {
-    // UUID로 파일명 중복 방지
-    String originalFilename = file.getOriginalFilename();
-    String extension = (originalFilename != null && originalFilename.contains("."))
-            ? originalFilename.substring(originalFilename.lastIndexOf("."))
-            : ".jpg";  // 확장자 없으면 기본값
-    String uploadFileName = UUID.randomUUID().toString() + extension;
-
-    Path savePath = Paths.get(uploadPath + uploadFileName); // 저장 경로
-    try {
-      Files.write(savePath, file.getBytes());
-    } catch (IOException e) {
-      throw new RuntimeException("파일 저장 실패", e);
-    }
-
-    return uploadFileName;
   }
 }

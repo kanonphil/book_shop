@@ -45,6 +45,18 @@ export const getBookList = async (page = 1, size = 8) => {
   }
 };
 
+// 베스트셀러
+export const getRandomBooks = async (size = 8) => {
+  try {
+    const response = await axiosInstance.get('/books/random', {
+        params: { size }
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || { message: '랜덤 도서 조회에 실패했습니다.' };
+  }
+};
+
 // 도서 상세 조회
 export const getBookDetail = async (bookNum) => {
   try {
