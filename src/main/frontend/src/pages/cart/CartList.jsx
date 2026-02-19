@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { deleteCartList, getCartList, updateCartCnt } from '../../api/cartApi'
+import { deleteCart, deleteCartList, getCartList, updateCartCnt } from '../../api/cartApi'
 import styles from './CartList.module.css'
 import Button from '../../components/common/Button'
 import { useNavigate } from 'react-router-dom'
@@ -130,7 +130,7 @@ const CartList = () => {
     }
 
     try {
-      await deleteCartList(cartNum)
+      await deleteCart(cartNum)
       fetchCartList()
       alert('삭제되었습니다.')
     } catch (error) {

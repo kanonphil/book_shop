@@ -1,14 +1,23 @@
 package com.green.book_shop.book.service;
 
 import com.green.book_shop.book.dto.BookDTO;
+import com.green.book_shop.book.dto.BookImgDTO;
 import com.green.book_shop.book.dto.BookListResponseDTO;
 import com.green.book_shop.book.dto.BookSearchDTO;
 import com.green.book_shop.book.mapper.BookMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.print.Book;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,9 +26,40 @@ public class BookService {
   private final BookMapper bookMapper;
 
   // 도서 등록
-  public void regBook(BookDTO bookDTO) {
-    bookMapper.insertBook(bookDTO);
-    log.info("도서 등록 완료 - 제목: {}", bookDTO.getBookTitle());
+  public void regBook(BookDTO bookData, MultipartFile mainImg, List<MultipartFile> subImgs) {
+    // 1. 도서 정보 저장
+    bookMapper.insertBook(bookData);
+    int bookNum = bookData.getBookNum();  // AUTO_INCREMENT로 생성된 bookNum
+
+    // 2. 대표 이미지 저장
+    if (mainImg != null) {
+      String uploadFileName = saveFile(mainImg);  // 서버에 파일 저장 후 저장된 파일명 반환
+
+      BookImgDTO imgDTO = new BookImgDTO();
+      imgDTO.setOriginFileName(mainImg.getOriginalFilename());  // 원본 파일명
+      imgDTO.setUploadFileName(uploadFileName);  // 저장된 파일명
+      imgDTO.setIsMain("Y");
+      imgDTO.setBookNum(bookNum);
+
+      bookMapper.insertBookImg(imgDTO);
+    }
+
+    // 3. 서브 이미지 저장
+    if (subImgs != null) {
+      for (MultipartFile img : subImgs) {
+        String uploadFileName = saveFile(img);
+
+        BookImgDTO imgDTO = new BookImgDTO();
+        imgDTO.setOriginFileName(img.getOriginalFilename());
+        imgDTO.setUploadFileName(uploadFileName);
+        imgDTO.setIsMain("N");
+        imgDTO.setBookNum(bookNum);
+
+        bookMapper.insertBookImg(imgDTO);
+      }
+    }
+
+    log.info("도서 등록 완료 - 제목: {}", bookData.getBookTitle());
   }
 
   // 도서 목록 조회 (페이징)
@@ -134,5 +174,23 @@ public class BookService {
     }
 
     log.info("재고 업데이트 완료 - bookNum: {}, quantity: {}", bookNum, quantity);
+  }
+
+  @Value("${file.upload.path}")
+  private String uploadPath;
+
+  // 파일 저장 후 저장된 파일명 반환
+  private String saveFile(MultipartFile file) {
+    // UUID로 파일명 중복 방지
+    String uploadFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
+    Path savePath = Paths.get(uploadPath + uploadFileName); // 저장 경로
+    try {
+      Files.write(savePath, file.getBytes());
+    } catch (IOException e) {
+      throw new RuntimeException("파일 저장 실패", e);
+    }
+
+    return uploadFileName;
   }
 }

@@ -21,6 +21,14 @@ const BookForm = () => {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
 
+  // 이미지 파일 (FormData로 전송)
+  const [mainImg, setMainImg] = useState(null)    // 대표 이미지 1개
+  const [subImgs, setSubImgs] = useState([])      // 서브 이미지 여러개
+
+  // 미리보기용 (화면 표시용)
+  // const [mainPreview, setMainPreview] = useState(null)
+  // const [subPreviews, setSubPreviews] = useState([])
+
   const [errors, setErrors] = useState({
     cateNum: '',
     bookTitle: '',
@@ -40,6 +48,23 @@ const BookForm = () => {
     bookData.bookPrice &&
     bookData.author.trim() &&
     bookData.publishDate
+
+    
+  // img
+  const handleFileChange = (e) => {
+    const { name, files } = e.target
+
+    if (name === 'mainImg') {
+      setMainImg(files[0])        // 단일 파일
+      console.log('대표 이미지:', files[0].name)
+      // setMainPreview(URL.createObjectURL(files[0]))  // 미리보기 URL 생성
+    } else if (name === 'subImgs') {
+      const fileArray = [...files]
+      setSubImgs(fileArray)      // 여러 파일을 배열로 변환
+      console.log('추가 이미지:', fileArray.map(file => file.name))
+      // setSubPreviews(fileArray.map(file => URL.createObjectURL(file)))  // 각 파일마다 미리보기 URL 생성
+    }
+  }
 
   // 숫자를 1,000 형식으로 변환
   const formatPrice = (value) => {
@@ -150,9 +175,7 @@ const BookForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    if (!validate()) {
-      return;
-    }
+    if (!validate()) return;
 
     setLoading(true);
     try {
@@ -163,9 +186,7 @@ const BookForm = () => {
         publishDate: bookData.publishDate || null
       };
       
-      console.log('전송 데이터:', submitData);
-      
-      await registerBook(submitData);
+      await registerBook(submitData, mainImg, subImgs);  // 이미지 같이 전송
       alert('도서가 성공적으로 등록되었습니다.');
       
       // 폼 초기화
@@ -177,7 +198,15 @@ const BookForm = () => {
         bookIntro: '',
         publishDate: ''
       });
+      setMainImg(null)
+      setSubImgs([])
 
+      // 초기화 할 때 URL 메모리 해제
+      // if (mainPreview) URL.revokeObjectURL(mainPreview)
+      // subPreviews.forEach(url => URL.revokeObjectURL(url))
+
+      // setMainPreview(null)
+      // setSubPreviews([])
       setErrors({
         cateNum: validateField('cateNum', ''),
         bookTitle: validateField('bookTitle', ''),
@@ -274,7 +303,36 @@ const BookForm = () => {
         value={bookData.publishDate}
         onChange={handleChange}
         error={errors.publishDate}
+        required
       />
+
+      {/* 도서 이미지 */}
+      <Input
+        label='Book Image'
+        type='file'
+        name='mainImg'
+        onChange={handleFileChange}
+        className={styles.bookImg}
+        required
+      />
+      {/* {mainPreview && (
+        <img src={mainPreview} alt="대표 이미지 미리보기" className={styles.preview} />
+      )} */}
+
+      <Input
+        type='file'
+        name='subImgs'
+        onChange={handleFileChange}
+        className={styles.bookImg}
+        multiple={true} // multiple 속성 사용 시 다중 첨부 가능
+      />
+      {/* {subPreviews.length > 0 && (
+        <div>
+          {subPreviews.map((url, index) => (
+            <img key={index} src={url} alt={`서브 이미지 ${index + 1}`} className={styles.preview} />
+          ))}
+        </div>
+      )} */}
 
       {/* 제출 버튼 */}
       <Button 

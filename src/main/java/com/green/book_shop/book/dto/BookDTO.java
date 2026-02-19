@@ -3,6 +3,7 @@ package com.green.book_shop.book.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Setter
 @Getter
@@ -21,4 +22,7 @@ public class BookDTO {
 
   // 조회 시 카테고리명도 함께 가져올 때 사용
   private String cateName;
+
+  // 이미지 목록 포함
+  private List<BookImgDTO> images;
 }

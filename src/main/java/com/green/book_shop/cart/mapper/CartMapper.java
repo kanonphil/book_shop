@@ -21,7 +21,7 @@ public interface CartMapper {
   int deleteCart(@Param("cartNum") Integer cartNum);
 
   // 선택 삭제
-  int deleteCartList(@Param("list") List<Integer> cartNumList);
+  int deleteCartList(@Param("cartNumList") List<Integer> cartNumList);
 
   // 중복 체크
   CartDTO selectCartByBookNum(@Param("memEmail") String memEmail, @Param("bookNum") Integer bookNum);

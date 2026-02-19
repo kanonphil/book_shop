@@ -19,6 +19,11 @@ const Input = ({
   className = '',
   ...props
 }) => {
+  // file 타입은 value 제어 불가 -> onChange만 전달
+  const inputProps = type === 'file'
+    ? { onChange }
+    : { value, onChange }
+
   return (
     <div className={`${styles.formGroup} ${className}`}>
       {label && (
@@ -65,9 +70,7 @@ const Input = ({
           id={name}
           type={type}
           name={name}
-          placeholder={type === 'date' ? undefined : placeholder}
-          value={value}
-          onChange={onChange}
+          placeholder={type === 'date' || type === 'file' ? undefined : placeholder}
           className={`${styles.input} ${error ? styles.inputError : ''}`}
           required={required}
           disabled={disabled}
@@ -78,6 +81,7 @@ const Input = ({
               e.target.showPicker?.();
             }
           }}
+          {...inputProps}
           {...props}
         />
       )}

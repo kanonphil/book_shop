@@ -64,8 +64,8 @@
 	<!-- 장바구니 삭제 (선택 삭제) -->
 	<delete id="deleteCartList">
 		DELETE FROM SHOP_CART
-		WHERE CART_NUM = #{cartNum}
-		<foreach collection="list" item="cartNum" open="(" separator="," close=")">
+		WHERE CART_NUM IN
+		<foreach collection="cartNumList" item="cartNum" open="(" separator="," close=")">
 			#{cartNum}
 		</foreach>
 	</delete>

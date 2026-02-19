@@ -14,6 +14,13 @@
 		<result column="PUBLISH_DATE" property="publishDate" />
 		<result column="CATE_NUM" property="cateNum" />
 		<result column="CATE_NAME" property="cateName" />
+
+		<collection property="images" ofType="com.green.book_shop.book.dto.BookImgDTO">
+			<id column="IMG_NUM" property="imgNum" />
+			<result column="ORIGIN_FILE_NAME" property="originFileName" />
+			<result column="UPLOAD_FILE_NAME" property="uploadFileName" />
+			<result column="IS_MAIN" property="isMain" />
+		</collection>
 	</resultMap>
 
 	<!-- 도서 등록 -->
@@ -35,6 +42,21 @@
 						 )
 	</insert>
 
+	<!-- 이미지 등록 -->
+	<insert id="insertBookImg">
+		INSERT INTO BOOK_IMG (
+		                      ORIGIN_FILE_NAME,
+		                      UPLOAD_FILE_NAME,
+		                      IS_MAIN,
+		                      BOOK_NUM
+		) VALUES (
+		          #{originFileName},
+		          #{uploadFileName},
+		          #{isName},
+		          #{bookNum}
+						 )
+	</insert>
+
 	<!-- 도서 목록 조회 (페이징) -->
 	<select id="selectBookList" resultMap="book">
 		SELECT B.BOOK_NUM,
@@ -45,9 +67,14 @@
 		       B.PUBLISH_DATE,
 		       B.CATE_NUM,
 		       C.CATE_NUM,
-		       C.CATE_NAME
+		       C.CATE_NAME,
+		       I.IMG_NUM,
+		       I.ORIGIN_FILE_NAME,
+		       I.UPLOAD_FILE_NAME,
+		       I.IS_MAIN
 		FROM SHOP_BOOK B
 		LEFT JOIN BOOK_CATEGORY C ON B.CATE_NUM = C.CATE_NUM
+		LEFT JOIN BOOK_IMG I ON B.BOOK_NUM = I.BOOK_NUM AND I.IS_MAIN = 'Y'
 		ORDER BY B.BOOK_NUM DESC
 		LIMIT #{offset}, #{size}
 	</select>
@@ -68,9 +95,14 @@
 		       B.BOOK_INTRO,
 		       B.PUBLISH_DATE,
 		       B.CATE_NUM,
-		       C.CATE_NAME
+		       C.CATE_NAME,
+		       I.IMG_NUM,
+		       I.ORIGIN_FILE_NAME,
+		       I.UPLOAD_FILE_NAME,
+		       I.IS_MAIN
 		FROM SHOP_BOOK B
 		LEFT JOIN BOOK_CATEGORY C ON B.CATE_NUM = C.CATE_NUM
+		LEFT JOIN BOOK_IMG I ON B.BOOK_NUM = I.BOOK_NUM
 		WHERE B.BOOK_NUM = #{bookNum}
 	</select>
 

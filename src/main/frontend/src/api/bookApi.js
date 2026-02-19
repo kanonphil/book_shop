@@ -3,14 +3,31 @@ import axiosInstance from './axiosInstance';
 // const API_BASE_URL = 'http://localhost:8080';
 
 // 도서 등록 (JWT 토큰 자동 추가됨)
-export const registerBook = async (bookData) => {
+export const registerBook = async (bookData, mainImg, subImgs) => {
   try {
-    const response = await axiosInstance.post('/books', bookData);
+    const formData = new FormData()
+
+    // 도서 데이터를 JSON Blob으로 첨부
+    formData.append('bookData', new Blob([JSON.stringify(bookData)], {
+      type: 'application/json'
+    }))
+
+    // 대표 이미지
+    if (mainImg) {
+      formData.append('mainImg', mainImg)
+    }
+
+    // 서브 이미지들
+    subImgs.forEach((img) => {
+      formData.append('subImgs', img)
+    })
+
+    const response = await axiosInstance.post('/books', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
     return response.data;
   } catch (error) {
     console.error('도서 등록 실패:', error);
-    console.error('에러 응답:', error.response?.data);
-    console.error('전송한 데이터:', bookData);
     throw error.response?.data || { message: '도서 등록에 실패했습니다.' };
   }
 };

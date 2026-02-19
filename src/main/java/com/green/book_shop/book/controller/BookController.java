@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -145,11 +147,13 @@ public class BookController {
    */
   @PostMapping("")
   @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-  public ResponseEntity<?> regBook(@RequestBody BookDTO bookDTO) {
+  public ResponseEntity<?> regBook(@RequestPart("bookData") BookDTO bookDTO,
+                                   @RequestPart(value = "mainImg", required = false) MultipartFile mainImg,
+                                   @RequestPart(value = "subImgs", required = false) List<MultipartFile> subImgs) {
     try {
       log.info("도서 등록 요청 - 제목: {}", bookDTO.getBookTitle());
 
-      bookService.regBook(bookDTO);
+      bookService.regBook(bookDTO, mainImg, subImgs);
 
       Map<String, Object> result = new HashMap<>();
       result.put("success", true);

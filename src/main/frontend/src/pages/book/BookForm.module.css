@@ -5,6 +5,11 @@
   gap: 1rem;
 }
 
+/* 도서 사진 */
+.bookImg {
+  margin-bottom: 20px;
+}
+
 /* 반응형: 작은 화면에서는 세로로 배치 */
 @media (max-width: 768px) {
   .rowGroup {

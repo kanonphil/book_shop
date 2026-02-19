@@ -6,7 +6,7 @@
   display: block;
   margin-bottom: 0.5rem;
   color: #e0e0e0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 
@@ -24,7 +24,7 @@
   border-radius: 4px;
   font-size: 1rem;
   font-family: inherit;
-  resize: vertical;
+  resize: none;
   transition: all 0.2s ease;
   line-height: 1.5;
 }
