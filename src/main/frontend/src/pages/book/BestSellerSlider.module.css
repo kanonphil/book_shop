@@ -1,5 +1,4 @@
 .sliderWrapper {
-  /* margin-bottom: 40px; */
   padding: 40px 20px;
 }
 
@@ -52,7 +51,6 @@
 .bookItem {
   position: relative;
   cursor: pointer;
-  text-align: center;
   flex: 1;
   opacity: 1;
   transition: opacity 0.4s ease;
@@ -62,13 +60,17 @@
 }
 
 .bookMeta {
-  background: rgba(0, 0, 0, 0.1);
-  padding: 8px;
-  border-radius: 0 0 8px 8px;
   height: 120px;  /* 고정 높이 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 100px;
+  padding: 20px;
+}
+
+.titleWrapper {
+  overflow: hidden;
+  width: 100%;
 }
 
 .fadeIn {
@@ -78,7 +80,7 @@
 .rank {
   position: absolute;
   top: 8px;
-  left: 18px;
+  left: 17px;
   background: #d32f2f;
   color: white;
   width: 30px;
@@ -100,21 +102,27 @@
 }
 
 .bookTitle {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
-  margin: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;  /* 2줄 제한 */
-  -webkit-box-orient: vertical;
+  margin: 0;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.titleWrapper:hover .bookTitle {
+  animation: marquee 4s linear infinite;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
 }
 
 .bookPrice {
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--primary-color);
-  margin: 0 12px 12px;
+  margin: 0;
 }
 
 /* 인디케이터 */
@@ -153,7 +161,7 @@
 }
 
 [data-theme='dark'] .bookImage {
-  border-color: #404040;
+  border-color: #1a1a1a;
 }
 
 [data-theme='dark'] .bookTitle {
@@ -161,5 +169,13 @@
 }
 
 [data-theme='dark'] .bookPrice {
-  color: #999;
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .bookItem {
+  background-color: #1a1a1a;
+}
+
+[data-theme='dark'] .bookMeta {
+  background-color: #2a2a2a;
 }

@@ -38,19 +38,19 @@
   justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   /* padding-bottom: 20px; */
 }
 
 .overlayText {
   color: white;
-  font-size: 26px;
+  font-size: 1.2rem;
   font-weight: 600;
   letter-spacing: 1px;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.7);
   width: 100%;
-  padding: 20px 0;
+  padding: 10px 0;
 }
 
 /* hover 시 */
@@ -62,20 +62,39 @@
   opacity: 1;
 }
 
-.title {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 12px;
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100px;  /* 고정 높이 */
+  padding: 20px;
+}
+
+.titleWrapper {
   overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;  /* 2줄 제한 */
-  -webkit-box-orient: vertical;
+  width: 100%;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.titleWrapper:hover .title {
+  animation: marquee 4s linear infinite;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
 }
 
 .price {
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--primary-color);
-  margin: 0 12px 12px;
+  margin: 0;
 }

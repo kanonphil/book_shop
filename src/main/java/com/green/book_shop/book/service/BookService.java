@@ -22,7 +22,7 @@ public class BookService {
   private final BookImgService bookImgService;
 
   // 도서 등록
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void regBook(BookDTO bookData, MultipartFile mainImg, List<MultipartFile> subImgs) {
     bookMapper.insertBook(bookData);
     int bookNum = bookData.getBookNum();

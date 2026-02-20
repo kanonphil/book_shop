@@ -1,6 +1,8 @@
 .container {
   min-height: 100vh;
   padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
@@ -9,6 +11,11 @@
   text-align: center;
   margin-bottom: 40px;
   color: var(--text-primary, #333);
+}
+
+.paginationWrapper {
+  margin-top: auto;
+  padding-top: 20px;
 }
 
 .loading,

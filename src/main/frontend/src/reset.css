@@ -6,6 +6,7 @@
   --text-secondary: #7f8c8d;
   --border-color: #ddd;
   --shadow-color: rgba(0, 0, 0, 0.1);
+  --card-bg: #ffffff;
   
   /* 버튼 색상 */
   --button-primary: #3498db;
@@ -30,6 +31,7 @@
   --text-secondary: #b0b0b0;
   --border-color: #444;
   --shadow-color: rgba(0, 0, 0, 0.5);
+  --card-bg: #2a2a2a;
   
   /* 버튼 색상 */
   --button-primary: #2980b9;

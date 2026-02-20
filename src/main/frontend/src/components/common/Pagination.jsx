@@ -1,4 +1,3 @@
-import React from 'react';
 import { IoCaretBackOutline, IoCaretForwardOutline } from 'react-icons/io5';
 import styles from './Pagination.module.css';
 

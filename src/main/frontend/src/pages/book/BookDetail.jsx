@@ -19,26 +19,26 @@ const BookDetail = () => {
   const [quantityError, setQuantityError] = useState('')
 
   useEffect(() => {
+    const fetchBookDetail = async () => {
+      setIsLoading(true)
+      setError(null)
+
+      try {
+        const response = await getBookDetail(bookNum)
+
+        if (response.success) {
+          setBook(response.data)
+        }
+      } catch (error) {
+        setError(error.message || '도서 정보를 불러오는데 실패했습니다.')
+        console.error('도서 상세 조회 실패:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
     fetchBookDetail()
   }, [bookNum])
-
-  const fetchBookDetail = async () => {
-    setIsLoading(true)
-    setError(null)
-
-    try {
-      const response = await getBookDetail(bookNum)
-
-      if (response.success) {
-        setBook(response.data)
-      }
-    } catch (error) {
-      setError(error.message || '도서 정보를 불러오는데 실패했습니다.')
-      console.error('도서 상세 조회 실패:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   const handleQuantityChange = (e) => {
     const value = e.target.value

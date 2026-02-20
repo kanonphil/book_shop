@@ -62,7 +62,9 @@ const BestSellerSlider = ({ books }) => {
                     className={styles.bookImage}
                   />
                   <div className={styles.bookMeta}>
-                    <p className={styles.bookTitle}>{book.bookTitle}</p>
+                    <div className={styles.titleWrapper}>
+                      <p className={styles.bookTitle}>{book.bookTitle}</p>
+                    </div>
                     <p className={styles.bookPrice}>{book.bookPrice?.toLocaleString()}원</p>
                   </div>
                 </div>

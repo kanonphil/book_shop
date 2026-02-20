@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { deleteCart, deleteCartList, getCartList, updateCartCnt } from '../../api/cartApi'
 import styles from './CartList.module.css'
 import Button from '../../components/common/Button'
@@ -11,27 +11,16 @@ const CartList = () => {
 
   const [cartItems, setCartItems] = useState([])
   const [selectedItems, setSelectedItems] = useState([])
-  const [totalPrice, setTotalPrice] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      alert('로그인이 필요한 서비스입니다.')
-      navigate('/login')
-      return
-    }
-    fetchCartList()
-  }, [isAuthenticated, navigate])
-
   // 장바구니 목록 조회
-  const fetchCartList = async () => {
+  const fetchCartList = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await getCartList()
 
       if (response.success) {
         setCartItems(response.cartList)
-        setTotalPrice(response.totalPrice)
       }
     } catch (error) {
       console.error('장바구니 조회 실패:', error);
@@ -46,7 +35,16 @@ const CartList = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [navigate])
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      alert('로그인이 필요한 서비스입니다.')
+      navigate('/login')
+      return
+    }
+    fetchCartList()
+  }, [isAuthenticated, navigate, fetchCartList])
 
   // 전체 선택/해제
   const handleSelectAll = (e) => {
@@ -81,7 +79,7 @@ const CartList = () => {
   // 수량 감소
   const handleDecrease = async (cartNum, currentCnt) => {
     if (currentCnt <= 1) {
-      alert('최소 1개 이상이어야 합니다.')
+      // alert('최소 1개 이상이어야 합니다.')
       return
     }
 
@@ -91,7 +89,7 @@ const CartList = () => {
   // 수량 변경
   const handleQuantityChange = async (cartNum, newCnt) => {
     if (newCnt < 1) {
-      alert('수량은 1개 이상이어야 합니다.')
+      // alert('수량은 1개 이상이어야 합니다.')
       return
     }
 
@@ -270,7 +268,15 @@ const CartList = () => {
                         >
                           -
                         </button>
-                        <span className={styles.quantityValue}>{item.cartCnt}</span>
+                        {/* <span className={styles.quantityValue}>{item.cartCnt}</span> */}
+                        <input
+                            type="number"
+                            className={styles.quantityInput}
+                            value={item.cartCnt}
+                            min={1}
+                            max={item.bookStock}
+                            onChange={(e) => handleQuantityChange(item.cartNum, parseInt(e.target.value))}
+                        />
                         <button 
                           className={styles.quantityBtn}
                           onClick={() => handleIncrease(item.cartNum, item.cartCnt, item.bookStock)}

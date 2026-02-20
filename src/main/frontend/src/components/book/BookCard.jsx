@@ -26,15 +26,19 @@ const BookCard = ({ book }) => {
         </div>
       </div>
 
-      {/* 도서명 */}
-      <h3 className={styles.title}>
-        {book.bookTitle}
-      </h3>
-
-      {/* 가격 */}
-      <p className={styles.price}>
-        {book.bookPrice?.toLocaleString()}원
-      </p>
+      <div className={styles.textContainer}>
+        {/* 도서명 */}
+        <div className={styles.titleWrapper}>
+          <h3 className={styles.title}>
+            {book.bookTitle}
+          </h3>
+        </div>
+  
+        {/* 가격 */}
+        <p className={styles.price}>
+          {book.bookPrice?.toLocaleString()}원
+        </p>
+      </div>
     </div>
   )
 }

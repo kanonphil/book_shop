@@ -30,8 +30,8 @@
 }
 
 .pageButton.active {
-  background: #4CAF50;
+  background: #4a9eff;
   color: #fff;
-  border-color: #4CAF50;
+  border-color: #4a9eff;
   font-weight: 600;
 }
