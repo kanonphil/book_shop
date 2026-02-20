@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import Button from '../../components/common/Button'
 import { IoCaretBackOutline, IoCaretForwardOutline } from 'react-icons/io5'
 
-const BestSellerSlider = ({ books, title }) => {
+const BestSellerSlider = ({ books }) => {
   const navigate = useNavigate()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [sliding, setSliding] = useState(false)

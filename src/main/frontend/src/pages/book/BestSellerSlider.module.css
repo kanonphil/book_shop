@@ -45,8 +45,8 @@
 }
 
 @keyframes slidePrev {
-  from { transform: translateX(-25%); }
-  to   { transform: translateX(0%); }
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(-25%); }
 }
 
 .bookItem {
