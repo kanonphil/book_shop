@@ -42,21 +42,6 @@
 						 )
 	</insert>
 
-	<!-- 이미지 등록 -->
-	<insert id="insertBookImg">
-		INSERT INTO BOOK_IMG (
-		                      ORIGIN_FILE_NAME,
-		                      UPLOAD_FILE_NAME,
-		                      IS_MAIN,
-		                      BOOK_NUM
-		) VALUES (
-		          #{originFileName},
-		          #{uploadFileName},
-		          #{isMain},
-		          #{bookNum}
-						 )
-	</insert>
-
 	<!-- 도서 목록 조회 (페이징) -->
 	<select id="selectBookList" resultMap="book">
 		SELECT B.BOOK_NUM,

@@ -30,8 +30,8 @@ const BestSellerSlider = ({ books, title }) => {
   }, [slide])
 
   // visibleBooks는 다시 4개로
-  const visibleBooks = Array.from({ length: visibleCount }, (_, i) =>
-    books[(currentIndex + i) % books.length]
+  const visibleBooks = Array.from({ length: visibleCount + 2 }, (_, i) =>
+    books[(currentIndex - 1 + i + books.length) % books.length]
   )
 
   return (

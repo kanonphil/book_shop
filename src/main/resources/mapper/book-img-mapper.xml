@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
+<mapper namespace="com.green.book_shop.book.mapper.BookImgMapper">
+	<resultMap id="images" type="com.green.book_shop.book.dto.BookImgDTO">
+		<id column="IMG_NUM" property="imgNum" />
+		<result column="ORIGIN_FILE_NAME" property="originFileName" />
+		<result column="UPLOAD_FILE_NAME" property="uploadFileName" />
+		<result column="IS_MAIN" property="isMain" />
+		<result column="BOOK_NUM" property="bookNum" />
+	</resultMap>
+
+	<!-- 이미지 등록 -->
+	<insert id="insertBookImg">
+		INSERT INTO BOOK_IMG (
+		                      ORIGIN_FILE_NAME,
+		                      UPLOAD_FILE_NAME,
+		                      IS_MAIN,
+		                      BOOK_NUM
+		) VALUES
+		<!-- collection: 반복할 데이터, item: 한 개씩 뺀 데이터를 부를 이름 -->
+		<!-- separator: 한 번 반복할 때마다 실행할 쿼리문(마지막 반복후에는 적용 안됨) -->
+		<foreach collection="imgList" item="img" separator=",">
+			(#{img.originFileName},
+			 #{img.uploadFileName},
+			 #{img.isMain},
+			 #{img.bookNum})
+		</foreach>
+	</insert>
+</mapper>

@@ -14,9 +14,6 @@ public interface BookMapper {
   // 도서 등록
   int insertBook(BookDTO bookDTO);
 
-  // 이미지 등록
-  int insertBookImg(BookImgDTO bookImgDTO);
-
   // 도서 목록 조회 (페이징)
   List<BookDTO> selectBookList(@Param("offset") int offset, @Param("size") int size);
 

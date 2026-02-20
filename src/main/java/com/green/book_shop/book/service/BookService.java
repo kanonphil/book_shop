@@ -3,11 +3,13 @@ package com.green.book_shop.book.service;
 import com.green.book_shop.book.dto.BookDTO;
 import com.green.book_shop.book.dto.BookListResponseDTO;
 import com.green.book_shop.book.dto.BookSearchDTO;
+import com.green.book_shop.book.mapper.BookImgMapper;
 import com.green.book_shop.book.mapper.BookMapper;
 import com.green.book_shop.util.UploadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -17,24 +19,15 @@ import java.util.List;
 @Slf4j
 public class BookService {
   private final BookMapper bookMapper;
-  private final UploadUtil uploadUtil;
+  private final BookImgService bookImgService;
 
   // 도서 등록
+  @Transactional
   public void regBook(BookDTO bookData, MultipartFile mainImg, List<MultipartFile> subImgs) {
-    // 1. 도서 정보 저장
     bookMapper.insertBook(bookData);
-    int bookNum = bookData.getBookNum();  // AUTO_INCREMENT로 생성된 bookNum
+    int bookNum = bookData.getBookNum();
 
-    // 2. 대표 이미지 저장
-    if (mainImg != null) {
-      bookMapper.insertBookImg(uploadUtil.saveMainImg(mainImg, bookNum));
-    }
-
-    // 3. 서브 이미지 저장
-    if (subImgs != null) {
-      uploadUtil.saveSubImgs(subImgs, bookNum)
-              .forEach(bookMapper::insertBookImg);
-    }
+    bookImgService.saveImgs(bookNum, mainImg, subImgs);
 
     log.info("도서 등록 완료 - 제목: {}", bookData.getBookTitle());
   }
