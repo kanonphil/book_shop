@@ -57,6 +57,7 @@
   border-radius: 8px;
   overflow: hidden;
   padding: 0 8px;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }
 
 .bookMeta {
@@ -66,6 +67,9 @@
   justify-content: space-between;
   height: 100px;
   padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  border-top: 0;
 }
 
 .titleWrapper {
@@ -178,4 +182,7 @@
 
 [data-theme='dark'] .bookMeta {
   background-color: #2a2a2a;
+  border-radius: 8px;
+  border: 1px solid #2a2a2a;
+  border-top: 0;
 }
