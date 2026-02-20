@@ -31,25 +31,15 @@ public class BookController {
           @RequestParam(defaultValue = "1") int page,
           @RequestParam(defaultValue = "8") int size
   ) {
-    try {
-      log.info("도서 목록 조회 요청 - page: {}, size: {}", page, size);
+    log.info("도서 목록 조회 요청 - page: {}, size: {}", page, size);
 
-      BookListResponseDTO response = bookService.getBookList(page, size);
+    BookListResponseDTO response = bookService.getBookList(page, size);
 
-      Map<String, Object> result = new HashMap<>();
-      result.put("success", true);
-      result.put("data", response);
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    result.put("data", response);
 
-      return ResponseEntity.ok(result);
-    } catch (Exception e) {
-      log.error("도서 목록 조회 실패", e);
-
-      Map<String, Object> error = new HashMap<>();
-      error.put("success", false);
-      error.put("message", "도서 목록 조회에 실패했습니다: " + e.getMessage());
-
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
+    return ResponseEntity.ok(result);
   }
 
   /**
@@ -73,25 +63,15 @@ public class BookController {
    */
   @GetMapping("/{bookNum}")
   public ResponseEntity<?> getBookDetail(@PathVariable Integer bookNum) {
-    try {
-      log.info("도서 상세 조회 요청 - bookNum: {}", bookNum);
+    log.info("도서 상세 조회 요청 - bookNum: {}", bookNum);
 
-      BookDTO book = bookService.getBookDetail(bookNum);
+    BookDTO book = bookService.getBookDetail(bookNum);
 
-      Map<String, Object> result = new HashMap<>();
-      result.put("success", true);
-      result.put("data", book);
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    result.put("data", book);
 
-      return ResponseEntity.ok(result);
-    } catch (Exception e) {
-      log.error("도서 상세 조회 실패", e);
-
-      Map<String, Object> error = new HashMap<>();
-      error.put("success", false);
-      error.put("message", e.getMessage());
-
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
+    return ResponseEntity.ok(result);
   }
 
   /**
@@ -104,25 +84,15 @@ public class BookController {
           @RequestParam(defaultValue = "1") int page,
           @RequestParam(defaultValue = "8") int size
   ) {
-    try {
-      log.info("카테고리별 도서 조회 요청 - cateNum: {}, page: {}", cateNum, page);
+    log.info("카테고리별 도서 조회 요청 - cateNum: {}, page: {}", cateNum, page);
 
-      BookListResponseDTO response = bookService.getBookListByCategory(cateNum, page, size);
+    BookListResponseDTO response = bookService.getBookListByCategory(cateNum, page, size);
 
-      Map<String, Object> result = new HashMap<>();
-      result.put("success", true);
-      result.put("data", response);
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    result.put("data", response);
 
-      return ResponseEntity.ok(result);
-    } catch (Exception e) {
-      log.error("카테고리별 도서 조회 실패", e);
-
-      Map<String, Object> error = new HashMap<>();
-      error.put("success", false);
-      error.put("message", "카테고리별 도서 조회에 실패했습니다: " + e.getMessage());
-
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
+    return ResponseEntity.ok(result);
   }
 
   /**
@@ -135,25 +105,15 @@ public class BookController {
           @RequestParam(defaultValue = "1") int page,
           @RequestParam(defaultValue = "8") int size
   ) {
-    try {
-      log.info("도서 검색 요청 - keyword: {}, page: {}", keyword, page);
+    log.info("도서 검색 요청 - keyword: {}, page: {}", keyword, page);
 
-      BookListResponseDTO response = bookService.searchBooks(keyword, page, size);
+    BookListResponseDTO response = bookService.searchBooks(keyword, page, size);
 
-      Map<String, Object> result = new HashMap<>();
-      result.put("success", true);
-      result.put("data", response);
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    result.put("data", response);
 
-      return ResponseEntity.ok(result);
-    } catch (Exception e) {
-      log.error("도서 검색 실패", e);
-
-      Map<String, Object> error = new HashMap<>();
-      error.put("success", false);
-      error.put("message", "도서 검색에 실패했습니다: " + e.getMessage());
-
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
+    return ResponseEntity.ok(result);
   }
 
   /**
@@ -165,25 +125,15 @@ public class BookController {
   public ResponseEntity<?> regBook(@RequestPart("bookData") BookDTO bookDTO,
                                    @RequestPart(value = "mainImg", required = false) MultipartFile mainImg,
                                    @RequestPart(value = "subImgs", required = false) List<MultipartFile> subImgs) {
-    try {
-      log.info("도서 등록 요청 - 제목: {}", bookDTO.getBookTitle());
+    log.info("도서 등록 요청 - 제목: {}", bookDTO.getBookTitle());
 
-      bookService.regBook(bookDTO, mainImg, subImgs);
+    bookService.regBook(bookDTO, mainImg, subImgs);
 
-      Map<String, Object> result = new HashMap<>();
-      result.put("success", true);
-      result.put("message", "도서가 등록되었습니다.");
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    result.put("message", "도서가 등록되었습니다.");
 
-      return ResponseEntity.status(HttpStatus.CREATED).body(result);
-    } catch (Exception e) {
-      log.error("도서 등록 실패", e);
-
-      Map<String, Object> error = new HashMap<>();
-      error.put("success", false);
-      error.put("message", "도서 등록에 실패했습니다: " + e.getMessage());
-
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
+    return ResponseEntity.status(HttpStatus.CREATED).body(result);
   }
 
   /**
@@ -196,26 +146,16 @@ public class BookController {
           @PathVariable Integer bookNum,
           @RequestBody BookDTO bookDTO
   ) {
-    try {
-      log.info("도서 수정 요청 - bookNum: {}", bookNum);
+    log.info("도서 수정 요청 - bookNum: {}", bookNum);
 
-      bookDTO.setBookNum(bookNum);
-      bookService.updateBook(bookDTO);
+    bookDTO.setBookNum(bookNum);
+    bookService.updateBook(bookDTO);
 
-      Map<String, Object> result = new HashMap<>();
-      result.put("success", true);
-      result.put("message", "도서가 수정되었습니다.");
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    result.put("message", "도서가 수정되었습니다.");
 
-      return ResponseEntity.ok(result);
-    } catch (Exception e) {
-      log.error("도서 수정 실패", e);
-
-      Map<String, Object> error = new HashMap<>();
-      error.put("success", false);
-      error.put("message", "도서 수정에 실패했습니다: " + e.getMessage());
-
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
+    return ResponseEntity.ok(result);
   }
 
   /**
@@ -225,24 +165,14 @@ public class BookController {
   @DeleteMapping("/{bookNum}")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<?> deleteBook(@PathVariable Integer bookNum) {
-    try {
-      log.info("도서 삭제 요청 - bookNum: {}", bookNum);
+    log.info("도서 삭제 요청 - bookNum: {}", bookNum);
 
-      bookService.deleteBook(bookNum);
+    bookService.deleteBook(bookNum);
 
-      Map<String, Object> result = new HashMap<>();
-      result.put("success", true);
-      result.put("message", "도서가 삭제되었습니다.");
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    result.put("message", "도서가 삭제되었습니다.");
 
-      return ResponseEntity.ok(result);
-    } catch (Exception e) {
-      log.error("도서 삭제 실패", e);
-
-      Map<String, Object> error = new HashMap<>();
-      error.put("success", false);
-      error.put("message", "도서 삭제에 실패했습니다: " + e.getMessage());
-
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
+    return ResponseEntity.ok(result);
   }
 }
