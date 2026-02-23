@@ -42,40 +42,40 @@
 	<!-- 내 주문 목록 조회 -->
 	<select id="selectBuyList" parameterType="String" resultMap="buy">
 		SELECT
-		    b.BUY_NUM,
-		    b.BUY_PRICE,
-		    b.MEM_EMAIL,
-		    b.BUY_DATE,
-		    d.BUY_DETAIL_NUM,
-		    d.BOOK_NUM,
-			d.BUY_CNT,
-		    d.BUY_PRICE AS DETAIL_PRICE,
-		    d.BUY_NUM,
-		    bk.BOOK_TITLE,
-		    bk.BOOK_PRICE,
-		    i.UPLOAD_FILE_NAME
-		FROM SHOP_BUY b
-		LEFT JOIN BUY_DETAIL d ON d.buy_num = b.buy_num
-		LEFT JOIN SHOP_BOOK bk ON d.BOOK_NUM = bk.BOOK_NUM
-		LEFT JOIN BOOK_IMG i ON bk.BOOK_NUM = i.BOOK_NUM AND i.IS_MAIN = 'Y'
-		WHERE b.MEM_EMAIL = #{memEmail}
-		ORDER BY b.BUY_DATE DESC
+		    B.BUY_NUM,
+		    B.BUY_PRICE,
+		    B.MEM_EMAIL,
+		    B.BUY_DATE,
+		    D.BUY_DETAIL_NUM,
+		    D.BOOK_NUM,
+			D.BUY_CNT,
+		    D.BUY_PRICE AS DETAIL_PRICE,
+		    D.BUY_NUM,
+		    BK.BOOK_TITLE,
+		    BK.BOOK_PRICE,
+		    I.UPLOAD_FILE_NAME
+		FROM SHOP_BUY B
+		LEFT JOIN BUY_DETAIL D ON D.buy_num = B.buy_num
+		LEFT JOIN SHOP_BOOK BK ON D.BOOK_NUM = BK.BOOK_NUM
+		LEFT JOIN BOOK_IMG I ON BK.BOOK_NUM = I.BOOK_NUM AND I.IS_MAIN = 'Y'
+		WHERE B.MEM_EMAIL = #{memEmail}
+		ORDER BY B.BUY_DATE DESC
 	</select>
 
 	<!-- 내 주문 단건 조회 -->
 	<select id="selectBuyByNum" parameterType="int" resultMap="buy">
 		SELECT
-			b.BUY_NUM,
-			b.BUY_PRICE,
-			b.MEM_EMAIL,
-			b.BUY_DATE,
-			d.BUY_DETAIL_NUM,
-			d.BOOK_NUM,
-			d.BUY_PRICE AS DETAIL_PRICE,
-			d.BUY_NUM
-		FROM SHOP_BUY b
-		LEFT JOIN BUY_DETAIL d ON d.buy_num = b.buy_num
-		WHERE b.BUY_NUM = #{buyNum}
+			B.BUY_NUM,
+			B.BUY_PRICE,
+			B.MEM_EMAIL,
+			B.BUY_DATE,
+			D.BUY_DETAIL_NUM,
+			D.BOOK_NUM,
+			D.BUY_PRICE AS DETAIL_PRICE,
+			D.BUY_NUM
+		FROM SHOP_BUY B
+		LEFT JOIN BUY_DETAIL D ON D.buy_num = B.buy_num
+		WHERE B.BUY_NUM = #{buyNum}
 	</select>
 
 	<!-- 재고 검증용 - 이미지 JOIN 없이 단순 조회 -->
