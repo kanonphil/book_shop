@@ -266,7 +266,7 @@
 .totalAmount {
   font-size: 24px;
   font-weight: 700;
-  color: #d32f2f;
+  color: #ff6b6b;
   /* color: #4a9eff; */
 }
 
@@ -417,4 +417,8 @@
 
 [data-theme='light'] .bookInfo:hover {
   background-color: #f0f0f0;
+}
+
+[data-theme='light'] .totalAmount {
+  color: #d32f2f;
 }

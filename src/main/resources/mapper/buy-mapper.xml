@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
+<mapper namespace="com.green.book_shop.buy.mapper.BuyMapper">
+	<!-- 구매 상세 -->
+	<resultMap id="buyDetail" type="com.green.book_shop.buy.dto.BuyDetailDTO">
+		<id column="BUY_DETAIL_NUM" property="buyDetailNum" />
+		<result column="BOOK_NUM" property="bookNum" />
+		<result column="BUY_CNT" property="buyCnt" />
+		<result column="BUY_PRICE" property="buyPrice" />
+		<result column="BUY_NUM" property="buyNum" />
+		<!-- 도서 정보 추가 -->
+		<result column="BOOK_TITLE" property="bookTitle" />
+		<result column="UPLOAD_FILE_NAME" property="uploadFileName" />
+		<result column="BOOK_PRICE" property="bookPrice" />
+	</resultMap>
+
+	<!-- 구매 정보 -->
+	<resultMap id="buy" type="com.green.book_shop.buy.dto.BuyDTO">
+		<id column="BUY_NUM" property="buyNum" />
+		<result column="BUY_PRICE" property="buyPrice" />
+		<result column="MEM_EMAIL" property="memEmail" />
+		<result column="BUY_DATE" property="buyDate" />
+		<collection property="details" resultMap="buyDetail" />
+	</resultMap>
+
+	<!-- 구매 등록 -->
+	<insert id="insertBuy" parameterType="com.green.book_shop.buy.dto.BuyDTO"
+			useGeneratedKeys="true" keyProperty="buyNum">
+		INSERT INTO SHOP_BUY (BUY_PRICE, MEM_EMAIL)
+		VALUES (#{buyPrice}, #{memEmail})
+	</insert>
+
+	<!-- 구매 상세 등록 -->
+	<insert id="insertBuyDetail" parameterType="com.green.book_shop.buy.dto.BuyDetailDTO">
+		INSERT INTO BUY_DETAIL (BOOK_NUM, BUY_CNT, BUY_PRICE, BUY_NUM)
+		VALUES (#{bookNum}, #{buyCnt}, #{buyPrice}, #{buyNum})
+	</insert>
+
+	<!-- 내 주문 목록 조회 -->
+	<select id="selectBuyList" parameterType="String" resultMap="buy">
+		SELECT
+		    b.BUY_NUM,
+		    b.BUY_PRICE,
+		    b.MEM_EMAIL,
+		    b.BUY_DATE,
+		    d.BUY_DETAIL_NUM,
+		    d.BOOK_NUM,
+			d.BUY_CNT,
+		    d.BUY_PRICE AS DETAIL_PRICE,
+		    d.BUY_NUM,
+		    bk.BOOK_TITLE,
+		    bk.BOOK_PRICE,
+		    i.UPLOAD_FILE_NAME
+		FROM SHOP_BUY b
+		LEFT JOIN BUY_DETAIL d ON d.buy_num = b.buy_num
+		LEFT JOIN SHOP_BOOK bk ON d.BOOK_NUM = bk.BOOK_NUM
+		LEFT JOIN BOOK_IMG i ON bk.BOOK_NUM = i.BOOK_NUM AND i.IS_MAIN = 'Y'
+		WHERE b.MEM_EMAIL = #{memEmail}
+		ORDER BY b.BUY_DATE DESC
+	</select>
+
+	<!-- 내 주문 단건 조회 -->
+	<select id="selectBuyByNum" parameterType="int" resultMap="buy">
+		SELECT
+			b.BUY_NUM,
+			b.BUY_PRICE,
+			b.MEM_EMAIL,
+			b.BUY_DATE,
+			d.BUY_DETAIL_NUM,
+			d.BOOK_NUM,
+			d.BUY_PRICE AS DETAIL_PRICE,
+			d.BUY_NUM
+		FROM SHOP_BUY b
+		LEFT JOIN BUY_DETAIL d ON d.buy_num = b.buy_num
+		WHERE b.BUY_NUM = #{buyNum}
+	</select>
+
+	<!-- 재고 검증용 - 이미지 JOIN 없이 단순 조회 -->
+	<select id="selectBookStockByNum" parameterType="int" resultType="int">
+		SELECT BOOK_STOCK
+		FROM SHOP_BOOK
+		WHERE BOOK_NUM = #{bookNum}
+	</select>
+</mapper>

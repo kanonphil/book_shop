@@ -43,14 +43,14 @@ public class BookController {
   }
 
   /**
-   * 베스트셀러 (추후 구매 테이블 생성 후 판매량 기준으로 수정 예정)
-   * GET /books/random
+   * 베스트셀러
+   * GET /books/best-sellers
    */
-  @GetMapping("/random")
-  public ResponseEntity<?> getRandomBooks(
+  @GetMapping("/best-sellers")
+  public ResponseEntity<?> getBestSellers(
           @RequestParam(defaultValue = "8") int size
   ) {
-    List<BookDTO> books = bookService.getRandomBooks(size);
+    List<BookDTO> books = bookService.getBestSellers(size);
     Map<String, Object> result = new HashMap<>();
     result.put("success", true);
     result.put("data", books);
@@ -172,6 +172,27 @@ public class BookController {
     Map<String, Object> result = new HashMap<>();
     result.put("success", true);
     result.put("message", "도서가 삭제되었습니다.");
+
+    return ResponseEntity.ok(result);
+  }
+
+  /**
+   * 재고 업데이트 (관리자/매니저만)
+   * PATCH /books/{bookNum}/stock
+   */
+  @PatchMapping("/{bookNum}/stock")
+  @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+  public ResponseEntity<?> updateStock(
+          @PathVariable Integer bookNum,
+          @RequestParam int quantity
+  ) {
+    log.info("재고 업데이트 요청 - bookNum: {}, quantity: {}", bookNum, quantity);
+
+    bookService.updateStock(bookNum, quantity);
+
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    result.put("message", "재고가 업데이트되었습니다.");
 
     return ResponseEntity.ok(result);
   }

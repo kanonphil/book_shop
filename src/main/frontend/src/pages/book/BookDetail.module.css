@@ -23,10 +23,10 @@
 /* 상단 영역 */
 .topSection {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 1fr 1.5fr;
   gap: 100px;
   margin-bottom: 60px;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* 이미지 영역 */
@@ -50,11 +50,24 @@
 .infoSection {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  gap: 0;
+  min-height: 400px;
+}
+
+.infoTop {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoBottom {
+  display: flex;
+  flex-direction: column;
   gap: 0;
 }
 
 .title {
-  font-size: 22px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--text-primary, #333);
   line-height: 1.4;
@@ -62,17 +75,18 @@
 }
 
 .author {
-  font-size: 14px;
+  font-size: 20px;
   color: #888;
   margin-bottom: 20px;
 }
 
 /* 가격 영역 */
 .priceSection {
-  padding: 20px 0;
-  font-size: 2rem;
+  padding: 20px 20px;
+  font-size: 26px;
   font-weight: 700;
-  color: #d32f2f;
+  color: var(--text-primary, #333);
+  text-align: right;
 }
 
 .divider {
@@ -84,13 +98,14 @@
 /* 수량 행 */
 .quantityRow {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 20px;
   padding: 20px 0;
 }
 
 .label {
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 600;
   color: #555;
   min-width: 60px;
@@ -162,13 +177,19 @@
 }
 
 .stockInfo {
-  font-size: 13px;
+  /* font-size: 13px; */
   color: #999;
   white-space: nowrap;
 }
 
+.outOfStock {
+  font-size: 16px;
+  color: #d32f2f;
+  font-weight: 600;
+}
+
 .qtyError {
-  font-size: 13px;
+  /* font-size: 13px; */
   color: #d32f2f;
   white-space: nowrap;
 }
@@ -185,7 +206,7 @@
 }
 
 .totalLabel {
-  font-size: 15px;
+  font-size: 22px;
   font-weight: 600;
   color: #333;
 }
@@ -193,18 +214,39 @@
 .totalRight {
   display: flex;
   align-items: center;
-  gap: 16px;
 }
 
 .totalQty {
-  font-size: 13px;
-  color: #888;
+  font-size: 15px;
+  font-weight: 600;
+  color: #757575;
+  line-height: 1;
+}
+
+.totalQty::after {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background: #ccc;
+  margin: 0 12px;
 }
 
 .totalValue {
-  font-size: 26px;
+  display: flex;
+  align-items: baseline;
   font-weight: 700;
   color: #d32f2f;
+}
+
+.totalValueNum {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.totalValueUnit {
+  font-size: 22px;
+  margin-left: 2px;
 }
 
 /* 버튼 */
@@ -216,7 +258,7 @@
 
 /* 도서 소개 영역 */
 .descriptionSection {
-  border-top: 2px solid #333;
+  border-top: 2px solid #404040;
   padding-top: 40px;
 }
 
@@ -284,6 +326,10 @@
 
 [data-theme='dark'] .stockInfo {
   color: #777;
+}
+
+[data-theme='dark'] .outOfStock {
+  color: #ff6b6b;
 }
 
 [data-theme='dark'] .quantityControl {

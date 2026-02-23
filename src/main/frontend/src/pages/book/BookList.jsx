@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import BookGrid from '../../components/book/BookGrid'
-import { getBookList, getRandomBooks } from '../../api/bookApi'
+import { getBookList } from '../../api/bookApi'
 import styles from './BookList.module.css'
 import Pagination from '../../components/common/Pagination'
 import { useSearchParams } from 'react-router-dom'
@@ -11,23 +11,6 @@ const BookList = () => {
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  // BestSeller
-  const [bestBooks, setBestBooks] = useState([])
-
-  useEffect(() => {
-    const fetchBestBooks = async () => {
-      try {
-        const response = await getRandomBooks()
-        if (response.success) {
-          setBestBooks(response.data)
-        }
-      } catch (error) {
-        console.error('베스트세러 조회 실패:', error)
-      }
-    }
-    fetchBestBooks()
-  }, [])
 
   // 페이지네이션 상태
   const [currentPage, setCurrentPage] = useState(1);
@@ -89,7 +72,7 @@ const BookList = () => {
   return (
     <div className={styles.container}>
 
-      {bestBooks.length > 0 && <BestSellerSlider books={bestBooks} />}
+      <BestSellerSlider />
 
       <h1 className={styles.title}>도서 목록</h1>
 

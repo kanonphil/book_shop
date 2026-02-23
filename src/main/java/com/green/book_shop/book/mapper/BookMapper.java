@@ -18,7 +18,7 @@ public interface BookMapper {
   List<BookDTO> selectBookList(@Param("offset") int offset, @Param("size") int size);
 
   // 베스트셀러
-  List<BookDTO> selectRandomBooks(@Param("size") int size);
+  List<BookDTO> selectBestSellers(@Param("size") int size);
 
   // 도서 총 개수
   int selectBookCount();

@@ -46,9 +46,9 @@ export const getBookList = async (page = 1, size = 8) => {
 };
 
 // 베스트셀러
-export const getRandomBooks = async (size = 8) => {
+export const getBestSellers = async (size = 8) => {
   try {
-    const response = await axiosInstance.get('/books/random', {
+    const response = await axiosInstance.get('/books/best-sellers', {
         params: { size }
     });
     return response.data;

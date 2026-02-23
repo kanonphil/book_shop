@@ -3,21 +3,37 @@ import styles from './BestSellerSlider.module.css'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../components/common/Button'
 import { IoCaretBackOutline, IoCaretForwardOutline } from 'react-icons/io5'
+import { getBestSellers } from '../../api/bookApi'
 
-const BestSellerSlider = ({ books }) => {
+const BestSellerSlider = () => {
   const navigate = useNavigate()
+  const [books, setBooks] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [sliding, setSliding] = useState(false)
   const [direction, setDirection] = useState('next')
+  const [isHovered, setIsHovered] = useState(false)
   const visibleCount = 4
 
-  const [isHovered, setIsHovered] = useState(false)
+  // 베스트셀러 조회
+  useEffect(() => {
+    const fetchBestSellers = async () => {
+      try {
+        const response = await getBestSellers(8)
+        console.log('베스트셀러 응답:', response)
+        if (response.success) {
+          setBooks(response.data)
+        }
+      } catch (error) {
+        console.error('베스트셀러 조회 실패:', error)
+      }
+    }
+    fetchBestSellers()
+  }, [])
 
   const slide = useCallback((dir) => {
-    if (sliding) return
+    if (sliding || books.length === 0) return
     setDirection(dir)
     setSliding(true)
-    // 인덱스를 먼저 바꾸고 애니메이션 실행
     setCurrentIndex(prev =>
       dir === 'next'
         ? (prev + 1) % books.length
@@ -26,35 +42,35 @@ const BestSellerSlider = ({ books }) => {
     setTimeout(() => setSliding(false), 400)
   }, [sliding, books.length])
 
+  // 자동 슬라이드
   useEffect(() => {
-    if (isHovered) return // hover 중이면 타이머 안 만들고 종료
+    if (isHovered || books.length === 0) return
     const timer = setInterval(() => slide('next'), 3000)
     return () => clearInterval(timer)
-  }, [slide, isHovered])
+  }, [slide, isHovered, books.length])
 
-  // visibleBooks는 다시 4개로
-  const visibleBooks = Array.from({ length: visibleCount + 2 }, (_, i) =>
-    books[(currentIndex - 1 + i + books.length) % books.length]
-  )
+  if (books.length === 0) return null
+
+  const visibleBooks = Array.from({ length: visibleCount + 2 }, (_, i) => {
+    const bookIndex = (currentIndex - 1 + i + books.length) % books.length
+    return { book: books[bookIndex], rank: bookIndex + 1 }
+  })
 
   return (
     <div className={styles.sliderWrapper}>
-      <h2 className={styles.title}>베스트셀러</h2>
-      <div 
+      <h2 className={styles.title}>Best Top {books.length}</h2>
+      <div
         className={styles.sliderContainer}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <Button
-          variant='icon'
-          onClick={() => slide('prev')}
-        >
+        <Button variant='icon' onClick={() => slide('prev')}>
           <IoCaretBackOutline />
         </Button>
 
         <div className={styles.sliderOuter}>
           <div className={`${styles.bookList} ${sliding ? styles[direction] : ''}`}>
-            {visibleBooks.map((book, index) => {
+            {visibleBooks.map(({book, rank}, index) => {
               const mainImg = book?.images?.[0]?.uploadFileName
               return (
                 <div
@@ -62,7 +78,7 @@ const BestSellerSlider = ({ books }) => {
                   className={styles.bookItem}
                   onClick={() => navigate(`/books/${book.bookNum}`)}
                 >
-                  <span className={styles.rank}>{(currentIndex + index) % books.length + 1}</span>
+                  <span className={styles.rank}>{rank}</span>
                   <img
                     src={mainImg ? `/upload/${mainImg}` : '/placeholder.jpg'}
                     alt={book.bookTitle}
@@ -80,23 +96,10 @@ const BestSellerSlider = ({ books }) => {
           </div>
         </div>
 
-        <Button
-          variant='icon'
-          onClick={() => slide('next')}
-        >
+        <Button variant='icon' onClick={() => slide('next')}>
           <IoCaretForwardOutline />
         </Button>
       </div>
-
-      {/* <div className={styles.indicators}>
-        {books.map((_, index) => (
-          <span
-            key={index}
-            className={`${styles.dot} ${index === currentIndex ? styles.activeDot : ''}`}
-            onClick={() => setCurrentIndex(index)}
-          />
-        ))}
-      </div> */}
     </div>
   )
 }

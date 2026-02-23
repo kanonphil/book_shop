@@ -1,0 +1,190 @@
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 40px;
+  color: var(--text-primary, #e0e0e0);
+}
+
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+  font-size: 18px;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.empty p {
+  font-size: 18px;
+  color: #999;
+}
+
+/* 주문 카드 */
+.buyCard {
+  margin-bottom: 30px;
+  border-radius: 8px;
+  border: 1px solid #404040;
+  overflow: hidden;
+}
+
+/* 주문 헤더 */
+.buyHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #4a9eff;
+  padding: 14px 20px;
+}
+
+.buyHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  font-size: 15px;
+  flex-wrap: wrap;
+}
+
+.buyNum {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.separator {
+  opacity: 0.6;
+}
+
+.buyTitle {
+  font-weight: 600;
+}
+
+.buyPrice {
+  font-weight: 700;
+}
+
+.buyDate {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+/* 테이블 래퍼 */
+.tableWrapper {
+  overflow-x: auto;
+  background-color: var(--card-bg, #1a1a1a);
+}
+
+/* 테이블 */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--card-bg, #1a1a1a);
+}
+
+.table thead {
+  background-color: #2a2a2a;
+}
+
+.table th {
+  padding: 16px 12px;
+  text-align: center;
+  font-weight: 600;
+  color: #e0e0e0;
+  border-bottom: 2px solid #404040;
+  white-space: nowrap;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #404040;
+  transition: background-color 0.2s;
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background-color: #252525;
+}
+
+.table td {
+  padding: 20px 12px;
+  text-align: center;
+  color: #e0e0e0;
+  vertical-align: middle;
+}
+
+/* 컬럼 너비 */
+.noCol { width: 60px; }
+.bookCol { width: auto; min-width: 300px; }
+.priceCol { width: 120px; }
+.quantityCol { width: 100px; }
+.totalCol { width: 140px; }
+
+/* 도서 정보 */
+.bookInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.bookImg {
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #404040;
+  flex-shrink: 0;
+}
+
+.bookTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e0e0e0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+}
+
+.bookTitle:hover {
+  color: #4a9eff;
+  text-decoration: underline;
+}
+
+.itemTotal {
+  font-weight: 700;
+  color: #4a9eff;
+}
+
+/* 라이트모드 */
+[data-theme='light'] .title { color: #1a1a1a; }
+[data-theme='light'] .buyCard { border-color: #e0e0e0; }
+[data-theme='light'] .tableWrapper { background-color: #ffffff; }
+[data-theme='light'] .table { background-color: #ffffff; }
+[data-theme='light'] .table thead { background-color: #f5f5f5; }
+[data-theme='light'] .table th { color: #1a1a1a; border-bottom-color: #e0e0e0; }
+[data-theme='light'] .table tbody tr { border-bottom-color: #e0e0e0; }
+[data-theme='light'] .table tbody tr:hover { background-color: #f9f9f9; }
+[data-theme='light'] .table td { color: #1a1a1a; }
+[data-theme='light'] .bookImg { border-color: #e0e0e0; }
+[data-theme='light'] .bookTitle { color: #1a1a1a; }
+[data-theme='light'] .empty p { color: #666; }

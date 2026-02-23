@@ -10,6 +10,8 @@ import OAuthCallback from './pages/member/OAuthCallback'
 import BookForm from './pages/book/BookForm'
 import BookDetail from './pages/book/BookDetail'
 import CartList from './pages/cart/CartList'
+import BuyList from './pages/buy/BuyList'
+import OrderPage from './pages/buy/OrderPage'
 
 function App() {
   
@@ -30,6 +32,8 @@ function App() {
           <Route path='login' element={<Login />} />
           <Route path='books/:bookNum' element={<BookDetail />} />
           <Route path='carts' element={<CartList />} />
+          <Route path='buy-list' element={<BuyList />} />
+          <Route path='order' element={<OrderPage />} />
           {/* <Route path='login-select' element={<LoginSelect />} /> */}
           {/* <Route path='oauth-callback' element={<OAuthCallback />} /> */}
         </Route>

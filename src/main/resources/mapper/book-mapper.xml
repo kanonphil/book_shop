@@ -64,12 +64,13 @@
 		LIMIT #{offset}, #{size}
 	</select>
 
-	<!-- 베스트셀러(추후 수정) -->
-	<select id="selectRandomBooks" resultMap="book">
+	<!-- 베스트셀러 - 누적 판매량 기준 -->
+	<select id="selectBestSellers" resultMap="book">
 		SELECT B.BOOK_NUM,
 		       B.BOOK_TITLE,
 		       B.AUTHOR,
 		       B.BOOK_PRICE,
+		       B.BOOK_STOCK,
 		       B.CATE_NUM,
 		       C.CATE_NUM,
 		       I.IMG_NUM,
@@ -79,8 +80,14 @@
 		FROM SHOP_BOOK B
 		LEFT JOIN BOOK_CATEGORY C ON B.CATE_NUM = C.CATE_NUM
 		LEFT JOIN BOOK_IMG I ON B.BOOK_NUM = I.BOOK_NUM AND I.IS_MAIN = 'Y'
-		ORDER BY RAND()
-		LIMIT #{size}
+		INNER JOIN (
+		    SELECT D.BOOK_NUM, SUM(D.BUY_CNT) AS TOTAL_SOLD
+		    FROM BUY_DETAIL D
+		    GROUP BY D.BOOK_NUM
+		    ORDER BY TOTAL_SOLD DESC
+		    LIMIT #{size}
+		) BEST ON B.BOOK_NUM = BEST.BOOK_NUM
+		ORDER BY BEST.TOTAL_SOLD DESC
 	</select>
 
 	<!-- 도서 총 개수 조회 -->

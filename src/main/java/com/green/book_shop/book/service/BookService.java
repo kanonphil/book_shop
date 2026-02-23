@@ -58,8 +58,8 @@ public class BookService {
   }
 
   // 베스트셀러
-  public List<BookDTO> getRandomBooks(int size) {
-    return bookMapper.selectRandomBooks(size);
+  public List<BookDTO> getBestSellers(int size) {
+    return bookMapper.selectBestSellers(size);
   }
 
   // 도서 상세 조회

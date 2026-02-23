@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     error.put("success", false);
     error.put("message", e.getMessage());
 
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
   }
 
   // 그 외 예상치 못한 에러

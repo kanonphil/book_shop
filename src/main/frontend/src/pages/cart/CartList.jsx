@@ -174,8 +174,14 @@ const CartList = () => {
       return
     }
 
-    // TODO: 구매 페이지 이동
-    alert('구매 페이지로 이동합니다')
+    // 선택한 아이템만 필터링해서 OrderPage로 전달
+    const selectedCartItems = cartItems.filter(item =>
+        selectedItems.includes(item.cartNum)
+    )
+
+    navigate('/order', {
+        state: { items: selectedCartItems }
+    })
   }
 
   // 선택한 상품들의 총 가격 계산
@@ -276,7 +282,6 @@ const CartList = () => {
                         >
                           -
                         </button>
-                        {/* <span className={styles.quantityValue}>{item.cartCnt}</span> */}
                         <input
                             type="number"
                             className={styles.quantityInput}
