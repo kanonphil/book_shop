@@ -168,59 +168,89 @@ const BookDetail = () => {
         {/* 정보 영역 */}
         <div className={styles.infoSection}>
           <h1 className={styles.title}>{book.bookTitle}</h1>
+          <p className={styles.author}>{book.author}</p>
 
-          <div className={styles.infoItem}>
-            <span className={styles.label}>저자 :</span>
-            <span className={styles.value}>{book.author}</span>
+          {/* 가격 영역 */}
+          <div className={styles.priceSection}>
+            <span>{book.bookPrice?.toLocaleString()}원</span>
           </div>
 
-          <div className={styles.infoItem}>
-            <span className={styles.label}>가격 :</span>
-            <span className={styles.value}>{book.bookPrice?.toLocaleString()}원</span>
-          </div>
+          <hr className={styles.divider}/>
 
           {/* 수량 */}
-          <div className={styles.infoItem}>
+          <div className={styles.quantityRow}>
             <span className={styles.label}>수량 :</span>
             <div className={styles.quantityWrapper}>
-              <Input
-                type="number"
-                name="quantity"
-                value={quantity}
-                onChange={handleQuantityChange}
-                error={quantityError}
-                placeholder="수량"
-                min="1"
-                max={book.bookStock}
-              />
-              {!quantityError && (
-                <span className={styles.stockInfo}>
-                  (재고: {book.bookStock}개)
-                </span>
-              )}
+              <div className={styles.quantityControl}>
+                <button 
+                  type="button"
+                  className={styles.qtyBtn}
+                  onClick={() => {
+                    const val = Math.max(1, (parseInt(quantity) || 1) - 1)
+                    setQuantity(String(val))
+                    setQuantityError('')
+                  }}
+                >-</button>
+                <Input
+                  type="number"
+                  name="quantity"
+                  value={quantity}
+                  onChange={handleQuantityChange}
+                  // error={quantityError}
+                  placeholder="수량"
+                  min="1"
+                  max={book.bookStock}
+                  className={styles.quantityInput}
+                />
+                <button 
+                  type="button"
+                  className={styles.qtyBtn}
+                  onClick={() => {
+                    const val = (parseInt(quantity) || 1) + 1
+                    if (val > book.bookStock) {
+                      setQuantityError(`재고는 ${book.bookStock}개 입니다.`)
+                      return
+                    }
+                    setQuantity(String(val))
+                    setQuantityError('')
+                  }}
+                >+</button>
+              </div>
+
+              {/* 재고 | 에러 */}
+              {quantityError
+                ? <span className={styles.qtyError}>{quantityError}</span>
+                : <span className={styles.stockInfo}>재고: {book.bookStock}개</span>
+              }
             </div>
           </div>
 
-          <div className={styles.infoItem}>
-            <span className={styles.label}>총 구매 가격 :</span>
-            <span className={styles.value}>{totalPrice?.toLocaleString()}원</span>
+          <hr className={styles.divider}/>
+
+          {/* 총 금액 */}
+          <div className={styles.totalRow}>
+            <span className={styles.totalLabel}>총 상품 금액</span>
+            <div className={styles.totalRight}>
+              <span className={styles.totalQty}>총 수량 {quantity || 0}개</span>
+              <span className={styles.totalValue}>{totalPrice?.toLocaleString()}원</span>
+            </div>
           </div>
 
           {/* 버튼 영역 */}
           <div className={styles.buttonGroup}>
             <Button
-              variant="success"
+              variant="outline"
               onClick={handleAddToCart}
               fullWidth
             >
-              장바구니 담기
+              장바구니
             </Button>
             <Button
               variant="primary"
               onClick={handleBuyNow}
               fullWidth
             >
-              바로 구매
+              구매하기
             </Button>
           </div>
         </div>

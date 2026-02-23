@@ -11,6 +11,8 @@ const BestSellerSlider = ({ books }) => {
   const [direction, setDirection] = useState('next')
   const visibleCount = 4
 
+  const [isHovered, setIsHovered] = useState(false)
+
   const slide = useCallback((dir) => {
     if (sliding) return
     setDirection(dir)
@@ -25,9 +27,10 @@ const BestSellerSlider = ({ books }) => {
   }, [sliding, books.length])
 
   useEffect(() => {
+    if (isHovered) return // hover 중이면 타이머 안 만들고 종료
     const timer = setInterval(() => slide('next'), 3000)
     return () => clearInterval(timer)
-  }, [slide])
+  }, [slide, isHovered])
 
   // visibleBooks는 다시 4개로
   const visibleBooks = Array.from({ length: visibleCount + 2 }, (_, i) =>
@@ -37,7 +40,11 @@ const BestSellerSlider = ({ books }) => {
   return (
     <div className={styles.sliderWrapper}>
       <h2 className={styles.title}>베스트셀러</h2>
-      <div className={styles.sliderContainer}>
+      <div 
+        className={styles.sliderContainer}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <Button
           variant='icon'
           onClick={() => slide('prev')}

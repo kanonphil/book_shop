@@ -66,3 +66,6 @@ CREATE TABLE SHOP_CART (
 );
 
 # 구매 정보 테이블 SHOP_BUY
+CREATE TABLE SHOP_BUY (
+	
+);

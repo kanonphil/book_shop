@@ -21,6 +21,7 @@ const CartList = () => {
 
       if (response.success) {
         setCartItems(response.cartList)
+        setSelectedItems(response.cartList.map(item => item.cartNum))
       }
     } catch (error) {
       console.error('장바구니 조회 실패:', error);
@@ -99,13 +100,20 @@ const CartList = () => {
       alert(`재고는 ${item.bookStock}개 입니다.`);
       return;
     }
+
+    // 낙관적 업에디트 - 서버 요청 전에 UI 먼저 반영
+    setCartItems(prev =>
+      prev.map(i => i.cartNum === cartNum ? {...i, cartCnt: newCnt} : i)
+    )
     
     try {
       const response = await updateCartCnt(cartNum, newCnt)
 
-      if (response.success) {
+      if (!response.success) {
         // 전체 목록 다시 조회 (총 가격도 같이 업데이트)
-        await fetchCartList()
+        // await fetchCartList() 이 내용을 사용하고 싶으면 ! 빼고 주석 해제
+        // 실패 시 원래대로 복구
+        fetchCartList()
       }
     } catch (error) {
       console.error('수량 변경 실패:', error)
@@ -167,7 +175,7 @@ const CartList = () => {
     }
 
     // TODO: 구매 페이지 이동
-    alert('not found')
+    alert('구매 페이지로 이동합니다')
   }
 
   // 선택한 상품들의 총 가격 계산
@@ -315,7 +323,7 @@ const CartList = () => {
           {/* 총 구매 가격 */}
           <div className={styles.totalSection}>
             <span className={styles.totalLabel}>총 구매 가격: </span>
-            <span className={styles.totlaAmount}>
+            <span className={styles.totalAmount}>
               {selectedItems.length > 0
                 ? `${getSelectedTotalPrice().toLocaleString()}원`
                 : `0원`
