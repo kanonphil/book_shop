@@ -91,35 +91,30 @@
 		FROM SHOP_MEMBER
 		WHERE MEM_EMAIL = #{memEmail}
 	</select>
+
+	<!-- 회원 정보 수정 -->
+	<update id="updateMember">
+		UPDATE SHOP_MEMBER
+		SET MEM_TEL = #{memTel},
+		    MEM_ADDR = #{memAddr},
+		    ADDR_DETAIL = #{addrDetail}
+		<if test="memPw != null and memPw != ''">
+			, MEM_PW = #{memPw}
+		</if>
+		WHERE MEM_EMAIL = #{memEmail}
+	</update>
+
+	<!-- 회원 탈퇴 (소프트 딜리트) -->
+	<update id="deleteMember">
+		UPDATE SHOP_MEMBER
+		SET IS_USING = 'N'
+		WHERE MEM_EMAIL = #{memEmail}
+	</update>
+
+	<!-- 비밀번호 조회 (본인 확인용) -->
+	<select id="selectMemberPw" resultType="String">
+		SELECT MEM_PW
+		FROM SHOP_MEMBER
+		WHERE MEM_EMAIL = #{memEmail}
+	</select>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

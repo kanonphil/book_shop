@@ -15,6 +15,9 @@ import OrderPage from './pages/buy/OrderPage'
 import ManageStock from './pages/manage/ManageStock'
 import ManageBookList from './pages/manage/ManageBookList'
 import ManageBookEdit from './pages/manage/ManageBookEdit'
+import MyPageLayout from './components/layout/MyPageLayout'
+import ProfileEdit from './pages/member/ProfileEdit'
+import PasswordCheck from './pages/member/PasswordCheck'
 
 function App() {
   
@@ -30,7 +33,7 @@ function App() {
 
         {/* 일반 회원이 접근하는 페이지들 */}
         <Route path='/' element={<BasicLayout />}>
-          <Route path='' element={<BookList />} />
+          <Route index element={<BookList />} />
           <Route path='join' element={<Join />} />
           <Route path='login' element={<Login />} />
           <Route path='books/:bookNum' element={<BookDetail />} />
@@ -39,6 +42,14 @@ function App() {
           <Route path='order' element={<OrderPage />} />
           {/* <Route path='login-select' element={<LoginSelect />} /> */}
           {/* <Route path='oauth-callback' element={<OAuthCallback />} /> */}
+        </Route>
+
+        {/* 마이페이지 */}
+        <Route path='/mypage' element={<MyPageLayout />}>
+          <Route index element={<CartList />} />
+          <Route path='buy-list' element={<BuyList />} />
+          <Route path='profile-edit' element={<PasswordCheck />} />
+          <Route path='profile-edit/form' element={<ProfileEdit />} />
         </Route>
 
         {/* 매니저 권한의 회원이 접근하는 페이지들 */}

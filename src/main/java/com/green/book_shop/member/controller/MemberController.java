@@ -80,4 +80,71 @@ public class MemberController {
     member.setMemPw(null);
     return ResponseEntity.ok(member);
   }
+
+  /**
+   * 회원 정보 수정
+   * PUT /members/{email}
+   */
+  @PutMapping("/{email}")
+  public ResponseEntity<Map<String, Object>> updateMember(
+          @PathVariable String email,
+          @RequestBody MemberDTO memberDTO
+  ) {
+    Map<String, Object> response = new HashMap<>();
+    try {
+      memberDTO.setMemEmail(email);
+      memberServiceImpl.updateMember(memberDTO);
+      response.put("success", true);
+      response.put("message", "회원 정보가 수정되었습니다.");
+      return ResponseEntity.ok(response);
+    } catch (Exception e) {
+      response.put("success", false);
+      response.put("message", e.getMessage());
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+  }
+
+  /**
+   * 회원 탈퇴
+   * DELETE /members/{email}
+   */
+  @DeleteMapping("/{email}")
+  public ResponseEntity<Map<String, Object>> deleteMember(
+          @PathVariable String email,
+          @RequestParam String memPw
+  ) {
+    Map<String, Object> response = new HashMap<>();
+    try {
+      memberServiceImpl.deleteMember(email, memPw);
+      response.put("success", true);
+      response.put("message", "회원 탈퇴가 완료되었습니다.");
+      return ResponseEntity.ok(response);
+    } catch (Exception e) {
+      response.put("success", false);
+      response.put("message", e.getMessage());
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+  }
+
+  /**
+   * 비밀번호 확인 (본인 인증)
+   * POST /members/check-password
+   */
+  @PostMapping("/check-password")
+  public ResponseEntity<Map<String, Object>> checkPassword(@RequestBody Map<String, String> body) {
+    Map<String, Object> response = new HashMap<>();
+    try {
+      boolean isValid = memberServiceImpl.checkPassword(
+              body.get("memEmail"),
+              body.get("memPw")
+      );
+      response.put("success", isValid);
+      response.put("message", isValid ? "확인되었습니다." : "비밀번호가 일치하지 않습니다.");
+      return ResponseEntity.ok(response);
+    } catch (Exception e) {
+      response.put("success", false);
+      response.put("message", e.getMessage());
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+  }
 }

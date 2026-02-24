@@ -1,4 +1,4 @@
-.manager_layout_container {
+.container {
   width: 1400px;
   border: 1px solid var(--border-color);
   background-color: var(--bg-primary);
@@ -10,13 +10,15 @@
 }
 
 .side {
-  width: 18%;
+  width: 220px;        /* 고정 너비 */
+  flex-shrink: 0;      /* 줄어들지 않게 */
   border: 1px solid var(--border-color);
   background-color: var(--bg-secondary);
 }
 
 .content {
-  width: 92%;
+  flex: 1;             /* 나머지 공간 전부 차지 */
+  min-width: 0;        /* flex 자식 요소 overflow 방지 */
   border: 1px solid var(--border-color);
   background-color: var(--bg-primary);
 }

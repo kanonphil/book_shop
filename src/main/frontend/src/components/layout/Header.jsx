@@ -39,7 +39,7 @@ const Header = () => {
           {isAuthenticated ? (
             <>
               <li>{member.memName}님 반갑습니다</li>
-              <li onClick={() => navigate('/carts')}>장바구니</li>
+              <li onClick={() => navigate('/mypage')}>마이페이지</li>
               <li onClick={handleLogout}>Logout</li>
             </>
           ) : (

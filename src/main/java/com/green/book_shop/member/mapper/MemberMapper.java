@@ -19,4 +19,13 @@ public interface MemberMapper {
 
   // 회원 정보 조회
   MemberDTO selectMemberInfo(String memEmail);
+
+  // 회원 정보 수정
+  int updateMember(MemberDTO memberDTO);
+
+  // 회원 탈퇴
+  int deleteMember(String memEmail);
+
+  // 비밀번호 조회 (본인 확인용)
+  String selectMemberPw(String memEmail);
 }

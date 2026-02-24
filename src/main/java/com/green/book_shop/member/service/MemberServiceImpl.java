@@ -81,4 +81,36 @@ public class MemberServiceImpl implements MemberService {
   public MemberDTO getMemberInfo(String memEmail) {
     return memberMapper.selectMemberInfo(memEmail);
   }
+
+  // 비밀번호 확인
+  public boolean checkPassword(String memEmail, String memPw) {
+    String encodedPw = memberMapper.selectMemberPw(memEmail);
+    return passwordEncoder.matches(memPw, encodedPw);
+  }
+
+  // 회원 정보 수정
+  @Transactional
+  public void updateMember(MemberDTO memberDTO) {
+    // 비밀번호 변경 요청이 있으면 암호화
+    if (memberDTO.getMemPw() != null && !memberDTO.getMemPw().isEmpty()) {
+      memberDTO.setMemPw(passwordEncoder.encode(memberDTO.getMemPw()));
+    }
+    int result = memberMapper.updateMember(memberDTO);
+    if (result == 0) {
+      throw new RuntimeException("회원 정보 수정에 실패했습니다.");
+    }
+  }
+
+  // 회원 탈퇴
+  @Transactional
+  public void deleteMember(String memEmail, String memPw) {
+    // 비밀번호 확인 후 탈퇴 처리
+    if (!checkPassword(memEmail, memPw)) {
+      throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+    }
+    int result = memberMapper.deleteMember(memEmail);
+    if (result == 0) {
+      throw new RuntimeException("회원 탈퇴에 실패했습니다.");
+    }
+  }
 }

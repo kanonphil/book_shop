@@ -118,7 +118,7 @@ const BuyList = () => {
                           >
                             {detail.uploadFileName && (
                               <img
-                                  src={detail.uploadFileName ? `upload/${detail.uploadFileName}` : '/placeholder.jpg'}
+                                  src={detail.uploadFileName ? `/upload/${detail.uploadFileName}` : '/placeholder.jpg'}
                                   alt={detail.bookTitle}
                                   className={styles.bookImg}
                               />

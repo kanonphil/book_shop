@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -109,7 +110,16 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     Map<String, Object> responseData = new HashMap<>();
     responseData.put("success", false);
-    responseData.put("message", "ID 또는 Password가 일치하지 않습니다.");
+
+    // InternalAuthenticationServiceException 안에 DisabledException이 감싸져 있어서
+    // getCause()로 원인 예외를 꺼내서 확인
+    Throwable cause = failed.getCause() != null ? failed.getCause() : failed;
+
+    if (cause instanceof DisabledException) {
+      responseData.put("message", "탈퇴한 계정입니다.");
+    } else {
+      responseData.put("message", "ID 또는 Password가 일치하지 않습니다.");
+    }
 
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");

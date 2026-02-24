@@ -131,6 +131,38 @@ export const hasRole = (requiredRole) => {
   return role === requiredRole;
 };
 
+// ==================== 회원 정보 수정 ====================
+export const updateMember = async(email, memberData) => {
+  try {
+    const response = await axiosInstance.put(`/members/${email}`, memberData)
+    return response.data
+  } catch (error) {
+    throw error.response?.data || { message: '회원 정보 수정에 실패했습니다.' }
+  }
+}
+
+// ==================== 회원 탈퇴 ====================
+export const deleteMember = async (email, memPw) => {
+  try {
+    const response = await axiosInstance.delete(`/members/${email}`, {
+      params: { memPw }
+    })
+    return response.data
+  } catch (error) {
+    throw error.response?.data || { message: '회원 탈퇴에 실패했습니다.' }
+  }
+}
+
+// ==================== 비밀번호 확인 ====================
+export const checkPassword = async (memEmail, memPw) => {
+  try {
+    const response = await axiosInstance.post('/members/check-password', { memEmail, memPw })
+    return response.data
+  } catch (error) {
+    throw error.response?.data || { message: '비밀번호 확인에 실패했습니다.' }
+  }
+}
+
 export default {
   joinMember,
   checkEmail,
