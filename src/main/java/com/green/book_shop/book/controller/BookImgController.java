@@ -47,4 +47,23 @@ public class BookImgController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
   }
+
+  /**
+   * 이미지 삭제 (관리자/매니저만)
+   * DELETE /books/{bookNum}/images/{imgNum}
+   */
+  @DeleteMapping("/{imgNum}")
+  @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+  public ResponseEntity<?> deleteImg(
+          @PathVariable int bookNum,
+          @PathVariable int imgNum
+  ) {
+    log.info("이미지 삭제 요청 - bookNum: {}, imgNum: {}", bookNum, imgNum);
+    bookImgService.deleteImg(imgNum);
+
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    result.put("message", "이미지가 삭제되었습니다.");
+    return ResponseEntity.ok(result);
+  }
 }

@@ -41,7 +41,8 @@ const BookDetail = () => {
   }, [bookNum])
 
   const handleQuantityChange = (e) => {
-    const value = e.target.value
+    // 붙여넣기 대비 숫자 외 문자 제거
+    const value = e.target.value.replace(/[^0-9]/g, '')
 
     // 빈 값 허용 (입력 중)
     if (value === '') {
@@ -50,12 +51,6 @@ const BookDetail = () => {
       return;
     }
 
-    // 숫자만 허용
-    if (!/^\d+$/.test(value)) {
-      setQuantityError('숫자만 입력 가능합니다.');
-      return;
-    }
-    
     const numValue = parseInt(value);
     
     // 유효성 검사
@@ -163,6 +158,19 @@ const BookDetail = () => {
 
   const totalPrice = book.bookPrice * quantity
 
+  // 한글/영문 키 입력 자체를 막기
+  const handleKeyDown = (e) => {
+    // 허용할 키 목록
+    const allowedKeys = [
+      'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'
+    ]
+    
+    // 숫자도 아니고 허용 키도 아니면 입력 차단
+    if (!/[0-9]/.test(e.key) && !allowedKeys.includes(e.key)) {
+      e.preventDefault()  // 입력 자체를 막음
+    }
+  }
+
   return (
     <div className={styles.container}>
       {/* 상단 영역 */}
@@ -208,11 +216,17 @@ const BookDetail = () => {
                       }}
                     >-</button>
                     <Input
-                      type="number"
+                      type="text"
                       name="quantity"
                       value={quantity}
                       onChange={handleQuantityChange}
-                      // error={quantityError}
+                      onKeyDown={handleKeyDown}
+                      onBlur={() => {
+                        if (quantity === '' || quantity === '0') {
+                          setQuantity('1')
+                          setQuantityError('')
+                        }
+                      }}
                       placeholder="수량"
                       min="1"
                       max={book.bookStock}

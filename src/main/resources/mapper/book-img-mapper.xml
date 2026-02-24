@@ -29,4 +29,21 @@
 			 #{img.bookNum})
 		</foreach>
 	</insert>
+
+	<!-- 이미지 단건 조회 -->
+	<select id="selectBookImg" resultMap="images">
+		SELECT IMG_NUM,
+		       ORIGIN_FILE_NAME,
+		       UPLOAD_FILE_NAME,
+		       IS_MAIN,
+		       BOOK_NUM
+		FROM BOOK_IMG
+		WHERE IMG_NUM = #{imgNum}
+	</select>
+
+	<!-- 이미지 삭제 -->
+	<delete id="deleteBookImg">
+		DELETE FROM BOOK_IMG
+		WHERE IMG_NUM = #{imgNum}
+	</delete>
 </mapper>

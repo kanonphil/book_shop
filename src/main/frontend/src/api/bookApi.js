@@ -90,3 +90,13 @@ export const searchBooks = async (keyword, page = 1, size = 8) => {
     throw error.response?.data || { message: '도서 검색에 실패했습니다.' };
   }
 };
+
+// 도서 수정
+export const updateBook = async (bookNum, bookData) => {
+  try {
+    const response = await axiosInstance.put(`/books/${bookNum}`, bookData)
+    return response.data
+  } catch (error) {
+    throw error.response?.data || { message: '도서 수정에 실패했습니다.' }
+  }
+}

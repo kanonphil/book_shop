@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './BookForm.module.css'
 import Form from '../../components/common/Form'
 import Input from '../../components/common/Input'
@@ -7,6 +7,7 @@ import Select from '../../components/common/Select'
 import Textarea from '../../components/common/Textarea'
 import { registerBook } from '../../api/bookApi';
 import { getCategories } from '../../api/categoryApi';
+import { IoCloseCircle } from 'react-icons/io5'
 
 const BookForm = () => {
   const [bookData, setBookData] = useState({
@@ -26,8 +27,10 @@ const BookForm = () => {
   const [subImgs, setSubImgs] = useState([])      // 서브 이미지 여러개
 
   // 미리보기용 (화면 표시용)
-  // const [mainPreview, setMainPreview] = useState(null)
-  // const [subPreviews, setSubPreviews] = useState([])
+  const [mainPreview, setMainPreview] = useState(null)
+  const [subPreviews, setSubPreviews] = useState([])
+
+  const subImgsRef = useRef(null)
 
   const [errors, setErrors] = useState({
     cateNum: '',
@@ -55,14 +58,34 @@ const BookForm = () => {
     const { name, files } = e.target
 
     if (name === 'mainImg') {
+      // 기존 미리보기 URL 메모리 해제
+      if (mainPreview) URL.revokeObjectURL(mainPreview)
+
       setMainImg(files[0])        // 단일 파일
-      console.log('대표 이미지:', files[0].name)
-      // setMainPreview(URL.createObjectURL(files[0]))  // 미리보기 URL 생성
+      setMainPreview(URL.createObjectURL(files[0]))  // 미리보기 URL 생성
+
     } else if (name === 'subImgs') {
       const fileArray = [...files]
+
+      // 기존 서브 미리보기 URL 메모리 해제
+      subPreviews.forEach(url => URL.revokeObjectURL(url))
+
       setSubImgs(fileArray)      // 여러 파일을 배열로 변환
-      console.log('추가 이미지:', fileArray.map(file => file.name))
-      // setSubPreviews(fileArray.map(file => URL.createObjectURL(file)))  // 각 파일마다 미리보기 URL 생성
+      setSubPreviews(fileArray.map(file => URL.createObjectURL(file)))  // 각 파일마다 미리보기 URL 생성
+    }
+  }
+
+  // 서브 이미지 개별 삭제
+  const handleSubImgRemove = (index) => {
+    URL.revokeObjectURL(subPreviews[index])
+    const newImgs = subImgs.filter((_, i) => i !== index)
+    const newPreviews = subPreviews.filter((_, i) => i !== index)
+    setSubImgs(newImgs)
+    setSubPreviews(newPreviews)
+
+    // 모두 삭제됐으면 input 초기화
+    if (newImgs.length === 0 && subImgsRef.current) {
+      subImgsRef.current.value = ''
     }
   }
 
@@ -202,11 +225,11 @@ const BookForm = () => {
       setSubImgs([])
 
       // 초기화 할 때 URL 메모리 해제
-      // if (mainPreview) URL.revokeObjectURL(mainPreview)
-      // subPreviews.forEach(url => URL.revokeObjectURL(url))
+      if (mainPreview) URL.revokeObjectURL(mainPreview)
+      subPreviews.forEach(url => URL.revokeObjectURL(url))
+      setMainPreview(null)
+      setSubPreviews([])
 
-      // setMainPreview(null)
-      // setSubPreviews([])
       setErrors({
         cateNum: validateField('cateNum', ''),
         bookTitle: validateField('bookTitle', ''),
@@ -306,33 +329,73 @@ const BookForm = () => {
         required
       />
 
-      {/* 도서 이미지 */}
-      <Input
-        label='Book Image'
-        type='file'
-        name='mainImg'
-        onChange={handleFileChange}
-        className={styles.bookImg}
-        required
-      />
-      {/* {mainPreview && (
-        <img src={mainPreview} alt="대표 이미지 미리보기" className={styles.preview} />
-      )} */}
+      {/* 대표 이미지 */}
+      <div className={styles.imgSection}>
+        <p className={styles.imgLabel}>Book Image</p>
 
-      <Input
-        type='file'
-        name='subImgs'
-        onChange={handleFileChange}
-        className={styles.bookImg}
-        multiple={true} // multiple 속성 사용 시 다중 첨부 가능
-      />
-      {/* {subPreviews.length > 0 && (
-        <div>
-          {subPreviews.map((url, index) => (
-            <img key={index} src={url} alt={`서브 이미지 ${index + 1}`} className={styles.preview} />
-          ))}
-        </div>
-      )} */}
+        {/* 대표 이미지 미리보기 */}
+        {mainPreview ? (
+          <div className={styles.imgGroup}>
+            <span className={styles.imgTag}>대표</span>
+            <div className={styles.imgItem}>
+              <img src={mainPreview} alt='대표이미지 미리보기' />
+              <button
+                type='button'
+                className={styles.imgDeleteBtn}
+                onClick={() => {
+                  URL.revokeObjectURL(mainPreview)
+                  setMainImg(null)
+                  setMainPreview(null)
+                }}
+              >
+                <IoCloseCircle />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <Input
+            label='대표 이미지'
+            type='file'
+            name='mainImg'
+            onChange={handleFileChange}
+            className={styles.bookImg}
+            required
+          />
+        )}
+        {/* 미리보기가 있으면 input 숨기고 이미지 표시, */}
+        {/* 없으면 input 표시해요. X 누르면 다시 input이 나타나요. */}
+
+        {/* 서브 이미지 */}
+        {subPreviews.length > 0 && (
+          <div className={styles.imgGroup}>
+            <span className={styles.imgTag}>서브</span>
+            <div className={styles.imgList}>
+              {subPreviews.map((url, index) => (
+                <div key={index} className={styles.imgItem}>
+                  <img src={url} alt={`서브이미지${index + 1}`} />
+                  <button
+                    type='button'
+                    className={styles.imgDeleteBtn}
+                    onClick={() => handleSubImgRemove(index)}
+                  >
+                    <IoCloseCircle />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 서브 이미지 추가 input (항상 표시) */}
+        <Input
+          type='file'
+          name='subImgs'
+          onChange={handleFileChange}
+          className={styles.bookImg}
+          multiple={true}
+          ref={subImgsRef}
+        />
+      </div>
 
       {/* 제출 버튼 */}
       <Button 

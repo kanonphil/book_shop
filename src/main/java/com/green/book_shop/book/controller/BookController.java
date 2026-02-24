@@ -2,6 +2,7 @@ package com.green.book_shop.book.controller;
 
 import com.green.book_shop.book.dto.BookDTO;
 import com.green.book_shop.book.dto.BookListResponseDTO;
+import com.green.book_shop.book.dto.StockDTO;
 import com.green.book_shop.book.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -180,7 +181,7 @@ public class BookController {
    * 재고 업데이트 (관리자/매니저만)
    * PATCH /books/{bookNum}/stock
    */
-  @PatchMapping("/{bookNum}/stock")
+  @PatchMapping("/stock/{bookNum}")
   @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
   public ResponseEntity<?> updateStock(
           @PathVariable Integer bookNum,
@@ -193,6 +194,42 @@ public class BookController {
     Map<String, Object> result = new HashMap<>();
     result.put("success", true);
     result.put("message", "재고가 업데이트되었습니다.");
+
+    return ResponseEntity.ok(result);
+  }
+
+  /**
+   * 재고 목록 조회
+   * GET /books/stock
+   */
+  @GetMapping("/stock")
+  @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+  public ResponseEntity<?> getStockList(
+          @RequestParam(required = false) String keyword,
+          @RequestParam(defaultValue = "false") boolean lowStockOnly
+  ) {
+    List<StockDTO> stocks = bookService.getStockList(keyword, lowStockOnly);
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    result.put("data", stocks);
+
+    return ResponseEntity.ok(result);
+  }
+
+  /**
+   * 입고 처리
+   * POST /books/restock/{bookNum}
+   */
+  @PostMapping("/restock/{bookNum}")
+  @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+  public ResponseEntity<?> restockBook(
+          @PathVariable("bookNum") Integer bookNum,
+          @RequestParam int addQuantity
+  ) {
+    bookService.addStock(bookNum, addQuantity);
+    Map<String, Object> result = new HashMap<>();
+    result.put("success", true);
+    result.put("message", "입고 처리가 완료되었습니다.");
 
     return ResponseEntity.ok(result);
   }

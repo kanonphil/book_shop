@@ -3,6 +3,7 @@ package com.green.book_shop.book.mapper;
 import com.green.book_shop.book.dto.BookDTO;
 import com.green.book_shop.book.dto.BookImgDTO;
 import com.green.book_shop.book.dto.BookSearchDTO;
+import com.green.book_shop.book.dto.StockDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -46,6 +47,14 @@ public interface BookMapper {
   // 도서 삭제
   int deleteBook(@Param("bookNum") Integer bookNum);
 
-  // 재고 업데이트
+  // 재고 업데이트 (덮어쓰기)
   int updateBookStock(@Param("bookNum") Integer bookNum, @Param("quantity") int quantity);
+
+  // 재고 관리용 목록 조회 (검색 + 부족 필터)
+  List<StockDTO> selectStockList(@Param("keyword") String keyword,
+                                 @Param("lowStockOnly") boolean lowStockOnly);
+
+  // 입고 처리 (현재 재고에 더하기)
+  int addBookStock(@Param("bookNum") Integer bookNum,
+                   @Param("addQuantity") int addQuantity);
 }

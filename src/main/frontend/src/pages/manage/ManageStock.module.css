@@ -1,0 +1,151 @@
+.container {
+  padding: 24px;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+/* 필터 바 */
+.filterBar {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.searchBox {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.searchBox > div {
+  flex: 1;
+  margin-bottom: 0; /* Input 컴포넌트 기본 margin 제거 */
+}
+
+/* 테이블 */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.table th {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 12px;
+  text-align: center;
+  border-bottom: 2px solid var(--border-color);
+  font-weight: 600;
+}
+
+.table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+/* 재고부족 행 경고 */
+.lowStock td {
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+/* 재고부족 행 강조 */
+.lowStock td {
+  background-color: rgba(255, 107, 107, 0.07);
+}
+
+/* 재고부족 경고 배지 */
+.lowWarningBadge {
+  color: #FFD700;
+  font-weight: 600;
+}
+
+/* 재고부족 배지 */
+.lowBadge {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+/* 재고 셀 - 클릭 힌트 */
+.stockCell {
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.stockCell:hover {
+  background-color: var(--bg-secondary);
+}
+
+/* 인라인 수정 input */
+.inlineInput {
+  width: 80px;
+  padding: 4px 8px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 2px solid #4a9eff;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.inlineInput::-webkit-outer-spin-button,
+.inlineInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.inlineInput:focus {
+  outline: none;
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 40px;
+}
+
+/* 모달 */
+.modalOverlay {
+  position: fixed;
+  inset: 0; /* top/right/bottom/left: 0 을 한 번에 쓰는 단축 속성 */
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 28px;
+  width: 360px;
+}
+
+.modal h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.modalBookTitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.modalButtons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}

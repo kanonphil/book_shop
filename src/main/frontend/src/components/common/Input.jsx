@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import styles from './Input.module.css'
 import Button from './Button'
 
-const Input = ({ 
+const Input = forwardRef(({ 
   label, 
   type = "text", 
   name,
@@ -18,7 +18,7 @@ const Input = ({
   onButtonClick,
   className = '',
   ...props
-}) => {
+}, ref) => {
   // file 타입은 value 제어 불가 -> onChange만 전달
   const inputProps = type === 'file'
     ? { onChange }
@@ -81,6 +81,7 @@ const Input = ({
               e.target.showPicker?.();
             }
           }}
+          ref={ref}
           {...inputProps}
           {...props}
         />
@@ -89,6 +90,6 @@ const Input = ({
       {error && <span className={styles.error}>{error}</span>}
     </div>
   )
-}
+})
 
 export default Input

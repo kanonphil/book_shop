@@ -3,6 +3,7 @@ package com.green.book_shop.book.service;
 import com.green.book_shop.book.dto.BookDTO;
 import com.green.book_shop.book.dto.BookListResponseDTO;
 import com.green.book_shop.book.dto.BookSearchDTO;
+import com.green.book_shop.book.dto.StockDTO;
 import com.green.book_shop.book.mapper.BookImgMapper;
 import com.green.book_shop.book.mapper.BookMapper;
 import com.green.book_shop.util.UploadUtil;
@@ -149,5 +150,22 @@ public class BookService {
     }
 
     log.info("재고 업데이트 완료 - bookNum: {}, quantity: {}", bookNum, quantity);
+  }
+
+  // 재고 목록 조회
+  public List<StockDTO> getStockList(String keyword, boolean lowStockOnly) {
+    return bookMapper.selectStockList(keyword, lowStockOnly);
+  }
+
+  // 입고 처리
+  public void addStock(Integer bookNum, int addQuantity) {
+    if (addQuantity <= 0) {
+      throw new IllegalArgumentException("입고 수량은 1 이상이어야 합니다.");
+    }
+    int result = bookMapper.addBookStock(bookNum, addQuantity);
+    if (result == 0) {
+      throw new RuntimeException("도서를 찾을 수 없습니다. BOOK_NUM: " + bookNum);
+    }
+    log.info("입고 처리 완료 - bookNum: {}, 추가수량: {}", bookNum, addQuantity);
   }
 }

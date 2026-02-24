@@ -60,4 +60,16 @@ public class UploadUtil {
             })
             .collect(Collectors.toList());
   }
+
+  // 파일 삭제
+  public void deleteFile(String uploadFileName) {
+    if (uploadFileName == null || uploadFileName.isEmpty()) return;
+
+    Path filePath = Paths.get(uploadPath + uploadFileName);
+    try {
+      Files.deleteIfExists(filePath);
+    } catch (IOException e) {
+      throw new RuntimeException("파일 삭제 실패: " + uploadFileName, e);
+    }
+  }
 }

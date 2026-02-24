@@ -48,8 +48,8 @@ const ManagerSide = () => {
           <ul className={styles.sub_menu}>
             <li><IoListOutline /> 카테고리관리</li>
             <li onClick={() => navigate('/manage/book-form')}><IoAddCircleOutline /> 상품등록</li>
-            <li><IoCubeOutline /> 상품재고관리</li>
-            <li><IoCreateOutline /> 상품정보수정</li>
+            <li onClick={() => navigate('/manage/stock')}><IoCubeOutline /> 상품재고관리</li>
+            <li onClick={() => navigate('/manage/book-edit')}><IoCreateOutline /> 상품정보수정</li>
           </ul>
         )}
       </div>

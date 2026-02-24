@@ -1,0 +1,75 @@
+/* rowGroup: 가격과 저자를 나란히 배치 */
+.rowGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.imgSection {
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.imgLabel {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.imgTag {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.imgGroup {
+  margin-bottom: 16px;
+}
+
+.imgList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.imgItem {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.imgItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.imgDeleteBtn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ff6b6b;
+  font-size: 1.3rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.imgDeleteBtn:hover {
+  color: #fa5252;
+}
+
+/* 반응형: 작은 화면에서는 세로로 배치 */
+@media (max-width: 768px) {
+  .rowGroup {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

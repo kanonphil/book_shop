@@ -7,11 +7,14 @@ import BookList from './pages/book/BookList'
 import Login from './pages/member/Login'
 import LoginSelect from './pages/member/LoginSelect'
 import OAuthCallback from './pages/member/OAuthCallback'
-import BookForm from './pages/book/BookForm'
+import BookForm from './pages/manage/BookForm'
 import BookDetail from './pages/book/BookDetail'
 import CartList from './pages/cart/CartList'
 import BuyList from './pages/buy/BuyList'
 import OrderPage from './pages/buy/OrderPage'
+import ManageStock from './pages/manage/ManageStock'
+import ManageBookList from './pages/manage/ManageBookList'
+import ManageBookEdit from './pages/manage/ManageBookEdit'
 
 function App() {
   
@@ -41,7 +44,9 @@ function App() {
         {/* 매니저 권한의 회원이 접근하는 페이지들 */}
         <Route path='/manage' element={<ManagerLayout />}>
           <Route path='book-form' element={<BookForm />} />
-          <Route />
+          <Route path='stock' element={<ManageStock />} />
+          <Route path='book-edit' element={<ManageBookList />} />
+          <Route path='book-edit/:bookNum' element={<ManageBookEdit />} />
         </Route>
       </Routes>
     </>

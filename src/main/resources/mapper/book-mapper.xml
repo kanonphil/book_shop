@@ -23,6 +23,14 @@
 		</collection>
 	</resultMap>
 
+	<resultMap id="stock" type="com.green.book_shop.book.dto.StockDTO">
+		<id column="BOOK_NUM" property="bookNum" />
+		<result column="BOOK_TITLE" property="bookTitle" />
+		<result column="AUTHOR" property="author" />
+		<result column="BOOK_PRICE" property="bookPrice" />
+		<result column="BOOK_STOCK" property="bookStock" />
+	</resultMap>
+
 	<!-- 도서 등록 -->
 	<insert id="insertBook" useGeneratedKeys="true" keyProperty="bookNum">
 		INSERT INTO SHOP_BOOK (
@@ -198,10 +206,36 @@
 		WHERE BOOK_NUM = #{bookNum}
 	</delete>
 
-	<!-- 재고 업데이트 -->
+	<!-- 재고 업데이트 (덮어쓰기) -->
 	<update id="updateBookStock">
 		UPDATE SHOP_BOOK
-		SET BOOK_STOCK = BOOK_STOCK + #{quantity}
+		SET BOOK_STOCK = #{quantity}
+		WHERE BOOK_NUM = #{bookNum}
+	</update>
+
+	<!-- 재고 관리용 목록 조회 -->
+	<select id="selectStockList" resultMap="stock">
+		SELECT BOOK_NUM,
+		       BOOK_TITLE,
+		       AUTHOR,
+		       BOOK_PRICE,
+		       BOOK_STOCK
+		FROM SHOP_BOOK
+		<where>
+			<if test="keyword != null and keyword != ''">
+				BOOK_TITLE LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="lowStockOnly">
+				AND BOOK_STOCK &lt;=5
+			</if>
+		</where>
+		ORDER BY BOOK_STOCK ASC
+	</select>
+
+	<!-- 입고 처리 -->
+	<update id="addBookStock">
+		UPDATE SHOP_BOOK
+		SET BOOK_STOCK = BOOK_STOCK + #{addQuantity}
 		WHERE BOOK_NUM = #{bookNum}
 	</update>
 </mapper>
