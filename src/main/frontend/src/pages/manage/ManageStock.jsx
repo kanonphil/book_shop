@@ -221,7 +221,7 @@ const ManageStock = () => {
                 <td>
                   <Button
                     onClick={() => {
-                      setRestockModal({ bookNum: stock.bookNum, bookTitle: stock.booktitle })
+                      setRestockModal({ bookNum: stock.bookNum, bookTitle: stock.bookTitle })
                       setRestockValue('')
                     }}
                     variant='primary'

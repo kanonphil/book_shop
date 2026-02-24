@@ -62,7 +62,7 @@ public class BuyServiceImpl implements BuyService {
       buyMapper.insertBuyDetail(buyDetail);
 
       // 재고 차감
-      bookMapper.updateBookStock(detail.getBookNum(), -detail.getBuyCnt());
+      bookMapper.deductBookStock(detail.getBookNum(), detail.getBuyCnt());
     }
   }
 

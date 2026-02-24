@@ -57,4 +57,6 @@ public interface BookMapper {
   // 입고 처리 (현재 재고에 더하기)
   int addBookStock(@Param("bookNum") Integer bookNum,
                    @Param("addQuantity") int addQuantity);
+
+  int deductBookStock(@Param("bookNum") int bookNum, @Param("quantity") int quantity);
 }

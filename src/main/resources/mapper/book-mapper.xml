@@ -238,4 +238,11 @@
 		SET BOOK_STOCK = BOOK_STOCK + #{addQuantity}
 		WHERE BOOK_NUM = #{bookNum}
 	</update>
+
+	<!-- 재고 차감 -->
+	<update id="deductBookStock">
+		UPDATE SHOP_BOOK
+		SET BOOK_STOCK = BOOK_STOCK - #{quantity}
+		WHERE BOOK_NUM = #{bookNum}
+	</update>
 </mapper>
