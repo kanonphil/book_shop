@@ -154,6 +154,10 @@ public class BookService {
 
   // 재고 목록 조회
   public List<StockDTO> getStockList(String keyword, boolean lowStockOnly) {
+    // null 체크 후 trim
+    if (keyword != null) {
+      keyword = keyword.trim();
+    }
     return bookMapper.selectStockList(keyword, lowStockOnly);
   }
 

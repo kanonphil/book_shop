@@ -223,7 +223,7 @@
 		FROM SHOP_BOOK
 		<where>
 			<if test="keyword != null and keyword != ''">
-				BOOK_TITLE LIKE CONCAT('%', #{keyword}, '%')
+				REPLACE(BOOK_TITLE, ' ', '') LIKE CONCAT('%', REPLACE(#{keyword}, ' ', ''), '%')
 			</if>
 			<if test="lowStockOnly">
 				AND BOOK_STOCK &lt;=5

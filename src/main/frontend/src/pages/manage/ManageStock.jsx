@@ -27,7 +27,7 @@ const ManageStock = () => {
 
   const [loading, setLoading] = useState(false)
   
-  const fetchStocks = useCallback(async (kw = keyword, low = lowStockOnly) => {
+  const fetchStocks = useCallback(async (kw, low) => {
     setLoading(true)
     try {
       const response = await getStockList(kw, low)
@@ -39,16 +39,16 @@ const ManageStock = () => {
       // finally는 성공/실패 상관없이 항상 실행
       setLoading(false)
     }
-  }, [keyword, lowStockOnly])
+  }, [])
   
   // 컴포넌트가 처음 렌더링 될 때 목록 불러오기
   useEffect(() => {
-    fetchStocks()
+    fetchStocks('', false)
   }, [fetchStocks])
   
   // 검색 실행
   const handleSearch = () => {
-    fetchStocks(keyword, lowStockOnly)
+    fetchStocks(keyword.trim(), lowStockOnly)
   }
 
   // 재고부족 필터링 토글
@@ -134,7 +134,7 @@ const ManageStock = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             placeholder='도서명 검색'
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch(keyword.trim(), lowStockOnly)}
           />
           <Button
             onClick={handleSearch}

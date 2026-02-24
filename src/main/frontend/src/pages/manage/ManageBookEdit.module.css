@@ -1,16 +1,23 @@
 .container {
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title {
+  width: 100%;
+  max-width: 500px;
   font-size: 1.4rem;
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 24px;
+  text-align: center;
 }
 
 .formWrap {
-  max-width: 600px;
+  width: 100%;
+  max-width: 500px;
 }
 
 .rowGroup {
@@ -86,7 +93,7 @@
 /* 버튼 그룹 */
 .buttonGroup {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 8px;
   margin-top: 24px;
 }
