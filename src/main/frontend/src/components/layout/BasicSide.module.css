@@ -17,9 +17,9 @@
 
 .menu > li {
   font-size: 1.2rem;
-  padding: 15px 20px;
+  padding: 25px 30px;
   cursor: pointer;
-  border-bottom: none;
+  border-bottom: 1px solid var(--bg-secondary);
   color: var(--text-secondary);
   display: flex;
   align-items: center;
@@ -31,9 +31,9 @@
 .menu > li:hover {
   background-color: transparent;
   color: var(--button-primary);
-  padding-left: 28px;
+  padding-left: 35px;
 }
-
+/* 
 .menu > li:last-child {
   border-bottom: none;
-}
+} */
