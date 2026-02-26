@@ -13,7 +13,7 @@
 	</resultMap>
 
 	<!-- 이미지 등록 -->
-	<insert id="insertBookImg">
+	<insert id="insertBookImgs">
 		INSERT INTO BOOK_IMG (
 		                      ORIGIN_FILE_NAME,
 		                      UPLOAD_FILE_NAME,

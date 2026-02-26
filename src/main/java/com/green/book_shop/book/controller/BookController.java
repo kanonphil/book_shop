@@ -145,12 +145,14 @@ public class BookController {
   @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
   public ResponseEntity<?> updateBook(
           @PathVariable Integer bookNum,
-          @RequestBody BookDTO bookDTO
+          @RequestBody BookDTO bookDTO,
+          @RequestPart(value = "mainImg", required = false) MultipartFile mainImg,
+          @RequestPart(value = "subImgs", required = false) List<MultipartFile> subImgs
   ) {
     log.info("도서 수정 요청 - bookNum: {}", bookNum);
 
     bookDTO.setBookNum(bookNum);
-    bookService.updateBook(bookDTO);
+    bookService.updateBook(bookDTO, mainImg, subImgs);
 
     Map<String, Object> result = new HashMap<>();
     result.put("success", true);

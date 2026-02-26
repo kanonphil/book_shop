@@ -50,8 +50,10 @@ const CartList = () => {
   // 전체 선택/해제
   const handleSelectAll = (e) => {
     if (e.target.checked) {
+      // 체크박스가 체크되면 -> 모든 cartNum을 selectedItems에 담음
       setSelectedItems(cartItems.map(item => item.cartNum))
     } else {
+      // 체크 해제되면 -> selectedItems를 빈 배열로 초기화
       setSelectedItems([])
     }
   }
@@ -60,8 +62,10 @@ const CartList = () => {
   const handleSelectItem = (cartNum) => {
     setSelectedItems(prev => {
       if (prev.includes(cartNum)) {
+        // 이미 선택된 항목이면 -> filter로 해당 cartNum 제거 (선택 해제)
         return prev.filter(id => id !== cartNum )
       } else {
+        // 선택 안 된 항목이면 -> 스프레드로 기존 배열에 추가 (선택)
         return [...prev, cartNum]
       }
     })
@@ -101,7 +105,7 @@ const CartList = () => {
       return;
     }
 
-    // 낙관적 업에디트 - 서버 요청 전에 UI 먼저 반영
+    // 낙관적 업데이트 - 서버 요청 전에 UI 먼저 반영
     setCartItems(prev =>
       prev.map(i => i.cartNum === cartNum ? {...i, cartCnt: newCnt} : i)
     )

@@ -15,7 +15,7 @@ export const addBookImgs = async (bookNum, mainImg, subImgs) => {
   try {
     const formData = new FormData()
     if (mainImg) formData.append('mainImg', mainImg)
-    if (subImgs?.lenght > 0) {
+    if (subImgs?.length > 0) {
       subImgs.forEach(img => formData.append('subImgs', img))
     }
     const response = await axiosInstance.post(`/books/${bookNum}/images`, formData, {

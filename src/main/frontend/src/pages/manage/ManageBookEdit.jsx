@@ -12,8 +12,6 @@ import Button from '../../components/common/Button'
 
 const ManageBookEdit = () => {
   const { bookNum } = useParams()
-  // useParams()는 URL의 :bookNum 부분을 꺼내주는 Hook
-  // /manage/book-edit/5로 접속하면 bookNum="5"
   const navigate = useNavigate()
 
   const [bookData, setBookData] = useState({
@@ -27,14 +25,18 @@ const ManageBookEdit = () => {
 
   const [categories, setCategories] = useState([])
 
-  // 기본 이미지 (DB에서 불러온 것)
+  // 기존 이미지 (DB에서 불러온 것)
   const [existingImgs, setExistingImgs] = useState([])
-  // 삭제 할 이미지 번호 등록 (저장 버튼 누를 때 한꺼번에 삭제)
+  // 삭제할 이미지 번호 목록
   const [deleteImgNums, setDeleteImgNums] = useState([])
-  // 새로 추가할 이미지 파일
-  const [newImgs, setNewImgs] = useState([])
-  // 새 이미지 미리보기 URL
-  const [newImgPreviews, setNewImgPreviews] = useState([])
+
+  // 새 대표 이미지 (1장만)
+  const [newMainImg, setNewMainImg] = useState(null)
+  const [newMainImgPreview, setNewMainImgPreview] = useState(null)
+
+  // 새 서브 이미지 (여러 장)
+  const [newSubImgs, setNewSubImgs] = useState([])
+  const [newSubImgPreviews, setNewSubImgPreviews] = useState([])
 
   const [loading, setLoading] = useState(false)
 
@@ -42,8 +44,6 @@ const ManageBookEdit = () => {
   const fetchData = useCallback(async () => {
     setLoading(true)
     try {
-      // Promise.all: 두 API를 동시에 호출
-      // 순서대로 기다리면 시간이 두 배 걸리지만, 동시에 호출하면 더 빠르게 처리
       const [bookRes, cateRes] = await Promise.all([
         getBookDetail(bookNum),
         getCategories()
@@ -79,34 +79,46 @@ const ManageBookEdit = () => {
   }
 
   // 기존 이미지 삭제 표시
-  // 실제 삭제는 저장 버튼 누를 때
-  // 미리 표시만 해두고 화면에서는 안 보이게 처리
   const handleImgDeleteMark = (imgNum) => {
     setDeleteImgNums(prev => [...prev, imgNum])
-    // 화면에서도 바로 제거
     setExistingImgs(prev => prev.filter(img => img.imgNum !== imgNum))
   }
 
-  // 새 이미지 파일 선택
-  const handleNewImgChange = (e) => {
-    const files = [...e.target.files]
-    setNewImgs(prev => [...prev, ...files])
+  // 새 대표 이미지 선택 (1장만 허용)
+  const handleNewMainImgChange = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
 
-    // 이미보기 URL 생성
-    // URL.createObjectURL: 파일을 브라우저 메모리에 임시 URL로 만듦
-    // 실제 서버에 올라간 게 아니라 브라우저 내에서만 볼 수 있음
-    const previews = files.map(file => URL.createObjectURL(file))
-    setNewImgPreviews(prev => [...prev, ...previews])
+    // 기존 미리보기 URL 해제
+    if (newMainImgPreview) {
+      URL.revokeObjectURL(newMainImgPreview)
+    }
+
+    setNewMainImg(file)
+    setNewMainImgPreview(URL.createObjectURL(file))
   }
 
-  // 새 이미지 추가 취소
-  const handleNewImgRemove = (index) => {
-    // 메모리 해제 - createObjectURL로 만든 URL은 쓰고 나면 해제해줘야 메모리 누수 방지
-    URL.revokeObjectURL(newImgPreviews[index])
+  // 새 대표 이미지 제거
+  const handleNewMainImgRemove = () => {
+    URL.revokeObjectURL(newMainImgPreview)
+    setNewMainImg(null)
+    setNewMainImgPreview(null)
+  }
 
-    setNewImgs(prev => prev.filter((_, i) => i !== index))
-    setNewImgPreviews(prev => prev.filter((_, i) => i !== index))
-    // filter의 (_, i)에서 _는 "값은 안 쓰고 인덱스만 씀" 관례적 표현
+  // 새 서브 이미지 선택 (여러 장)
+  const handleNewSubImgsChange = (e) => {
+    const files = [...e.target.files]
+    setNewSubImgs(prev => [...prev, ...files])
+
+    const previews = files.map(file => URL.createObjectURL(file))
+    setNewSubImgPreviews(prev => [...prev, ...previews])
+  }
+
+  // 새 서브 이미지 제거
+  const handleNewSubImgRemove = (index) => {
+    URL.revokeObjectURL(newSubImgPreviews[index])
+    setNewSubImgs(prev => prev.filter((_, i) => i !== index))
+    setNewSubImgPreviews(prev => prev.filter((_, i) => i !== index))
   }
 
   // 저장
@@ -125,18 +137,23 @@ const ManageBookEdit = () => {
         bookPrice: Number(bookData.bookPrice)
       })
 
-      // 2. 삭제 표시된 이미지 삭제 (Promise.all로 동시 처리)
+      // 2. 삭제 표시된 이미지 삭제
       if (deleteImgNums.length > 0) {
         await Promise.all(
           deleteImgNums.map(imgNum => deleteBookImg(bookNum, imgNum))
         )
       }
 
-      // 3. 새 이미지 추가
-      if (newImgs.length > 0) {
-        await addBookImgs(bookNum, null, newImgs)
-        // 첫 번째 null은 mainImg 자리
-        // 수정 시엔 대표이미지를 별도로 교체하지 않으므로 null로 전달
+      // 3. 새 이미지 추가 (mainImg / subImgs 구분해서 전달)
+      const hasNewMain = newMainImg !== null
+      const hasNewSubs = newSubImgs.length > 0
+
+      if (hasNewMain || hasNewSubs) {
+        await addBookImgs(
+          bookNum,
+          hasNewMain ? newMainImg : null,
+          hasNewSubs ? newSubImgs : null
+        )
       }
 
       alert('수정이 완료되었습니다.')
@@ -150,17 +167,17 @@ const ManageBookEdit = () => {
 
   if (loading) return <p>로딩 중...</p>
 
-  // 이미지 분리
-  const mainImg = existingImgs.find(img => img.isMain === 'Y')
-  const subImgs = existingImgs.filter(img => img.isMain === 'N')
-  
+  // 기존 이미지 분리
+  const existingMainImg = existingImgs.find(img => img.isMain === 'Y')
+  const existingSubImgs = existingImgs.filter(img => img.isMain === 'N')
+
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>상품 정보 수정</h2>
 
       <div className={styles.formWrap}>
         {/* 카테고리 */}
-        <Select 
+        <Select
           label='Category'
           name='cateNum'
           value={bookData.cateNum}
@@ -212,74 +229,96 @@ const ManageBookEdit = () => {
           showCount={true}
         />
 
-        {/* 이미지 섹션 */}
+        {/* ===== 이미지 섹션 ===== */}
         <div className={styles.imgSection}>
           <p className={styles.imgLabel}>이미지 관리</p>
 
-          {/* 대표 이미지 */}
-          {mainImg && (
-            <div className={styles.imgGroup}>
-              <span className={styles.imgTag}>대표</span>
+          {/* --- 대표 이미지 --- */}
+          <div className={styles.imgGroup}>
+            <span className={styles.imgTag}>대표</span>
+
+            {/* 기존 대표 이미지 */}
+            {existingMainImg && (
               <div className={styles.imgItem}>
-                <img src={`/upload/${mainImg.uploadFileName}`} alt="대표이미지" />
+                <img src={`/upload/${existingMainImg.uploadFileName}`} alt='대표이미지' />
                 <button
                   type='button'
                   className={styles.imgDeleteBtn}
-                  onClick={() => handleImgDeleteMark(mainImg.imgNum)}
+                  onClick={() => handleImgDeleteMark(existingMainImg.imgNum)}
                 >
                   <IoCloseCircle />
                 </button>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* 서브 이미지 */}
-          {subImgs.length > 0 && (
-            <div className={styles.imgGroup}>
-              <span className={styles.imgTag}>서브</span>
-              <div className={styles.imgList}>
-                {subImgs.map(img => (
-                  <div key={img.imgNum} className={styles.imgItem}>
-                    <img src={`/upload/${img.uploadFileName}`} alt='서브이미지' />
-                    <button
-                      className={styles.imgDeleteBtn}
-                      onClick={() => handleImgDeleteMark(img.imgNum)}
-                    >
-                      <IoCloseCircle />
-                    </button>
-                  </div>
-                ))}
+            {/* 새 대표 이미지 미리보기 */}
+            {newMainImgPreview && (
+              <div className={styles.imgItem}>
+                <img src={newMainImgPreview} alt='새 대표이미지' />
+                <button
+                  type='button'
+                  className={styles.imgDeleteBtn}
+                  onClick={handleNewMainImgRemove}
+                >
+                  <IoCloseCircle />
+                </button>
               </div>
-            </div>
-          )}
-        
-          {/* 새 이미지 미리보기 */}
-          {newImgPreviews.length > 0 && (
-            <div className={styles.imgGroup}>
-              <span className={styles.imgTag}>추가</span>
-              <div className={styles.imgList}>
-                {newImgPreviews.map((url, index) => (
-                  <div key={index} className={styles.imgItem}>
-                    <img src={url} alt={`새이미지${index}`} />
-                    <button
-                      className={styles.imgDeleteBtn}
-                      onClick={() => handleNewImgRemove(index)}
-                    >
-                      <IoCloseCircle />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+            )}
 
-          {/* 새 이미지 추가 */}
-          <Input
-            type='file'
-            name='newImgs'
-            onChange={handleNewImgChange}
-            multiple={true}
-          />
+            {/* 대표 이미지가 없을 때만 업로드 input 노출 */}
+            {!existingMainImg && !newMainImgPreview && (
+              <Input
+                type='file'
+                name='newMainImg'
+                onChange={handleNewMainImgChange}
+                accept='image/*'
+              />
+            )}
+          </div>
+
+          {/* --- 서브 이미지 --- */}
+          <div className={styles.imgGroup}>
+            <span className={styles.imgTag}>서브</span>
+
+            <div className={styles.imgList}>
+              {/* 기존 서브 이미지 */}
+              {existingSubImgs.map(img => (
+                <div key={img.imgNum} className={styles.imgItem}>
+                  <img src={`/upload/${img.uploadFileName}`} alt='서브이미지' />
+                  <button
+                    type='button'
+                    className={styles.imgDeleteBtn}
+                    onClick={() => handleImgDeleteMark(img.imgNum)}
+                  >
+                    <IoCloseCircle />
+                  </button>
+                </div>
+              ))}
+
+              {/* 새 서브 이미지 미리보기 */}
+              {newSubImgPreviews.map((url, index) => (
+                <div key={index} className={styles.imgItem}>
+                  <img src={url} alt={`새 서브이미지 ${index + 1}`} />
+                  <button
+                    type='button'
+                    className={styles.imgDeleteBtn}
+                    onClick={() => handleNewSubImgRemove(index)}
+                  >
+                    <IoCloseCircle />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* 서브 이미지 추가 input */}
+            <Input
+              type='file'
+              name='newSubImgs'
+              onChange={handleNewSubImgsChange}
+              multiple={true}
+              accept='image/*'
+            />
+          </div>
         </div>
 
         {/* 버튼 */}

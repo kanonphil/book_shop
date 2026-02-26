@@ -120,8 +120,9 @@ public class BookService {
   }
 
   // 도서 수정
-  public void updateBook(BookDTO bookDTO) {
+  public void updateBook(BookDTO bookDTO, MultipartFile mainImg, List<MultipartFile> subImgs) {
     int result = bookMapper.updateBook(bookDTO);
+    bookImgService.saveImgs(bookDTO.getBookNum(), mainImg, subImgs);
 
     if (result == 0) {
       throw new RuntimeException("도서를 찾을 수 없습니다. BOOK_NUM: " + bookDTO.getBookNum());
