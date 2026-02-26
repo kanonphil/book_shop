@@ -191,7 +191,14 @@ const CartList = () => {
   // 선택한 상품들의 총 가격 계산
   const getSelectedTotalPrice = () => {
     return cartItems
+      // 1. 선택된 항목만 필터링
+      // selectedItems = [1, 3, 5] 처럼 선택된 cartNum 목록
+      // cartItems 중 selectedItems에 포함된 것만 추합
       .filter(item => selectedItems.includes(item.cartNum))
+      // 2. 필터링된 항목들의 가격 합산
+      // sum: 누적값 (초기값 0)
+      // item: 현재 항목
+      // 가격 * 수량을 누적해서 더함
       .reduce((sum, item) => sum + (item.bookPrice * item.cartCnt), 0)
   }
 
