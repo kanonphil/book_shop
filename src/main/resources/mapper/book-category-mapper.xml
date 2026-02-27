@@ -16,6 +16,32 @@
 		FROM BOOK_CATEGORY
 		ORDER BY CATE_NUM
 	</select>
+
+	<!-- 카테고리 추가 -->
+	<insert id="insertCategory"	useGeneratedKeys="true" keyProperty="cateNum">
+		INSERT INTO BOOK_CATEGORY (CATE_NAME)
+		VALUES (#{cateName})
+	</insert>
+
+	<!-- 카테고리 수정 -->
+	<update id="updateCategory">
+		UPDATE BOOK_CATEGORY
+		SET CATE_NAME = #{cateName}
+		WHERE CATE_NUM = #{cateNum}
+	</update>
+
+	<!-- 카테고리 삭제 -->
+	<delete id="deleteCategory">
+		DELETE FROM BOOK_CATEGORY
+		WHERE CATE_NUM = #{cateNum}
+	</delete>
+
+	<!-- 해당 카테고리에 속한 도서 수 조회 -->
+	<select id="selectBookCountByCateNum" resultType="int">
+		SELECT COUNT(*)
+		FROM BOOK_CATEGORY
+		WHERE CATE_NUM = #{cateNum}
+	</select>
 </mapper>
 
 
