@@ -65,9 +65,9 @@ const ManagerSide = () => {
         </div>
         {openMenu.purchase && (
           <ul className={styles.sub_menu}>
-            <li><IoReceiptOutline /> 구매내역조회</li>
-            <li><IoCalendarOutline /> 월별매출관리</li>
-            <li><IoStatsChartOutline /> 주간매출관리</li>
+            <li onClick={() => navigate('/manage/buy/history')}><IoReceiptOutline /> 구매내역조회</li>
+            <li onClick={() => navigate('/manage/buy/monthly')}><IoCalendarOutline /> 월별매출관리</li>
+            <li onClick={() => navigate('/manage/buy/weekly')}><IoStatsChartOutline /> 주간매출관리</li>
           </ul>
         )}
       </div>

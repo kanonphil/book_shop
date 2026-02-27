@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { getStockList, restockBook, updateStock } from '../../api/stockApi'
-import Input from '../../components/common/Input'
-import Button from '../../components/common/Button'
+import { getStockList, restockBook, updateStock } from '../../../api/stockApi'
+import Input from '../../../components/common/Input'
+import Button from '../../../components/common/Button'
 import { IoAddCircleOutline, IoSearchOutline, IoWarningOutline } from 'react-icons/io5'
 import styles from './ManageStock.module.css'
 

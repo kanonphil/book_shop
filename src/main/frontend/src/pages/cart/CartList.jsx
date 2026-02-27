@@ -299,7 +299,14 @@ const CartList = () => {
                             value={item.cartCnt}
                             min={1}
                             max={item.bookStock}
-                            onChange={(e) => handleQuantityChange(item.cartNum, parseInt(e.target.value))}
+                            onChange={(e) => {
+                              const value = e.target.value
+
+                              // 숫자가 아니면 무시 (기존 값 유지)
+                              if (value !== '' && !/^\d+$/.test(value)) return
+
+                              handleQuantityChange(item.cartNum, parseInt(value) || item.cartCnt)
+                            }}
                         />
                         <button 
                           className={styles.quantityBtn}

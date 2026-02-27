@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from './BookForm.module.css'
-import Form from '../../components/common/Form'
-import Input from '../../components/common/Input'
-import Button from '../../components/common/Button'
-import Select from '../../components/common/Select'
-import Textarea from '../../components/common/Textarea'
-import { registerBook } from '../../api/bookApi';
-import { getCategories } from '../../api/categoryApi';
+import Form from '../../../components/common/Form'
+import Input from '../../../components/common/Input'
+import Button from '../../../components/common/Button'
+import Select from '../../../components/common/Select'
+import Textarea from '../../../components/common/Textarea'
+import { registerBook } from '../../../api/bookApi';
+import { getCategories } from '../../../api/categoryApi';
 import { IoCloseCircle } from 'react-icons/io5'
 
 const BookForm = () => {
@@ -37,7 +37,8 @@ const BookForm = () => {
     bookTitle: '',
     author: '',
     bookPrice: '',
-    publishDate: ''
+    publishDate: '',
+    mainImg: ''
   })
 
   const isFormValid =
@@ -50,8 +51,8 @@ const BookForm = () => {
     bookData.bookTitle.trim() &&
     bookData.bookPrice &&
     bookData.author.trim() &&
-    bookData.publishDate
-
+    bookData.publishDate &&
+    mainImg !== null
     
   // img
   const handleFileChange = (e) => {
@@ -63,6 +64,7 @@ const BookForm = () => {
 
       setMainImg(files[0])        // 단일 파일
       setMainPreview(URL.createObjectURL(files[0]))  // 미리보기 URL 생성
+      setErrors(prev => ({ ...prev, mainImg: '' }))
 
     } else if (name === 'subImgs') {
       const fileArray = [...files]
@@ -111,7 +113,8 @@ const BookForm = () => {
       bookTitle: validateField('bookTitle', ''),
       author: validateField('author', ''),
       bookPrice: validateField('bookPrice', ''),
-      publishDate: validateField('publishDate', '')
+      publishDate: validateField('publishDate', ''),
+      mainImg: '대표 이미지를 등록해주세요.'
     })
   }, [])
 
@@ -151,6 +154,10 @@ const BookForm = () => {
       case 'publishDate':
         if (!value) return '출판일을 선택해주세요'
         return ''
+
+      case 'mainImg':
+        if (!value) return '대표 이미지를 등록해주세요.'
+        return ''
     
       default:
         return '';
@@ -167,6 +174,11 @@ const BookForm = () => {
     }
 
     setErrors(newErrors)
+
+    if (!mainImg) {
+      setErrors(prev => ({ ...prev, mainImg: '대표 이미지를 등록해주세요.' }))
+      return false
+    }
 
     return !Object.values(newErrors).some(error => error !== '')
   }
@@ -359,6 +371,7 @@ const BookForm = () => {
             name='mainImg'
             onChange={handleFileChange}
             className={styles.bookImg}
+            error={errors.mainImg}
             required
           />
         )}

@@ -7,18 +7,21 @@ import BookList from './pages/book/BookList'
 import Login from './pages/member/Login'
 import LoginSelect from './pages/member/LoginSelect'
 import OAuthCallback from './pages/member/OAuthCallback'
-import BookForm from './pages/manage/BookForm'
+import BookForm from './pages/manage/book/BookForm'
 import BookDetail from './pages/book/BookDetail'
 import CartList from './pages/cart/CartList'
 import BuyList from './pages/buy/BuyList'
 import OrderPage from './pages/buy/OrderPage'
-import ManageStock from './pages/manage/ManageStock'
-import ManageBookList from './pages/manage/ManageBookList'
-import ManageBookEdit from './pages/manage/ManageBookEdit'
+import ManageStock from './pages/manage/edit/ManageStock'
+import ManageBookList from './pages/manage/edit/ManageBookList'
+import ManageBookEdit from './pages/manage/edit/ManageBookEdit'
 import MyPageLayout from './components/layout/MyPageLayout'
 import ProfileEdit from './pages/member/ProfileEdit'
 import PasswordCheck from './pages/member/PasswordCheck'
 import MyPageMain from './pages/mypage/MyPageMain'
+import BuyHistory from './pages/manage/buy/BuyHistory'
+import MonthlySales from './pages/manage/buy/MonthlySales'
+import WeeklySales from './pages/manage/buy/WeeklySales'
 
 function App() {
   
@@ -60,6 +63,9 @@ function App() {
           <Route path='stock' element={<ManageStock />} />
           <Route path='book-edit' element={<ManageBookList />} />
           <Route path='book-edit/:bookNum' element={<ManageBookEdit />} />
+          <Route path='buy/history' element={<BuyHistory />} />
+          <Route path='buy/monthly' element={<MonthlySales />} />
+          <Route path='buy/weekly' element={<WeeklySales />} />
         </Route>
       </Routes>
     </>

@@ -1,0 +1,160 @@
+.container {
+  padding: 24px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+}
+
+/* 필터 섹션 */
+.filterSection {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: var(--card-bg, #1e1e1e);
+  border: 1px solid var(--border-color, #333);
+  margin-bottom: 24px;
+  max-width: 400px;  /* ← 추가: 너무 넓지 않게 */
+}
+
+.filterSection > * {
+  margin-bottom: 0 !important;  /* ← 추가: Input 하단 마진 제거 */
+}
+
+.yearInput {
+  width: 120px;
+}
+
+/* 요약 카드 */
+.summaryRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summaryCard {
+  padding: 20px;
+  border-radius: 12px;
+  background-color: var(--card-bg, #1e1e1e);
+  border: 1px solid var(--border-color, #333);
+  text-align: center;
+}
+
+.summaryLabel {
+  font-size: 13px;
+  color: var(--text-secondary, #aaa);
+  margin-bottom: 8px;
+}
+
+.summaryValue {
+  font-size: 22px;
+  font-weight: 700;
+  color: #4a9eff;
+}
+
+.emptyMsg {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--text-secondary, #aaa);
+  font-size: 14px;
+}
+
+/* 차트 섹션 */
+.chartSection {
+  padding: 20px;
+  border-radius: 12px;
+  background-color: var(--card-bg, #1e1e1e);
+  border: 1px solid var(--border-color, #333);
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary, #e0e0e0);
+  margin-bottom: 16px;
+}
+
+/* 테이블 */
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border-color, #333);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table thead tr {
+  background-color: var(--card-bg, #1e1e1e);
+  border-bottom: 2px solid var(--border-color, #333);
+}
+
+.table th {
+  padding: 14px 16px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-secondary, #aaa);
+}
+
+.table td {
+  padding: 14px 16px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color, #333);
+  color: var(--text-primary, #e0e0e0);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background-color: var(--item-hover-bg, #2a2a2a);
+}
+
+/* 라이트 모드 */
+[data-theme='light'] .filterSection,
+[data-theme='light'] .summaryCard,
+[data-theme='light'] .chartSection {
+  background-color: #ffffff;
+  border-color: #e0e0e0;
+}
+
+[data-theme='light'] .title,
+[data-theme='light'] .sectionTitle {
+  color: #1a1a1a;
+}
+
+[data-theme='light'] .summaryLabel {
+  color: #666;
+}
+
+[data-theme='light'] .table thead tr {
+  background-color: #f5f5f5;
+}
+
+[data-theme='light'] .table th {
+  color: #666;
+}
+
+[data-theme='light'] .table td {
+  color: #1a1a1a;
+  border-bottom-color: #e0e0e0;
+}
+
+[data-theme='light'] .tableWrapper {
+  border-color: #e0e0e0;
+}
+
+[data-theme='light'] .table tbody tr:hover {
+  background-color: #f0f0f0;
+}

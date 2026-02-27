@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getBookList } from '../../api/bookApi'
+import { getBookList } from '../../../api/bookApi'
 import styles from './ManageBookList.module.css'
-import Button from '../../components/common/Button'
+import Button from '../../../components/common/Button'
 import { IoCreateOutline } from 'react-icons/io5'
-import Pagination from '../../components/common/Pagination'
+import Pagination from '../../../components/common/Pagination'
 
 const ManageBookList = () => {
   const navigate = useNavigate()

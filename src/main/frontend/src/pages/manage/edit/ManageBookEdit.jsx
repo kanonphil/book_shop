@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getBookDetail, updateBook } from '../../api/bookApi'
-import { getCategories } from '../../api/categoryApi'
-import { addBookImgs, deleteBookImg } from '../../api/bookImgApi'
+import { getBookDetail, updateBook } from '../../../api/bookApi'
+import { getCategories } from '../../../api/categoryApi'
+import { addBookImgs, deleteBookImg } from '../../../api/bookImgApi'
 import styles from './ManageBookEdit.module.css'
-import Select from '../../components/common/Select'
-import Input from '../../components/common/Input'
-import Textarea from '../../components/common/Textarea'
+import Select from '../../../components/common/Select'
+import Input from '../../../components/common/Input'
+import Textarea from '../../../components/common/Textarea'
 import { IoCloseCircle } from 'react-icons/io5'
-import Button from '../../components/common/Button'
+import Button from '../../../components/common/Button'
 
 const ManageBookEdit = () => {
   const { bookNum } = useParams()

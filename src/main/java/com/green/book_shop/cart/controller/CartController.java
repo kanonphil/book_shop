@@ -93,6 +93,11 @@ public class CartController {
     try {
       Integer cartCnt = request.get("cartCnt");
 
+      if (cartCnt == null || cartCnt < 1) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("success", false, "message", "올바른 수량을 입력해주세요."));
+      }
+
       log.info("=== 수량 변경 요청 ===");
       log.info("장바구니 수량 변경 - cartNum: {}, 새 수량: {}", cartNum, cartCnt);
 

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
+<mapper namespace="com.green.book_shop.buy.mapper.BuyManageMapper">
+	<!-- 구매 상세 -->
+	<resultMap id="buyHistory" type="com.green.book_shop.buy.dto.BuyHistoryDTO">
+		<id 	column="BUY_NUM" 	property="buyNum" />
+		<result column="MEM_EMAIL"  property="memEmail" />
+		<result column="BUY_PRICE"  property="buyPrice" />
+		<result column="BUY_DATE"   property="buyDate" />
+		<collection property="details" ofType="com.green.book_shop.buy.dto.BuyDetailDTO">
+			<id     column="BUY_DETAIL_NUM"     property="buyDetailNum" />
+			<result column="BOOK_NUM"           property="bookNum" />
+			<result column="BUY_CNT"            property="buyCnt" />
+			<result column="DETAIL_PRICE"       property="buyPrice" />
+			<result column="BOOK_TITLE"         property="bookTitle" />
+			<result column="UPLOAD_FILE_NAME"   property="uploadFileName" />
+		</collection>
+	</resultMap>
+
+	<!-- 전체 구매내역 조회 (필터 조건) -->
+	<select id="selectBuyHistory" resultMap="buyHistory">
+		SELECT
+		B.BUY_NUM,
+		B.MEM_EMAIL,
+		B.BUY_PRICE,
+		B.BUY_DATE,
+		D.BUY_DETAIL_NUM,
+		D.BOOK_NUM,
+		D.BUY_CNT,
+		D.BUY_PRICE  AS DETAIL_PRICE,
+		BK.BOOK_TITLE,
+		BI.UPLOAD_FILE_NAME
+		FROM SHOP_BUY B
+		LEFT JOIN BUY_DETAIL D  ON B.BUY_NUM   = D.BUY_NUM
+		LEFT JOIN SHOP_BOOK BK  ON D.BOOK_NUM   = BK.BOOK_NUM
+		LEFT JOIN BOOK_IMG BI   ON BK.BOOK_NUM  = BI.BOOK_NUM AND BI.IS_MAIN = 'Y'
+		<where>
+			<if test="memEmail != null and memEmail != ''">
+				AND B.MEM_EMAIL LIKE CONCAT('%', #{memEmail}, '%')
+			</if>
+			<if test="startDate != null and startDate != ''">
+				AND B.BUY_DATE &gt;= #{startDate}
+			</if>
+			<if test="endDate != null and endDate != ''">
+				AND B.BUY_DATE &lt;= CONCAT(#{endDate}, ' 23:59:59')
+			</if>
+			<if test="bookTitle != null and bookTitle != ''">
+				AND BK.BOOK_TITLE LIKE CONCAT('%', #{bookTitle}, '%')
+			</if>
+		</where>
+		ORDER BY B.BUY_DATE DESC
+	</select>
+
+	<!-- 월별 매출 조회 -->
+	<select id="selectMonthlySales" resultType="com.green.book_shop.buy.dto.SalesDTO">
+		SELECT
+			CONCAT(MONTH(BUY_DATE), '월')  AS label,
+			SUM(BUY_PRICE)                 AS totalSales,
+			COUNT(BUY_NUM)                 AS orderCount
+		FROM SHOP_BUY
+		WHERE YEAR(BUY_DATE) = #{year}
+		GROUP BY MONTH(BUY_DATE)
+		ORDER BY MONTH(BUY_DATE)
+	</select>
+
+	<!-- 주간 매출 조회 -->
+	<select id="selectWeeklySales" resultType="com.green.book_shop.buy.dto.SalesDTO">
+		SELECT
+			CONCAT(CEIL(DAY(BUY_DATE) / 7), '주차')  AS label,
+			SUM(BUY_PRICE)                            AS totalSales,
+			COUNT(BUY_NUM)                            AS orderCount
+		FROM SHOP_BUY
+		WHERE YEAR(BUY_DATE) = #{year}
+		  AND MONTH(BUY_DATE) = #{month}
+		GROUP BY CEIL(DAY(BUY_DATE) / 7)
+		ORDER BY CEIL(DAY(BUY_DATE) / 7)
+	</select>
+</mapper>
