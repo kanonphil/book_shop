@@ -18,6 +18,7 @@ import ManageBookEdit from './pages/manage/ManageBookEdit'
 import MyPageLayout from './components/layout/MyPageLayout'
 import ProfileEdit from './pages/member/ProfileEdit'
 import PasswordCheck from './pages/member/PasswordCheck'
+import MyPageMain from './pages/mypage/MyPageMain'
 
 function App() {
   
@@ -46,7 +47,8 @@ function App() {
 
         {/* 마이페이지 */}
         <Route path='/mypage' element={<MyPageLayout />}>
-          <Route index element={<CartList />} />
+          <Route index element={<MyPageMain />} />
+          <Route path='cart' element={<CartList />} />
           <Route path='buy-list' element={<BuyList />} />
           <Route path='profile-edit' element={<PasswordCheck />} />
           <Route path='profile-edit/form' element={<ProfileEdit />} />
