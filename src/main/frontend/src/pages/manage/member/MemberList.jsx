@@ -20,20 +20,23 @@ const STATUS_OPTIONS = [
 ]
 
 const MemberList = () => {
-
+  // 검색 필터
   const [filters, setFilters] = useState({
     keyword: '',
     memRole: '',
     isUsing: '',
   })
 
+  // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [totalElements, setTotalElements] = useState(0)
 
+  // 데이터 & UI
   const [members, setMembers] = useState([])
   const [loading, setLoading] = useState(false)
 
+  // 회원 목록 조회
   const fetchMembers = useCallback(async (page = 1) => {
     setLoading(true)
     try {
