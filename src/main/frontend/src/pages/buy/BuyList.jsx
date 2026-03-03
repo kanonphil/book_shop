@@ -4,6 +4,7 @@ import { getBuyList } from '../../api/buyApi'
 import styles from './BuyList.module.css'
 import Button from '../../components/common/Button'
 import Pagenation from '../../components/common/Pagination'
+import { IoChevronDownOutline, IoChevronUpOutline } from 'react-icons/io5'
 
 const PAGE_SIZE = 5
 
@@ -12,6 +13,9 @@ const BuyList = () => {
   const [buyList, setBuyList] = useState([])
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
+
+  // 아코디언 열림 상태: Set으로 현재 펼쳐진 buyNum을 관리
+  const [openItems, setOpenItems] = useState(new Set())
 
   useEffect(() => {
     fetchBuyList()
@@ -44,6 +48,23 @@ const BuyList = () => {
     return rest > 0 ? `${first} 외 ${rest}개` : first
   }
 
+  /**
+   * 아코디언 토글 핸들러
+   * 이미 열린 항목이면 닫고, 닫힌 항목이면 엶
+   * @param {number} buyNum - 토글할 주문 번호
+   */
+  const toggleAccordion = (buyNum) => {
+    setOpenItems(prev => {
+      const next = new Set(prev)
+      if (next.has(buyNum)) {
+        next.delete(buyNum)
+      } else {
+        next.add(buyNum)
+      }
+      return next
+    })
+  }
+
   // 페이지네이션 계산
   const totalPage = Math.ceil(buyList.length / PAGE_SIZE)
   const pagedList = buyList.slice(
@@ -52,10 +73,10 @@ const BuyList = () => {
   )
 
   if (loading) return <div className={styles.loading}>로딩 중...</div>
-  
+
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>주문 내역</h1>
+      <h1 className={styles.title}>구매 내역</h1>
 
       {buyList.length === 0 ? (
         <div className={styles.empty}>
@@ -66,84 +87,96 @@ const BuyList = () => {
         </div>
       ) : (
         <>
-          {pagedList.map(buy => (
-            <div key={buy.buyNum} className={styles.buyCard}>
+          {pagedList.map(buy => {
+            // 현재 항목이 펼쳐진 상태인지 확인
+            const isOpen = openItems.has(buy.buyNum)
 
-              {/* 주문 헤더 */}
-              <div className={styles.buyHeader}>
-                <div className={styles.buyHeaderLeft}>
-                  <span className={styles.buyNum}>{buy.buyNum}</span>
-                  <span className={styles.separator}>|</span>
-                  <span className={styles.buyTitle}>
-                    {getRepresentTitle(buy.details)}
-                  </span>
-                  <span className={styles.separator}>|</span>
-                  <span className={styles.buyPrice}>
-                    {buy.buyPrice?.toLocaleString()}원
-                  </span>
-                  <span className={styles.separator}>|</span>
-                  <span className={styles.buyDate}>
-                    {formatDate(buy.buyDate)}
+            return (
+              <div key={buy.buyNum} className={styles.buyCard}>
+
+                {/* 주문 헤더 - 클릭 시 아코디언 토글 */}
+                <div
+                  className={styles.buyHeader}
+                  onClick={() => toggleAccordion(buy.buyNum)}
+                >
+                  <div className={styles.buyHeaderLeft}>
+                    <span className={styles.buyNum}>{buy.buyNum}</span>
+                    <span className={styles.separator}>|</span>
+                    <span className={styles.buyTitle}>
+                      {getRepresentTitle(buy.details)}
+                    </span>
+                    <span className={styles.separator}>|</span>
+                    <span className={styles.buyPrice}>
+                      {buy.buyPrice?.toLocaleString()}원
+                    </span>
+                    <span className={styles.separator}>|</span>
+                    <span className={styles.buyDate}>
+                      {formatDate(buy.buyDate)}
+                    </span>
+                  </div>
+
+                  {/* 업/다운 아이콘: 열리면 위쪽 화살표, 닫히면 아래쪽 화살표 */}
+                  <span className={styles.chevron}>
+                    {isOpen ? <IoChevronUpOutline /> : <IoChevronDownOutline />}
                   </span>
                 </div>
-                <Button
-                  variant='outline'
-                  size='small'
-                  onClick={() => navigate(`/buy-list/${buy.buyNum}`)}
-                >
-                  상세보기
-                </Button>
-              </div>
 
-              {/* 주문 상세 테이블 */}
-              <div className={styles.tableWrapper}>
-                <table className={styles.table}>
-                  <thead>
-                    <tr>
-                      <th className={styles.noCol}>No</th>
-                      <th className={styles.bookCol}>도서 정보</th>
-                      <th className={styles.priceCol}>가격</th>
-                      <th className={styles.quantityCol}>수량</th>
-                      <th className={styles.totalCol}>구매가격</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {buy.details?.map((detail, index) => (
-                      <tr key={detail.buyDetailNum}>
-                        <td>{index + 1}</td>
-                        <td>
-                          <div 
-                            onClick={() => navigate(`/books/${detail.bookNum}`)}
-                            className={styles.bookInfo}
-                          >
-                            {detail.uploadFileName && (
-                              <img
-                                  src={detail.uploadFileName ? `/upload/${detail.uploadFileName}` : '/placeholder.jpg'}
-                                  alt={detail.bookTitle}
-                                  className={styles.bookImg}
-                              />
-                            )}
-                            <span className={styles.bookTitle}>
-                              {detail.bookTitle}
-                            </span>
-                          </div>
-                        </td>
-                        <td>{detail.bookPrice?.toLocaleString()}원</td>
-                        <td>{detail.buyCnt}</td>
-                        <td className={styles.itemTotal}>
-                          {(detail.bookPrice * detail.buyCnt).toLocaleString()}원
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                {/* 주문 상세 테이블 - isOpen일 때만 렌더링 (아코디언) */}
+                {isOpen && (
+                  <div className={styles.tableWrapper}>
+                    <table className={styles.table}>
+                      <thead>
+                        <tr>
+                          <th className={styles.noCol}>No</th>
+                          <th className={styles.bookCol}>도서 정보</th>
+                          <th className={styles.priceCol}>가격</th>
+                          <th className={styles.quantityCol}>수량</th>
+                          <th className={styles.totalCol}>구매가격</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {buy.details?.map((detail, index) => (
+                          <tr key={detail.buyDetailNum}>
+                            <td>{index + 1}</td>
+                            <td>
+                              <div
+                                onClick={(e) => {
+                                  // 헤더 클릭 이벤트(아코디언)와 분리
+                                  e.stopPropagation()
+                                  navigate(`/books/${detail.bookNum}`)
+                                }}
+                                className={styles.bookInfo}
+                              >
+                                {detail.uploadFileName && (
+                                  <img
+                                      src={detail.uploadFileName ? `/upload/${detail.uploadFileName}` : '/placeholder.jpg'}
+                                      alt={detail.bookTitle}
+                                      className={styles.bookImg}
+                                  />
+                                )}
+                                <span className={styles.bookTitle}>
+                                  {detail.bookTitle}
+                                </span>
+                              </div>
+                            </td>
+                            <td>{detail.bookPrice?.toLocaleString()}원</td>
+                            <td>{detail.buyCnt}</td>
+                            <td className={styles.itemTotal}>
+                              {(detail.bookPrice * detail.buyCnt).toLocaleString()}원
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            )
+          })}
 
           {/* 페이지네이션 */}
           {totalPage > 1 && (
-            <Pagenation 
+            <Pagenation
               currentPage={currentPage}
               totalPages={totalPage}
               onPageChange={setCurrentPage}

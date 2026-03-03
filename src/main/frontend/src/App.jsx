@@ -22,6 +22,9 @@ import MyPageMain from './pages/mypage/MyPageMain'
 import BuyHistory from './pages/manage/buy/BuyHistory'
 import MonthlySales from './pages/manage/buy/MonthlySales'
 import WeeklySales from './pages/manage/buy/WeeklySales'
+// 매니저용 회원 관리 페이지
+import ManageMemberList from './pages/manage/member/ManageMemberList'
+import ManageMemberStatus from './pages/manage/member/ManageMemberStatus'
 
 function App() {
   
@@ -66,6 +69,10 @@ function App() {
           <Route path='buy/history' element={<BuyHistory />} />
           <Route path='buy/monthly' element={<MonthlySales />} />
           <Route path='buy/weekly' element={<WeeklySales />} />
+          {/* 회원 관리: /manage/member/list */}
+          <Route path='member/list' element={<ManageMemberList />} />
+          {/* 회원 상태 변경: /manage/member/status */}
+          <Route path='member/status' element={<ManageMemberStatus />} />
         </Route>
       </Routes>
     </>

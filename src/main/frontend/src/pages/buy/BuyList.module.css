@@ -42,13 +42,25 @@
   overflow: hidden;
 }
 
-/* 주문 헤더 */
+/* 주문 헤더 - 클릭 가능하도록 cursor: pointer */
 .buyHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: #4a9eff;
   padding: 14px 20px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* 업/다운 chevron 아이콘 */
+.chevron {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-left: 12px;
 }
 
 .buyHeaderLeft {
