@@ -1,0 +1,71 @@
+/* ── 기본 뱃지 스타일 ─────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;       /* pill 형태 */
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+/* ── 색상 변형 ───────────────────────────────────────────── */
+
+/* 초록: 활성 상태 */
+.green {
+  background-color: rgba(39, 174, 96, 0.15);
+  color: #27ae60;
+  border: 1px solid rgba(39, 174, 96, 0.4);
+}
+
+/* 빨강: 비활성 상태 / ADMIN 권한 */
+.red {
+  background-color: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.4);
+}
+
+/* 파랑: USER 권한 */
+.blue {
+  background-color: rgba(74, 158, 255, 0.15);
+  color: #4a9eff;
+  border: 1px solid rgba(74, 158, 255, 0.4);
+}
+
+/* 주황: MANAGER 권한 */
+.orange {
+  background-color: rgba(243, 156, 18, 0.15);
+  color: #f39c12;
+  border: 1px solid rgba(243, 156, 18, 0.4);
+}
+
+/* 회색: 일반(local) 가입 */
+.gray {
+  background-color: rgba(149, 165, 166, 0.15);
+  color: #95a5a6;
+  border: 1px solid rgba(149, 165, 166, 0.4);
+}
+
+/* 구글 초록 */
+.google {
+  background-color: rgba(52, 168, 83, 0.15);
+  color: #34a853;
+  border: 1px solid rgba(52, 168, 83, 0.4);
+}
+
+/* 네이버 초록 */
+.naver {
+  background-color: rgba(3, 199, 90, 0.15);
+  color: #03c75a;
+  border: 1px solid rgba(3, 199, 90, 0.4);
+}
+
+/* ── 라이트 모드 오버라이드 ─────────────────────────────────
+   라이트 모드에서는 배경색을 조금 더 진하게 적용하여 가독성 확보 */
+[data-theme='light'] .green  { background-color: rgba(39, 174, 96, 0.12); }
+[data-theme='light'] .red    { background-color: rgba(231, 76, 60, 0.12); }
+[data-theme='light'] .blue   { background-color: rgba(74, 158, 255, 0.12); }
+[data-theme='light'] .orange { background-color: rgba(243, 156, 18, 0.12); }
+[data-theme='light'] .gray   { background-color: rgba(149, 165, 166, 0.12); }
+[data-theme='light'] .google { background-color: rgba(52, 168, 83, 0.12); }
+[data-theme='light'] .naver  { background-color: rgba(3, 199, 90, 0.12); }

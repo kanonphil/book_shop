@@ -22,6 +22,8 @@ import MyPageMain from './pages/mypage/MyPageMain'
 import BuyHistory from './pages/manage/buy/BuyHistory'
 import MonthlySales from './pages/manage/buy/MonthlySales'
 import WeeklySales from './pages/manage/buy/WeeklySales'
+import MemberList from './pages/manage/member/MemberList'
+import MemberStatus from './pages/manage/member/MemberStatus'
 
 function App() {
   
@@ -66,6 +68,8 @@ function App() {
           <Route path='buy/history' element={<BuyHistory />} />
           <Route path='buy/monthly' element={<MonthlySales />} />
           <Route path='buy/weekly' element={<WeeklySales />} />
+          <Route path='member/list' element={<MemberList />} />
+          <Route path='member/status' element={<MemberStatus />} />
         </Route>
       </Routes>
     </>

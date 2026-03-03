@@ -82,8 +82,8 @@ const ManagerSide = () => {
         </div>
         {openMenu.member && (
           <ul className={styles.sub_menu}>
-            <li><IoPersonOutline /> 회원정보조회</li>
-            <li><IoToggleOutline /> 회원상태변경</li>
+            <li onClick={() => navigate('/manage/member/list')}><IoPersonOutline /> 회원정보조회</li>
+            <li onClick={() => navigate('/manage/member/status')}><IoToggleOutline /> 회원상태변경</li>
           </ul>
         )}
       </div>
