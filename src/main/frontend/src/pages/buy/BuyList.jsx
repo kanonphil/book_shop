@@ -26,6 +26,8 @@ const BuyList = () => {
       const response = await getBuyList()
       if (response.success) {
         setBuyList(response.buyList)
+        // 기본적으로 모든 항목을 펼친 상태로 초기화
+        setOpenItems(new Set(response.buyList.map(b => b.buyNum)))
       }
     } catch (error) {
       console.error('구매 목록 조회 실패:', error);
