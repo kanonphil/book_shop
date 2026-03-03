@@ -81,3 +81,5 @@ CREATE TABLE BUY_DETAIL (
 	BUY_PRICE INT NOT NULL,										# 구매 금액
 	BUY_NUM INT REFERENCES SHOP_BUY (BUY_NUM)					# 구매 번호
 );
+
+#
