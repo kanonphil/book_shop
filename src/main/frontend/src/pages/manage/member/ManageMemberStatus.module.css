@@ -1,0 +1,262 @@
+/* ── 페이지 전체 컨테이너 ────────────────────────────────── */
+.container {
+  padding: 24px;
+}
+
+/* ── 페이지 타이틀 ────────────────────────────────────────── */
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+}
+
+/* ── 검색 필터 섹션 (ManageMemberList.module.css와 동일 구조) */
+.filterSection {
+  padding: 20px;
+  border-radius: 12px;
+  background-color: var(--card-bg, #1e1e1e);
+  border: 1px solid var(--border-color, #333);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filterRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* ── 결과 건수 ────────────────────────────────────────────── */
+.resultCount {
+  font-size: 14px;
+  color: var(--text-secondary, #aaa);
+  margin-bottom: 12px;
+}
+
+.resultCount span {
+  font-weight: 700;
+  color: #4a9eff;
+}
+
+/* ── 로딩 / 빈 목록 메시지 ───────────────────────────────── */
+.loading,
+.emptyMsg {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--text-secondary, #aaa);
+  font-size: 14px;
+}
+
+/* ── 테이블 래퍼 ─────────────────────────────────────────── */
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border-color, #333);
+  margin-bottom: 20px;
+}
+
+/* ── 테이블 ─────────────────────────────────────────────── */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table thead tr {
+  background-color: var(--card-bg, #1e1e1e);
+  border-bottom: 2px solid var(--border-color, #333);
+}
+
+.table th {
+  padding: 14px 16px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-secondary, #aaa);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 12px 16px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color, #333);
+  color: var(--text-primary, #e0e0e0);
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background-color: var(--item-hover-bg, #2a2a2a);
+}
+
+/* 이메일 셀 좌측 정렬 */
+.emailCell {
+  text-align: left !important;
+  font-size: 13px;
+  color: var(--text-secondary, #aaa);
+}
+
+/* ── 권한 변경 인라인 셀렉트 ─────────────────────────────
+   ManageStock의 inlineInput과 유사한 스타일로 통일 */
+.roleSelect {
+  padding: 5px 10px;
+  background-color: var(--bg-secondary, #2a2a2a);
+  color: var(--text-primary, #e0e0e0);
+  border: 1px solid var(--border-color, #444);
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  min-width: 100px;
+}
+
+.roleSelect:hover {
+  border-color: #4a9eff;
+}
+
+.roleSelect:focus {
+  outline: none;
+  border-color: #4a9eff;
+  box-shadow: 0 0 0 2px rgba(74, 158, 255, 0.2);
+}
+
+.roleSelect option {
+  background-color: var(--bg-secondary, #2a2a2a);
+  color: var(--text-primary, #e0e0e0);
+}
+
+/* ── 확인 모달 (ManageStock.module.css 패턴) ─────────────── */
+
+/* 반투명 오버레이: 화면 전체를 덮음 */
+.modalOverlay {
+  position: fixed;
+  inset: 0;                         /* top/right/bottom/left: 0 */
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* 모달 박스 */
+.modal {
+  background-color: var(--bg-primary, #121212);
+  border: 1px solid var(--border-color, #333);
+  border-radius: 12px;
+  padding: 28px 32px;
+  width: 420px;
+  max-width: 90vw;
+}
+
+/* 모달 타이틀 */
+.modalTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary, #e0e0e0);
+  margin-bottom: 14px;
+}
+
+/* 안내 메시지 */
+.modalMessage {
+  font-size: 14px;
+  color: var(--text-secondary, #aaa);
+  line-height: 1.6;
+  margin-bottom: 18px;
+  word-break: break-all;  /* 이메일 주소 줄바꿈 처리 */
+}
+
+/* 변경 후 미리보기 영역 */
+.modalPreview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background-color: var(--bg-secondary, #1e1e1e);
+  border: 1px solid var(--border-color, #333);
+  margin-bottom: 22px;
+}
+
+.previewLabel {
+  font-size: 13px;
+  color: var(--text-secondary, #aaa);
+  flex-shrink: 0;
+}
+
+/* 모달 버튼 행 */
+.modalButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* ── 라이트 모드 오버라이드 ───────────────────────────────── */
+[data-theme='light'] .filterSection {
+  background-color: #ffffff;
+  border-color: #e0e0e0;
+}
+
+[data-theme='light'] .title {
+  color: #1a1a1a;
+}
+
+[data-theme='light'] .table thead tr {
+  background-color: #f5f5f5;
+}
+
+[data-theme='light'] .table th {
+  color: #666;
+}
+
+[data-theme='light'] .table td {
+  color: #1a1a1a;
+  border-bottom-color: #e0e0e0;
+}
+
+[data-theme='light'] .tableWrapper {
+  border-color: #e0e0e0;
+}
+
+[data-theme='light'] .table tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+[data-theme='light'] .emailCell {
+  color: #555;
+}
+
+[data-theme='light'] .roleSelect {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border-color: #d0d0d0;
+}
+
+[data-theme='light'] .roleSelect option {
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+[data-theme='light'] .modal {
+  background-color: #ffffff;
+  border-color: #e0e0e0;
+}
+
+[data-theme='light'] .modalTitle {
+  color: #1a1a1a;
+}
+
+[data-theme='light'] .modalPreview {
+  background-color: #f5f5f5;
+  border-color: #e0e0e0;
+}

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
+<mapper namespace="com.green.book_shop.member.mapper.ManageMemberMapper">
+
+	<!--
+		ResultMap: SHOP_MEMBER 테이블 컬럼 → MemberDTO 필드 매핑
+		기존 member-mapper.xml의 "member" resultMap과 동일한 구조이나
+		mapper namespace가 다르므로 별도 선언
+		비밀번호(MEM_PW)는 보안상 매핑에서 제외 (SELECT 절에도 미포함)
+	-->
+	<resultMap id="manageMember" type="com.green.book_shop.member.dto.MemberDTO">
+		<!-- PK: 이메일 (기본키) -->
+		<id     column="MEM_EMAIL"   property="memEmail" />
+		<!-- 이름 -->
+		<result column="MEM_NAME"    property="memName" />
+		<!-- 전화번호 -->
+		<result column="MEM_TEL"     property="memTel" />
+		<!-- 주소 -->
+		<result column="MEM_ADDR"    property="memAddr" />
+		<!-- 상세 주소 -->
+		<result column="ADDR_DETAIL" property="addrDetail" />
+		<!-- 계정 활성 여부: 'Y' = 활성, 'N' = 비활성 -->
+		<result column="IS_USING"    property="isUsing" />
+		<!-- 권한: USER / MANAGER / ADMIN -->
+		<result column="MEM_ROLE"    property="memRole" />
+		<!-- 가입일 -->
+		<result column="JOIN_DATE"   property="joinDate" />
+		<!-- 소셜 로그인 제공자: local / google / naver -->
+		<result column="PROVIDER"    property="provider" />
+	</resultMap>
+
+	<!--
+		회원 목록 조회 (동적 검색 + 페이지네이션)
+		- keyword: MEM_EMAIL 또는 MEM_NAME LIKE 검색
+		- memRole: 권한 필터 (USER / MANAGER / ADMIN)
+		- isUsing: 활성 상태 필터 ('Y' / 'N')
+		- 정렬: 가입일 내림차순 (최신 가입자 우선)
+		- 페이지네이션: LIMIT #{offset}, #{size}
+	-->
+	<select id="selectMemberList" resultMap="manageMember">
+		SELECT
+			MEM_EMAIL,
+			MEM_NAME,
+			MEM_TEL,
+			MEM_ADDR,
+			ADDR_DETAIL,
+			IS_USING,
+			MEM_ROLE,
+			JOIN_DATE,
+			PROVIDER
+		FROM SHOP_MEMBER
+		<where>
+			<!-- 키워드 검색: 이메일 또는 이름에 포함될 경우 -->
+			<if test="keyword != null and keyword != ''">
+				AND (
+					MEM_EMAIL LIKE CONCAT('%', #{keyword}, '%')
+					OR MEM_NAME LIKE CONCAT('%', #{keyword}, '%')
+				)
+			</if>
+			<!-- 권한 필터: 특정 권한 선택 시에만 조건 추가 -->
+			<if test="memRole != null and memRole != ''">
+				AND MEM_ROLE = #{memRole}
+			</if>
+			<!-- 계정 상태 필터: 활성(Y) / 비활성(N) 선택 시에만 조건 추가 -->
+			<if test="isUsing != null and isUsing != ''">
+				AND IS_USING = #{isUsing}
+			</if>
+		</where>
+		ORDER BY JOIN_DATE DESC
+		LIMIT #{offset}, #{size}
+	</select>
+
+	<!--
+		회원 전체 수 조회 (페이지네이션 계산용)
+		selectMemberList와 동일한 WHERE 조건을 사용하여 전체 개수를 반환
+		totalPages = CEIL(totalElements / size)
+	-->
+	<select id="selectMemberCount" resultType="int">
+		SELECT COUNT(*)
+		FROM SHOP_MEMBER
+		<where>
+			<!-- 키워드 검색: 이메일 또는 이름에 포함될 경우 -->
+			<if test="keyword != null and keyword != ''">
+				AND (
+					MEM_EMAIL LIKE CONCAT('%', #{keyword}, '%')
+					OR MEM_NAME LIKE CONCAT('%', #{keyword}, '%')
+				)
+			</if>
+			<!-- 권한 필터 -->
+			<if test="memRole != null and memRole != ''">
+				AND MEM_ROLE = #{memRole}
+			</if>
+			<!-- 계정 상태 필터 -->
+			<if test="isUsing != null and isUsing != ''">
+				AND IS_USING = #{isUsing}
+			</if>
+		</where>
+	</select>
+
+	<!--
+		회원 계정 상태 변경 (활성 ↔ 비활성)
+		IS_USING 컬럼을 'Y' 또는 'N'으로 업데이트
+		- ADMIN 계정은 서비스 레이어에서 변경 불가 처리
+	-->
+	<update id="updateMemberStatus">
+		UPDATE SHOP_MEMBER
+		SET IS_USING = #{isUsing}
+		WHERE MEM_EMAIL = #{memEmail}
+	</update>
+
+	<!--
+		회원 권한 변경
+		MEM_ROLE 컬럼을 USER / MANAGER / ADMIN 중 하나로 업데이트
+		- 서비스 레이어에서 유효하지 않은 권한값 검증
+	-->
+	<update id="updateMemberRole">
+		UPDATE SHOP_MEMBER
+		SET MEM_ROLE = #{memRole}
+		WHERE MEM_EMAIL = #{memEmail}
+	</update>
+
+</mapper>

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout test-ai)",
+      "Bash(git push -u origin test-ai)"
+    ]
+  }
+}
