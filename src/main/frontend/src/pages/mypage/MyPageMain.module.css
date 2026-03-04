@@ -138,6 +138,7 @@
 
 .cartPreviewItem:hover {
   background-color: var(--item-hover-bg, #333);
+  cursor: pointer;
 }
 
 .cartPreviewImg {
@@ -190,6 +191,7 @@
 
 .buyPreviewItem:hover {
   background-color: var(--item-hover-bg, #333);
+  cursor: pointer;
 }
 
 .buyDate {

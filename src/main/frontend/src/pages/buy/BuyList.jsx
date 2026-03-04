@@ -82,7 +82,7 @@ const BuyList = () => {
 
       {buyList.length === 0 ? (
         <div className={styles.empty}>
-          <p>주문 내역이 없습니다.</p>
+          <p>구매 내역이 없습니다.</p>
           <Button variant='primary' onClick={() => navigate('/')}>
             쇼핑 계속하기
           </Button>
