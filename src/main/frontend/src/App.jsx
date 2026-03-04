@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import BasicLayout from './components/layout/BasicLayout'
 import ManagerLayout from './components/layout/ManagerLayout'
 import Join from './pages/member/Join'
@@ -24,6 +24,7 @@ import MonthlySales from './pages/manage/buy/MonthlySales'
 import WeeklySales from './pages/manage/buy/WeeklySales'
 import MemberList from './pages/manage/member/MemberList'
 import MemberStatus from './pages/manage/member/MemberStatus'
+import PrivateRoute from './components/common/PrivateRoute'
 
 function App() {
   
@@ -43,15 +44,25 @@ function App() {
           <Route path='join' element={<Join />} />
           <Route path='login' element={<Login />} />
           <Route path='books/:bookNum' element={<BookDetail />} />
-          <Route path='carts' element={<CartList />} />
-          <Route path='buy-list' element={<BuyList />} />
-          <Route path='order' element={<OrderPage />} />
+          <Route path='carts' element={
+            <PrivateRoute><CartList /></PrivateRoute>
+          } />
+          <Route path='buy-list' element={
+            <PrivateRoute><BuyList /></PrivateRoute>
+          } />
+          <Route path='order' element={
+            <PrivateRoute><OrderPage /></PrivateRoute>
+          } />
           {/* <Route path='login-select' element={<LoginSelect />} /> */}
           {/* <Route path='oauth-callback' element={<OAuthCallback />} /> */}
         </Route>
 
         {/* 마이페이지 */}
-        <Route path='/mypage' element={<MyPageLayout />}>
+        <Route path='/mypage' element={
+          <PrivateRoute>
+            <MyPageLayout />
+          </PrivateRoute>
+        }>
           <Route index element={<MyPageMain />} />
           <Route path='cart' element={<CartList />} />
           <Route path='buy-list' element={<BuyList />} />
@@ -60,7 +71,11 @@ function App() {
         </Route>
 
         {/* 매니저 권한의 회원이 접근하는 페이지들 */}
-        <Route path='/manage' element={<ManagerLayout />}>
+        <Route path='/manage' element={
+          <PrivateRoute roles={['MANAGER', 'ADMIN']}>
+            <ManagerLayout />
+          </PrivateRoute>
+        }>
           <Route path='book-form' element={<BookForm />} />
           <Route path='stock' element={<ManageStock />} />
           <Route path='book-edit' element={<ManageBookList />} />
