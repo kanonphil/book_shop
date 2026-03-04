@@ -3,7 +3,7 @@ import { getMonthlySales } from '../../../api/buyManageApi'
 import styles from './MonthlySales.module.css'
 import Input from '../../../components/common/Input'
 import Button from '../../../components/common/Button'
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 const MonthlySales = () => {
   const currentYear = new Date().getFullYear()
@@ -83,7 +83,7 @@ const MonthlySales = () => {
               <div className={styles.chartSection}>
                 <h3 className={styles.sectionTitle}>{searchedYear}년 월별 매출</h3>
                 <ResponsiveContainer width='100%' height={300}>
-                  <BarChart data={salesData} margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
+                  <AreaChart data={salesData} margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
                     <CartesianGrid strokeDasharray='3 3' stroke='#333' />
                     <XAxis dataKey='label' tick={{ fill: '#aaa', fontSize: 13 }} />
                     <YAxis
@@ -95,8 +95,8 @@ const MonthlySales = () => {
                       contentStyle={{ backgroundColor: '#1e1e1e', border: '1px solid #333', borderRadius: '8px' }}
                       labelStyle={{ color: '#e0e0e0' }}
                     />
-                    <Bar dataKey='totalSales' fill='#4a9eff' radius={[4, 4, 0, 0]} />
-                  </BarChart>
+                    <Area type='monotone' dataKey='totalSales' stroke='#4a9eff' fill='#4a9eff' fillOpacity={0.2} />
+                  </AreaChart>
                 </ResponsiveContainer>
               </div>
 
