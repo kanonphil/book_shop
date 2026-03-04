@@ -11,7 +11,7 @@ const BasicSide = () => {
         <ul className={styles.menu}>
           <li onClick={() => navigate('/mypage/cart')}><IoCartOutline /> 장바구니</li>
           <li onClick={() => navigate('/mypage/buy-list')}><IoReceiptOutline /> 구매내역</li>
-          <li onClick={() => navigate('/mypage/profile-edit')}><IoPersonOutline /> 내 정보 수정</li>
+          <li onClick={() => navigate('/mypage/profile-edit')}><IoPersonOutline /> 내정보수정</li>
         </ul>
       </div>
     </div>

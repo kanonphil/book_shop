@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git restore --staged .)",
+      "Bash(git add STUDY.md)",
+      "Bash(git restore .)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(git push -u origin main)"
+    ]
+  }
+}

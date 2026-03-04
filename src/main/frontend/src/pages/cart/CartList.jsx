@@ -180,11 +180,11 @@ const CartList = () => {
 
     // 선택한 아이템만 필터링해서 OrderPage로 전달
     const selectedCartItems = cartItems.filter(item =>
-        selectedItems.includes(item.cartNum)
+      selectedItems.includes(item.cartNum)
     )
 
     navigate('/order', {
-        state: { items: selectedCartItems }
+      state: { items: selectedCartItems }
     })
   }
 
