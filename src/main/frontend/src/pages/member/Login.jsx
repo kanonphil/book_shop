@@ -138,7 +138,7 @@ const Login = () => {
 
         // 권한에 따른 페이지 이동
         if (member.memRole === 'ADMIN' || member.memRole === 'MANAGER') {
-          navigate('/manage/book-form')
+          navigate('/manage')
         } else {
           navigate('/')
         }

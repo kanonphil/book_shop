@@ -25,6 +25,7 @@ import WeeklySales from './pages/manage/buy/WeeklySales'
 import MemberList from './pages/manage/member/MemberList'
 import MemberStatus from './pages/manage/member/MemberStatus'
 import PrivateRoute from './components/common/PrivateRoute'
+import ManageMain from './pages/manage/ManageMain'
 
 function App() {
   
@@ -76,6 +77,7 @@ function App() {
             <ManagerLayout />
           </PrivateRoute>
         }>
+          <Route index element={<ManageMain />} />
           <Route path='book-form' element={<BookForm />} />
           <Route path='stock' element={<ManageStock />} />
           <Route path='book-edit' element={<ManageBookList />} />

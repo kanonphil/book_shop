@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
+<mapper namespace="com.green.book_shop.buy.mapper.DashboardMapper">
+
+	<!-- 오늘/이달 주문건수 매출 조회 -->
+	<select id="selectDashboardStats" resultType="com.green.book_shop.buy.dto.DashboardStatsDTO">
+		SELECT
+		    (SELECT COUNT(*)
+		     FROM SHOP_BUY
+		     WHERE DATE(BUY_DATE) = CURDATE()) AS todayOrderCount,
+
+			(SELECT COUNT(*)
+			 FROM SHOP_BUY
+			 WHERE YEAR(BUY_DATE) = YEAR(CURDATE())
+			 AND MONTH(BUY_DATE) = MONTH(CURDATE())) AS monthOrderCount,
+
+			(SELECT IFNULL(SUM(BUY_PRICE), 0)
+			 FROM SHOP_BUY
+			 WHERE DATE(BUY_DATE) = CURDATE()) AS todaySales,
+
+			(SELECT IFNULL(SUM(BUY_PRICE), 0)
+			 FROM SHOP_BUY
+			 WHERE YEAR(BUY_DATE) = YEAR(CURDATE())
+			 AND MONTH(BUY_DATE) = MONTH(CURDATE())) AS monthSales
+	</select>
+
+	<!-- 최근 10일간 일별 매출 -->
+	<select id="selectRecentDailySales" resultType="com.green.book_shop.buy.dto.SalesDTO">
+		SELECT
+		    DATE_FORMAT(BUY_DATE, '%m/%d') AS label,
+		    IFNULL(SUM(BUY_PRICE), 0) AS totalSales,
+		    COUNT(BUY_NUM) AS orderCount
+		FROM SHOP_BUY
+		WHERE BUY_DATE >= DATE_SUB(CURDATE(), INTERVAL 9 DAY)
+		GROUP BY DATE(BUY_DATE)
+		ORDER BY DATE(BUY_DATE) ASC
+	</select>
+
+	<!-- 구매 랭킹 상위 5위 -->
+	<select id="selectBuyRank" resultType="com.green.book_shop.buy.dto.BuyRankDTO">
+		SELECT
+		    ROW_NUMBER() OVER (ORDER BY SUM(B.BUY_PRICE) DESC) AS rank,
+			B.MEM_EMAIL AS memEmail,
+			COUNT(B.BUY_NUM) AS orderCount,
+			SUM(B.BUY_PRICE) AS totalSales
+		FROM SHOP_BUY B
+		GROUP BY B.MEM_EMAIL
+		ORDER BY totalSales DESC
+		LIMIT 5
+	</select>
+
+	<!-- 인기 도서 랭킹 상위 5위 -->
+	<select id="selectBookRank" resultType="com.green.book_shop.buy.dto.BookRankDTO">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY SUM(D.BUY_CNT) DESC) AS rank,
+			BK.BOOK_NUM AS bookNum,
+			BK.BOOK_TITLE AS bookTitle,
+			BK.AUTHOR,
+			SUM(D.BUY_CNT) AS totalQty
+		FROM BUY_DETAIL D
+		JOIN SHOP_BOOK BK ON D.BOOK_NUM = BK.BOOK_NUM
+		GROUP BY BK.BOOK_NUM, BK.BOOK_TITLE, BK.BOOK_PRICE
+		ORDER BY totalQty DESC
+		LIMIT 5
+	</select>
+</mapper>
