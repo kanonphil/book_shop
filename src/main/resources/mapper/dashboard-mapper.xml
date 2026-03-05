@@ -29,14 +29,21 @@
 
 	<!-- 최근 10일간 일별 매출 -->
 	<select id="selectRecentDailySales" resultType="com.green.book_shop.buy.dto.SalesDTO">
+		WITH RECURSIVE date_range AS (
+			SELECT DATE_SUB(CURDATE(), INTERVAL 9 DAY) AS dt
+			UNION ALL
+			SELECT DATE_ADD(dt, INTERVAL 1 DAY)
+			FROM date_range
+			WHERE dt &lt; CURDATE()
+		)
 		SELECT
-		    DATE_FORMAT(BUY_DATE, '%m/%d') AS label,
-		    IFNULL(SUM(BUY_PRICE), 0) AS totalSales,
-		    COUNT(BUY_NUM) AS orderCount
-		FROM SHOP_BUY
-		WHERE BUY_DATE >= DATE_SUB(CURDATE(), INTERVAL 9 DAY)
-		GROUP BY DATE(BUY_DATE)
-		ORDER BY DATE(BUY_DATE) ASC
+			DATE_FORMAT(dr.dt, '%m/%d') AS label,
+			IFNULL(SUM(b.BUY_PRICE), 0) AS totalSales,
+			COUNT(b.BUY_NUM) AS orderCount
+		FROM date_range dr
+				 LEFT JOIN SHOP_BUY b ON DATE(b.BUY_DATE) = dr.dt
+		GROUP BY dr.dt
+		ORDER BY dr.dt ASC
 	</select>
 
 	<!-- 구매 랭킹 상위 5위 -->

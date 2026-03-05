@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getDashboard } from '../../api/dashboardApi'
 import styles from './ManageMain.module.css'
 import { IoCalendarOutline, IoCartOutline, IoCashOutline, IoTrendingUpOutline } from 'react-icons/io5'
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 const ManageMain = () => {
   const [stats, setStats] = useState(null)
@@ -57,7 +57,7 @@ const ManageMain = () => {
           <div className={`${styles.statCard} ${styles.blue}`}>
             <div className={styles.statIcon}><IoCartOutline /></div>
             <div className={styles.statInfo}>
-              <span className={styles.statLabel}>오늘 주문건수</span>
+              <span className={styles.statLabel}>오늘 주문</span>
               <span className={styles.statValue}>{stats?.todayOrderCount ?? 0}</span>
             </div>
           </div>
@@ -65,7 +65,7 @@ const ManageMain = () => {
           <div className={`${styles.statCard} ${styles.green}`}>
             <div className={styles.statIcon}><IoCalendarOutline /></div>
             <div className={styles.statInfo}>
-              <span className={styles.statLabel}>이달의 주문건수</span>
+              <span className={styles.statLabel}>이달 주문</span>
               <span className={styles.statValue}>{stats?.monthOrderCount ?? 0}</span>
             </div>
           </div>
@@ -73,7 +73,7 @@ const ManageMain = () => {
           <div className={`${styles.statCard} ${styles.orange}`}>
             <div className={styles.statIcon}><IoCashOutline /></div>
             <div className={styles.statInfo}>
-              <span className={styles.statLabel}>오늘의 매출금액</span>
+              <span className={styles.statLabel}>오늘 매출</span>
               <span className={styles.statValue}>{formatPrice(stats?.todaySales)}</span>
             </div>
           </div>
@@ -81,7 +81,7 @@ const ManageMain = () => {
           <div className={`${styles.statCard} ${styles.purple}`}>
             <div className={styles.statIcon}><IoTrendingUpOutline /></div>
             <div className={styles.statInfo}>
-              <span className={styles.statLabel}>이달의 매출금액</span>
+              <span className={styles.statLabel}>이달 매출</span>
               <span className={styles.statValue}>{formatPrice(stats?.monthSales)}</span>
             </div>
           </div>
@@ -89,27 +89,15 @@ const ManageMain = () => {
 
         {/* 최근 10일간 매출 */}
         <div className={styles.chartCard}>
-          <h3 className={styles.cartTitle}>최근 10일 매출</h3>
+          <h3 className={styles.cardTitle}>최근 10일 매출</h3>
           <ResponsiveContainer width="100%" height={220}>
-            <AreaChart data={recentSales} margin={{ top: 10, right: 20, left: 10, bottom: 0 }}>
-              <defs>
-                <linearGradient id='salesGradient' x1='0' y1='0' x2='0' y2='1'>
-                  <stop offset='5%' stopColor='#4a93ff' stopOpacity={0.3} />
-                  <stop offset='95%' stopColor='#4a93ff' stopOpacity={0} />
-                </linearGradient>
-              </defs>
+            <BarChart data={recentSales} margin={{ top: 10, right: 20, left: 10, bottom: 0 }}>
               <CartesianGrid strokeDasharray='3 3' stroke='#eee' />
               <XAxis dataKey='label' tick={{ fontSize: 12 }} />
               <YAxis tickFormatter={(v) => `${(v / 10000).toFixed(0)}만`} tick={{ fontSize: 12 }} />
               <Tooltip formatter={(value) => [`${formatPrice(value)}원`, '매출']} />
-              <Area 
-                type='monotone'
-                dataKey='totalSales'
-                stroke='#4a9eff'
-                fill='url(#salesGradient)'
-                strokeWidth={2}
-              />
-            </AreaChart>
+              <Bar dataKey='totalSales' fill='#4a9eff' radius={[4, 4, 0, 0]} />
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
@@ -123,7 +111,7 @@ const ManageMain = () => {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>랭킹</th>
+                <th className={styles.rankCell}>랭킹</th>
                 <th>이메일</th>
                 <th>구매건수</th>
                 <th>구매금액</th>
@@ -132,7 +120,7 @@ const ManageMain = () => {
             <tbody>
               {buyRank.map((item) => (
                 <tr key={item.rank}>
-                  <td className={styles.rankCell}>{getMedal(item.rank)}</td>
+                  <td>{getMedal(item.rank)}</td>
                   <td>{item.memEmail}</td>
                   <td>{item.orderCount}건</td>
                   <td>{formatPrice(item.totalSales)}원</td>
