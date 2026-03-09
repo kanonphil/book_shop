@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class BuyRankDTO {
-  private int rank;
   private String memEmail;
   private long totalSales;
   private int orderCount;

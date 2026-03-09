@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class BookRankDTO {
-  private int rank;
   private int bookNum;
   private String bookTitle;
   private String author;
