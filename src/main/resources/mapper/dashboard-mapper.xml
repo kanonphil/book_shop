@@ -49,7 +49,6 @@
 	<!-- 구매 랭킹 상위 5위 -->
 	<select id="selectBuyRank" resultType="com.green.book_shop.buy.dto.BuyRankDTO">
 		SELECT
-		    ROW_NUMBER() OVER (ORDER BY SUM(B.BUY_PRICE) DESC) AS rank,
 			B.MEM_EMAIL AS memEmail,
 			COUNT(B.BUY_NUM) AS orderCount,
 			SUM(B.BUY_PRICE) AS totalSales
@@ -62,7 +61,6 @@
 	<!-- 인기 도서 랭킹 상위 5위 -->
 	<select id="selectBookRank" resultType="com.green.book_shop.buy.dto.BookRankDTO">
 		SELECT
-			ROW_NUMBER() OVER (ORDER BY SUM(D.BUY_CNT) DESC) AS rank,
 			BK.BOOK_NUM AS bookNum,
 			BK.BOOK_TITLE AS bookTitle,
 			BK.AUTHOR,

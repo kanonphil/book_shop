@@ -118,9 +118,9 @@ const ManageMain = () => {
               </tr>
             </thead>
             <tbody>
-              {buyRank.map((item) => (
-                <tr key={item.rank}>
-                  <td>{getMedal(item.rank)}</td>
+              {buyRank.map((item, index) => (
+                <tr key={index}>
+                  <td>{getMedal(index + 1)}</td>
                   <td>{item.memEmail}</td>
                   <td>{item.orderCount}건</td>
                   <td>{formatPrice(item.totalSales)}원</td>
@@ -148,9 +148,9 @@ const ManageMain = () => {
               </tr>
             </thead>
             <tbody>
-              {bookRank.map((item) => (
-                <tr key={item.rank}>
-                  <td>{getMedal(item.rank)}</td>
+              {bookRank.map((item, index) => (
+                <tr key={index}>
+                  <td>{getMedal(index + 1)}</td>
                   <td>{item.bookTitle}</td>
                   <td>{item.author}</td>
                   <td>{item.totalQty}</td>
