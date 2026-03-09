@@ -41,7 +41,7 @@
 			IFNULL(SUM(b.BUY_PRICE), 0) AS totalSales,
 			COUNT(b.BUY_NUM) AS orderCount
 		FROM date_range dr
-				 LEFT JOIN SHOP_BUY b ON DATE(b.BUY_DATE) = dr.dt
+		LEFT JOIN SHOP_BUY b ON DATE(b.BUY_DATE) = dr.dt
 		GROUP BY dr.dt
 		ORDER BY dr.dt ASC
 	</select>
