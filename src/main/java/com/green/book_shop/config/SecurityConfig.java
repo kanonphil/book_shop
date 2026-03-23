@@ -3,12 +3,12 @@ package com.green.book_shop.config;
 import com.green.book_shop.filter.LoginFilter;
 import com.green.book_shop.jwt.JwtConfirmFilter;
 import com.green.book_shop.jwt.JwtUtil;
-import com.green.book_shop.member.service.CustomOAuth2UserService;
+//import com.green.book_shop.member.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
+//import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -24,6 +24,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+// 인증 및 인가에 대한 설정 내용을 작성하는 클래스
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -49,10 +50,14 @@ public class SecurityConfig {
     // 로그인 검증을 처리하는 객체를 의존성 주입으로 받아옴
     AuthenticationManager authenticationManager = authConfig.getAuthenticationManager();
 
+    //----- http 객체에 인증 및 인가에 대한 설정을 세팅 -----//
+    // 1. csrf 설정을 disable로 세팅 -> 세션 방식 로그인에서는 사용하지만 jwt 인증 방식에서는 사용 안 함.
+    // 2. Form 로그인 방식 사용 안 함으로 세팅
+    // 3. http basic 인증 방식 사용 안 함
     http
             // CORS 설정. 아래 corsConfigurationSource() 메서드에서 정의한 Bean을 등록함.
             .cors(Customizer.withDefaults())
-            // csrf disable   세션방식이 아니기 때문에 할 필요 없음
+            // csrf disable   csrf -> csrf.disable() 람다 방식은 복잡할 때 사용
             .csrf(AbstractHttpConfigurer::disable)
             // form 로그인 방식 disable
             .formLogin(AbstractHttpConfigurer::disable)
@@ -85,6 +90,7 @@ public class SecurityConfig {
     // JwtConfirmFilter 클래스는 LoginFilter가 진행되기 전에 실행되도록 설정 함
     http.addFilterBefore(new JwtConfirmFilter(jwtUtil), LoginFilter.class);
 
+    // 인증 및 인가에 대한 설정 내용을 저장하고 있는 http 객체를 리턴
     return http.build();
   }
 
