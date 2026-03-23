@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,11 +53,11 @@ public class SecurityConfig {
             // CORS 설정. 아래 corsConfigurationSource() 메서드에서 정의한 Bean을 등록함.
             .cors(Customizer.withDefaults())
             // csrf disable   세션방식이 아니기 때문에 할 필요 없음
-            .csrf(csrf -> csrf.disable())
+            .csrf(AbstractHttpConfigurer::disable)
             // form 로그인 방식 disable
-            .formLogin(form -> form.disable())
+            .formLogin(AbstractHttpConfigurer::disable)
             // http basic 인증 방식 disable
-            .httpBasic(basic -> basic.disable())
+            .httpBasic(AbstractHttpConfigurer::disable)
             // 세션을 STATELESS로 지정
             .sessionManagement(
                     session ->

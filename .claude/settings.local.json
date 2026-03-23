@@ -7,7 +7,16 @@
       "Bash(git commit:*)",
       "Bash(git push)",
       "Bash(git push -u origin main)",
-      "Bash(git add src/main/frontend/src/pages/manage/buy/MonthlySales.jsx src/main/frontend/src/pages/manage/buy/WeeklySales.jsx src/main/frontend/src/reset.css)"
+      "Bash(git add src/main/frontend/src/pages/manage/buy/MonthlySales.jsx src/main/frontend/src/pages/manage/buy/WeeklySales.jsx src/main/frontend/src/reset.css)",
+      "Bash(find /d/01-STUDY/dev/workspace/book_shop/src/main/frontend/src -type f \\\\\\(-name *.jsx -o -name *.js -o -name *.tsx -o -name *.ts \\\\\\))",
+      "Bash(xargs grep:*)",
+      "mcp__notionApi__API-get-self",
+      "mcp__notionApi__API-post-search",
+      "mcp__notionApi__API-post-page",
+      "mcp__notionApi__API-patch-block-children",
+      "Bash(powershell -Command \"Get-Content ''C:\\\\Users\\\\GRS\\\\.claude\\\\projects\\\\D--01-STUDY-dev-workspace-book-shop\\\\c3ed001a-03b9-445b-91ec-f85603609829\\\\tool-results\\\\mcp-notionApi-API-patch-block-children-1773731748804.txt'' | Select-Object -First 1 | ForEach-Object { $_Substring\\(0, [Math]::Min\\(300, $_Length\\)\\) }\")",
+      "Bash(powershell -Command \"$content = Get-Content ''C:\\\\Users\\\\GRS\\\\.claude\\\\projects\\\\D--01-STUDY-dev-workspace-book-shop\\\\c3ed001a-03b9-445b-91ec-f85603609829\\\\tool-results\\\\mcp-notionApi-API-patch-block-children-1773731748804.txt'' -Raw; Write-Output $content.Substring\\(0, 200\\)\")",
+      "Bash(cmd /c \"type \"\"C:\\\\Users\\\\GRS\\\\.claude\\\\projects\\\\D--01-STUDY-dev-workspace-book-shop\\\\c3ed001a-03b9-445b-91ec-f85603609829\\\\tool-results\\\\mcp-notionApi-API-patch-block-children-1773731748804.txt\"\" 2>&1 | more +1\")"
     ]
   }
 }
