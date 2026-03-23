@@ -51,7 +51,7 @@ public class MemberController {
   }
 
   // 로그인
-  /*@PostMapping("/login")
+  @PostMapping("/login")
   public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> loginData) {
     Map<String, Object> response = new HashMap<>();
 
@@ -71,7 +71,7 @@ public class MemberController {
       response.put("message", e.getMessage());
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
-  }*/
+  }
 
   // 회원 정보 조회
   @GetMapping("/info/{email}")
